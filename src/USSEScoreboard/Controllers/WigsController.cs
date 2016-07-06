@@ -210,11 +210,5 @@ namespace USSEScoreboard.Controllers
             return _context.Wig.Any(e => e.WigId == id);
         }
 
-        private async Task<bool> AddWigsToProfile(List<int> profiles)
-        {
-           //
-           return false;
-
-        }
     }
 }

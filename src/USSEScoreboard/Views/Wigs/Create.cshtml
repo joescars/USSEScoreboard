@@ -1,4 +1,4 @@
-@model USSEScoreboard.Models.Wig
+@model USSEScoreboard.Models.WigViewModels.CreateWigViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -31,6 +31,19 @@
                 <select asp-for="Status" asp-items="Html.GetEnumSelectList<WigStatus>()" class="form-control"></select>
                 <span asp-validation-for="Status" class="text-danger" />
             </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Assigned To</label>
+            <div class="col-md-10">
+                @foreach (var u in Model.UserProfiles)
+                {
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="SelectedUserProfiles" value="@u.UserProfileId" id="@u.UserProfileId" />@u.FullName</label>
+                    </div>
+                }
+            </div>
+        <div class="form-group">
+            <br/>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

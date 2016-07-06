@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using USSEScoreboard.Data;
 using USSEScoreboard.Models;
+using Microsoft.AspNetCore.Authorization;
+using USSEScoreboard.Models.WigViewModels;
 
 namespace USSEScoreboard.Controllers
 {
+    [Authorize]
     public class WigsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -43,9 +46,11 @@ namespace USSEScoreboard.Controllers
         }
 
         // GET: Wigs/Create
-        public IActionResult Create()
+        public async Task<ViewResult> Create()
         {
-            return View();
+            var model = new CreateWigViewModel();
+            model.UserProfiles = await _context.UserProfile.ToListAsync();
+            return View(model);
         }
 
         // POST: Wigs/Create
@@ -53,16 +58,30 @@ namespace USSEScoreboard.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("WigId,Description,Status,Title")] Wig wig)
+        public async Task<IActionResult> Create([Bind("WigId,Description,Status,Title,SelectedUserProfiles")] CreateWigViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var wig = new Wig();
+                wig.Title = model.Title;
+                wig.Description = model.Description;
+                wig.Status = model.Status;
                 wig.DateCreated = DateTime.Now;
                 _context.Add(wig);
                 await _context.SaveChangesAsync();
+
+                foreach (var i in model.SelectedUserProfiles)
+                {
+                    var uw = new UserWig();
+                    uw.WigId = wig.WigId;
+                    uw.UserProfileId = i;
+                    _context.Add(uw);
+                }
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
-            return View(wig);
+            return View(model);
         }
 
         // GET: Wigs/Edit/5

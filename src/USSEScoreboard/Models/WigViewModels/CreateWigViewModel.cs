@@ -14,7 +14,8 @@ namespace USSEScoreboard.Models.WigViewModels
         public string Description { get; set; }
         public WigStatus Status { get; set; }
         public DateTime DateCreated { get; set; }
-
+        public IList<UserProfile> UserProfiles { get; set; }
+        public int[] SelectedUserProfiles { get; set; }
         public CreateWigViewModel()
         {
             DateCreated = DateTime.Today;

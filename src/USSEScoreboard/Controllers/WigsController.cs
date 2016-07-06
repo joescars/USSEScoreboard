@@ -68,7 +68,6 @@ namespace USSEScoreboard.Controllers
                 wig.Status = model.Status;
                 wig.DateCreated = DateTime.Now;
                 _context.Add(wig);
-                await _context.SaveChangesAsync();
 
                 foreach (var i in model.SelectedUserProfiles)
                 {
@@ -77,6 +76,7 @@ namespace USSEScoreboard.Controllers
                     uw.UserProfileId = i;
                     _context.Add(uw);
                 }
+                                
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction("Index");
@@ -92,12 +92,23 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var wig = await _context.Wig.SingleOrDefaultAsync(m => m.WigId == id);
+            // Get source WIG            
+            var wig = await _context.Wig.Include(u => u.UserWigs).SingleOrDefaultAsync(m => m.WigId == id);
             if (wig == null)
             {
                 return NotFound();
             }
-            return View(wig);
+
+            // Create view model and populate
+            var model = new EditWigViewModel();
+            model.WigId = wig.WigId;
+            model.Title = wig.Title;
+            model.Description = wig.Description;
+            model.Status = wig.Status;
+            model.DateCreated = wig.DateCreated;
+            model.SelectedUserProfiles = wig.UserWigs.Select(m => m.UserProfileId).ToList();
+            model.UserProfiles = await _context.UserProfile.ToListAsync();
+            return View(model);
         }
 
         // POST: Wigs/Edit/5
@@ -105,8 +116,11 @@ namespace USSEScoreboard.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("WigId,DateCreated,Description,Status,Title")] Wig wig)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("WigId,DateCreated,Description,Status,Title")] Wig wig,
+            List<int> SelectedUserProfiles)
         {
+
             if (id != wig.WigId)
             {
                 return NotFound();
@@ -116,8 +130,36 @@ namespace USSEScoreboard.Controllers
             {
                 try
                 {
-                    _context.Update(wig);
+                    // Get the Source Wig with corresponding user profile data
+                    var myWig = await _context.Wig
+                        .Include(u => u.UserWigs)
+                        .SingleOrDefaultAsync(m => m.WigId == id);
+
+                    myWig.Title = wig.Title;
+                    myWig.Description = wig.Description;
+                    myWig.Status = wig.Status;
+
+                    //removes users that are already there and not in new list
+                    foreach (UserWig uw in myWig.UserWigs.ToList())
+                    {
+                        if (!SelectedUserProfiles.Contains(uw.UserProfileId))
+                            myWig.UserWigs.Remove(uw);
+                    }
+
+                    // Add the new ones
+                    foreach (int i in SelectedUserProfiles)
+                    {
+                        if (!myWig.UserWigs.Any(u=> u.UserProfileId == i))
+                        {
+                            var newUserWig = new UserWig { UserProfileId = i, WigId = id };
+                            myWig.UserWigs.Add(newUserWig);
+                        }
+
+                    }
+
+                    // Save Changes
                     await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -166,6 +208,13 @@ namespace USSEScoreboard.Controllers
         private bool WigExists(int id)
         {
             return _context.Wig.Any(e => e.WigId == id);
+        }
+
+        private async Task<bool> AddWigsToProfile(List<int> profiles)
+        {
+           //
+           return false;
+
         }
     }
 }

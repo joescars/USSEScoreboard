@@ -1,4 +1,4 @@
-@model USSEScoreboard.Models.Wig
+@model USSEScoreboard.Models.WigViewModels.EditWigViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -15,7 +15,7 @@
         <div class="form-group">
             <label asp-for="DateCreated" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="DateCreated" class="form-control" />
+                <input asp-for="DateCreated" class="form-control" readonly />
                 <span asp-validation-for="DateCreated" class="text-danger" />
             </div>
         </div>
@@ -40,12 +40,35 @@
                 <span asp-validation-for="Title" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <label class="col-md-2 control-label">Assigned To</label>
+            <div class="col-md-10">
+                @foreach (var u in Model.UserProfiles)
+                {
+                    <div class="checkbox">
+                        <label>
+                        <input type="checkbox" 
+                                      name="SelectedUserProfiles" 
+                                      value="@u.UserProfileId" id="@u.UserProfileId" 
+                                      @{ if (Model.SelectedUserProfiles.Contains(u.UserProfileId))
+                                              { <text> checked="checked" </text>}     }
+                                      />@u.FullName</label>
+                    </div>
+                }
             </div>
+            <div class="form-group">
+                <br />
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+
         </div>
-    </div>
 </form>
 
 <div>

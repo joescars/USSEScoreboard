@@ -184,7 +184,7 @@ namespace USSEScoreboard.Controllers
             {
                 return NotFound();
             }
-
+            
             var wig = await _context.Wig.SingleOrDefaultAsync(m => m.WigId == id);
             if (wig == null)
             {
@@ -199,7 +199,14 @@ namespace USSEScoreboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var wig = await _context.Wig.SingleOrDefaultAsync(m => m.WigId == id);
+            //modified to include UserWigs
+            var wig = await _context.Wig
+                .Include(u => u.UserWigs)
+                .SingleOrDefaultAsync(m => m.WigId == id);
+
+            //removes associated wigs
+            wig.UserWigs.Clear();
+
             _context.Wig.Remove(wig);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

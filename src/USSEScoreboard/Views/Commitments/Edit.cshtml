@@ -1,4 +1,4 @@
-@model USSEScoreboard.Models.Commitment
+@model USSEScoreboard.Models.CommitmentViewModels.EditCommitmentViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -15,7 +15,7 @@
         <div class="form-group">
             <label asp-for="DateCreated" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="DateCreated" type="date" class="form-control" />
+                <input asp-for="DateCreated" type="date" class="form-control" readonly/>
                 <span asp-validation-for="DateCreated" class="text-danger" />
             </div>
         </div>
@@ -40,7 +40,13 @@
                 <span asp-validation-for="Status" class="text-danger" />
             </div>
         </div>
-
+        <div class="form-group">
+            <label asp-for="SelectedUserID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="SelectedUserID" asp-items="@(new SelectList(Model.Users,"UserProfileId","FullName"))" class="form-control"></select>
+                <span asp-validation-for="SelectedUserID" class="text-danger" />
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

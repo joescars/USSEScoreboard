@@ -69,7 +69,7 @@ namespace USSEScoreboard.Controllers
             if (ModelState.IsValid)
             {
                 var commitment = new Commitment();
-                commitment.DateCreated = System.DateTime.Now;
+                commitment.DateCreated = DateTime.Now;
                 commitment.Description = model.Description;
                 commitment.Status = model.Status;
                 commitment.Title = model.Title;
@@ -90,12 +90,25 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var commitment = await _context.Commitment.SingleOrDefaultAsync(m => m.Id == id);
+            var model = new EditCommitmentViewModel();
+
+            var commitment = await _context.Commitment
+                .Include(u => u.UserProfile)
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (commitment == null)
             {
                 return NotFound();
             }
-            return View(commitment);
+
+            model.Id = commitment.Id;
+            model.Title = commitment.Title;
+            model.Description = commitment.Description;
+            model.Status = commitment.Status;
+            model.SelectedUserID = commitment.UserProfileId;
+            model.DateCreated = commitment.DateCreated;
+            model.Users = await _context.UserProfile.ToListAsync();
+
+            return View(model);
         }
 
         // POST: Commitments/Edit/5
@@ -103,7 +116,9 @@ namespace USSEScoreboard.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DateCreated,Description,Status,Title")] Commitment commitment)
+        public async Task<IActionResult> Edit(int id, 
+            [Bind("Id,DateCreated,Description,Status,Title")] Commitment commitment,
+            int SelectedUserId)
         {
             if (id != commitment.Id)
             {
@@ -114,6 +129,7 @@ namespace USSEScoreboard.Controllers
             {
                 try
                 {
+                    commitment.UserProfileId = SelectedUserId;
                     _context.Update(commitment);
                     await _context.SaveChangesAsync();
                 }

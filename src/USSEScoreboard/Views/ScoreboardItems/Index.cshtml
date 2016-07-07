@@ -1,0 +1,53 @@
+@model IEnumerable<USSEScoreboard.Models.ScoreboardItem>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                Assigned To
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.DateCreated.ToString("d")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @item.UserProfile.FullName
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ScoreboardItemId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ScoreboardItemId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ScoreboardItemId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

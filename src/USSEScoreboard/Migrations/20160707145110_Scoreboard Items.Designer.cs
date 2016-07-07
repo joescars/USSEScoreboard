@@ -8,9 +8,10 @@ using USSEScoreboard.Data;
 namespace USSEScoreboard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160707145110_Scoreboard Items")]
+    partial class ScoreboardItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -194,26 +195,6 @@ namespace USSEScoreboard.Migrations
                     b.ToTable("Commitment");
                 });
 
-            modelBuilder.Entity("USSEScoreboard.Models.ScoreboardEntry", b =>
-                {
-                    b.Property<int>("ScoreboardEntryId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Count");
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<int>("ScoreboardItemId");
-
-                    b.HasKey("ScoreboardEntryId");
-
-                    b.HasIndex("ScoreboardItemId");
-
-                    b.ToTable("ScoreboardEntry");
-                });
-
             modelBuilder.Entity("USSEScoreboard.Models.ScoreboardItem", b =>
                 {
                     b.Property<int>("ScoreboardItemId")
@@ -333,14 +314,6 @@ namespace USSEScoreboard.Migrations
                     b.HasOne("USSEScoreboard.Models.UserProfile", "UserProfile")
                         .WithMany("Commitments")
                         .HasForeignKey("UserProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("USSEScoreboard.Models.ScoreboardEntry", b =>
-                {
-                    b.HasOne("USSEScoreboard.Models.ScoreboardItem", "ScoreboardItem")
-                        .WithMany()
-                        .HasForeignKey("ScoreboardItemId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

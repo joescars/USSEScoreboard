@@ -43,5 +43,9 @@ namespace USSEScoreboard.Data
         public DbSet<Wig> Wig { get; set; }
 
         public DbSet<UserProfile> UserProfile { get; set; }
+
+        public DbSet<ScoreboardItem> ScoreboardItem { get; set; }
+        
+        public DbSet<ScoreboardEntry> ScoreboardEntry { get; set; }
     }
 }

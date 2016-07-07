@@ -69,12 +69,15 @@ namespace USSEScoreboard.Controllers
                 wig.DateCreated = DateTime.Now;
                 _context.Add(wig);
 
-                foreach (var i in model.SelectedUserProfiles)
+                if (model.SelectedUserProfiles != null)
                 {
-                    var uw = new UserWig();
-                    uw.WigId = wig.WigId;
-                    uw.UserProfileId = i;
-                    _context.Add(uw);
+                    foreach (var i in model.SelectedUserProfiles)
+                    {
+                        var uw = new UserWig();
+                        uw.WigId = wig.WigId;
+                        uw.UserProfileId = i;
+                        _context.Add(uw);
+                    }
                 }
                                 
                 await _context.SaveChangesAsync();

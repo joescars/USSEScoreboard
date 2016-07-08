@@ -7,28 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using USSEScoreboard.Data;
 using USSEScoreboard.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace USSEScoreboard.Controllers
 {
-    [Authorize]
-    public class ScoreboardItemsController : Controller
+    public class ScoreboardEntriesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ScoreboardItemsController(ApplicationDbContext context)
+        public ScoreboardEntriesController(ApplicationDbContext context)
         {
             _context = context;    
         }
 
-        // GET: ScoreboardItems
+        // GET: ScoreboardEntries
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ScoreboardItem.Include(s => s.UserProfile);
+            var applicationDbContext = _context.ScoreboardEntry.Include(s => s.ScoreboardItem);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: ScoreboardItems/Details/5
+        // GET: ScoreboardEntries/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,42 +34,49 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var scoreboardItem = await _context.ScoreboardItem.SingleOrDefaultAsync(m => m.ScoreboardItemId == id);
-            if (scoreboardItem == null)
+            var scoreboardEntry = await _context.ScoreboardEntry.SingleOrDefaultAsync(m => m.ScoreboardEntryId == id);
+            if (scoreboardEntry == null)
             {
                 return NotFound();
             }
 
-            return View(scoreboardItem);
+            return View(scoreboardEntry);
         }
 
-        // GET: ScoreboardItems/Create
+        // GET: ScoreboardEntries/Create
         public IActionResult Create()
         {
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "FullName");
+            var mySelects = _context.ScoreboardItem.Include(u => u.UserProfile)
+                .Select(item => new SelectListItem {
+                    Text = item.Title + " - " + item.UserProfile.FullName,
+                    Value = item.ScoreboardItemId.ToString()
+                });
+
+            ViewData["ScoreboardItemId"] = mySelects;
             ViewData["DateCreated"] = DateTime.Now;
             ViewData["DateModified"] = DateTime.Now;
+
             return View();
         }
 
-        // POST: ScoreboardItems/Create
+        // POST: ScoreboardEntries/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ScoreboardItemId,DateCreated,DateModified,Description,Title,Total,UserProfileId")] ScoreboardItem scoreboardItem)
+        public async Task<IActionResult> Create([Bind("ScoreboardEntryId,Count,DateCreated,DateModified,ScoreboardItemId")] ScoreboardEntry scoreboardEntry)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(scoreboardItem);
+                _context.Add(scoreboardEntry);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "UserProfileId", scoreboardItem.UserProfileId);
-            return View(scoreboardItem);
+            ViewData["ScoreboardItemId"] = new SelectList(_context.ScoreboardItem, "ScoreboardItemId", "ScoreboardItemId", scoreboardEntry.ScoreboardItemId);
+            return View(scoreboardEntry);
         }
 
-        // GET: ScoreboardItems/Edit/5
+        // GET: ScoreboardEntries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,23 +84,23 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var scoreboardItem = await _context.ScoreboardItem.SingleOrDefaultAsync(m => m.ScoreboardItemId == id);
-            if (scoreboardItem == null)
+            var scoreboardEntry = await _context.ScoreboardEntry.SingleOrDefaultAsync(m => m.ScoreboardEntryId == id);
+            if (scoreboardEntry == null)
             {
                 return NotFound();
             }
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "FullName", scoreboardItem.UserProfileId);
-            return View(scoreboardItem);
+            ViewData["ScoreboardItemId"] = new SelectList(_context.ScoreboardItem, "ScoreboardItemId", "ScoreboardItemId", scoreboardEntry.ScoreboardItemId);
+            return View(scoreboardEntry);
         }
 
-        // POST: ScoreboardItems/Edit/5
+        // POST: ScoreboardEntries/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ScoreboardItemId,DateCreated,DateModified,Description,Title,Total,UserProfileId")] ScoreboardItem scoreboardItem)
+        public async Task<IActionResult> Edit(int id, [Bind("ScoreboardEntryId,Count,DateCreated,DateModified,ScoreboardItemId")] ScoreboardEntry scoreboardEntry)
         {
-            if (id != scoreboardItem.ScoreboardItemId)
+            if (id != scoreboardEntry.ScoreboardEntryId)
             {
                 return NotFound();
             }
@@ -104,13 +109,12 @@ namespace USSEScoreboard.Controllers
             {
                 try
                 {
-                    scoreboardItem.DateModified = DateTime.Now;
-                    _context.Update(scoreboardItem);
+                    _context.Update(scoreboardEntry);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ScoreboardItemExists(scoreboardItem.ScoreboardItemId))
+                    if (!ScoreboardEntryExists(scoreboardEntry.ScoreboardEntryId))
                     {
                         return NotFound();
                     }
@@ -121,11 +125,11 @@ namespace USSEScoreboard.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "UserProfileId", scoreboardItem.UserProfileId);
-            return View(scoreboardItem);
+            ViewData["ScoreboardItemId"] = new SelectList(_context.ScoreboardItem, "ScoreboardItemId", "ScoreboardItemId", scoreboardEntry.ScoreboardItemId);
+            return View(scoreboardEntry);
         }
 
-        // GET: ScoreboardItems/Delete/5
+        // GET: ScoreboardEntries/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,29 +137,29 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var scoreboardItem = await _context.ScoreboardItem.SingleOrDefaultAsync(m => m.ScoreboardItemId == id);
-            if (scoreboardItem == null)
+            var scoreboardEntry = await _context.ScoreboardEntry.SingleOrDefaultAsync(m => m.ScoreboardEntryId == id);
+            if (scoreboardEntry == null)
             {
                 return NotFound();
             }
 
-            return View(scoreboardItem);
+            return View(scoreboardEntry);
         }
 
-        // POST: ScoreboardItems/Delete/5
+        // POST: ScoreboardEntries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var scoreboardItem = await _context.ScoreboardItem.SingleOrDefaultAsync(m => m.ScoreboardItemId == id);
-            _context.ScoreboardItem.Remove(scoreboardItem);
+            var scoreboardEntry = await _context.ScoreboardEntry.SingleOrDefaultAsync(m => m.ScoreboardEntryId == id);
+            _context.ScoreboardEntry.Remove(scoreboardEntry);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool ScoreboardItemExists(int id)
+        private bool ScoreboardEntryExists(int id)
         {
-            return _context.ScoreboardItem.Any(e => e.ScoreboardItemId == id);
+            return _context.ScoreboardEntry.Any(e => e.ScoreboardEntryId == id);
         }
     }
 }

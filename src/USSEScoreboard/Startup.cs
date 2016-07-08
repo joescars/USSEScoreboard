@@ -90,6 +90,10 @@ namespace USSEScoreboard
 
             // Call custom function to create default roles
             await CreateRoles(serviceProvider);
+
+            // Create default users
+            //await SeedData.Initialize(app.ApplicationServices);
+            await SeedDataLive.Initialize(app.ApplicationServices);
         }
 
         // Create Default Roles

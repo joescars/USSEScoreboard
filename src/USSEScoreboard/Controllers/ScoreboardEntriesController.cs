@@ -22,7 +22,9 @@ namespace USSEScoreboard.Controllers
         // GET: ScoreboardEntries
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ScoreboardEntry.Include(s => s.ScoreboardItem);
+            var applicationDbContext = _context.ScoreboardEntry
+                .Include(s => s.ScoreboardItem)
+                .Include(u => u.ScoreboardItem.UserProfile);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -46,13 +48,8 @@ namespace USSEScoreboard.Controllers
         // GET: ScoreboardEntries/Create
         public IActionResult Create()
         {
-            var mySelects = _context.ScoreboardItem.Include(u => u.UserProfile)
-                .Select(item => new SelectListItem {
-                    Text = item.Title + " - " + item.UserProfile.FullName,
-                    Value = item.ScoreboardItemId.ToString()
-                });
 
-            ViewData["ScoreboardItemId"] = mySelects;
+            ViewData["ScoreboardItemId"] = GetScoreboardItems();
             ViewData["DateCreated"] = DateTime.Now;
             ViewData["DateModified"] = DateTime.Now;
 
@@ -70,9 +67,16 @@ namespace USSEScoreboard.Controllers
             {
                 _context.Add(scoreboardEntry);
                 await _context.SaveChangesAsync();
+
+                //Update Total for the parent item
+                var myScoreboardItem = 
+                    await _context.ScoreboardItem.Where(i => i.ScoreboardItemId == scoreboardEntry.ScoreboardItemId).FirstOrDefaultAsync();
+                myScoreboardItem.Total += scoreboardEntry.Count;
+                await _context.SaveChangesAsync();
+                
                 return RedirectToAction("Index");
             }
-            ViewData["ScoreboardItemId"] = new SelectList(_context.ScoreboardItem, "ScoreboardItemId", "ScoreboardItemId", scoreboardEntry.ScoreboardItemId);
+            ViewData["ScoreboardItemId"] = new SelectList(GetScoreboardItems(), "Value", "Text", scoreboardEntry.ScoreboardItemId);
             return View(scoreboardEntry);
         }
 
@@ -89,7 +93,7 @@ namespace USSEScoreboard.Controllers
             {
                 return NotFound();
             }
-            ViewData["ScoreboardItemId"] = new SelectList(_context.ScoreboardItem, "ScoreboardItemId", "ScoreboardItemId", scoreboardEntry.ScoreboardItemId);
+            ViewData["ScoreboardItemId"] = new SelectList(GetScoreboardItems(),"Value","Text",scoreboardEntry.ScoreboardItemId);
             return View(scoreboardEntry);
         }
 
@@ -109,7 +113,8 @@ namespace USSEScoreboard.Controllers
             {
                 try
                 {
-                    _context.Update(scoreboardEntry);
+                    //Todo: Add edit feature to change score
+                    _context.Update(scoreboardEntry);                    
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -125,7 +130,7 @@ namespace USSEScoreboard.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["ScoreboardItemId"] = new SelectList(_context.ScoreboardItem, "ScoreboardItemId", "ScoreboardItemId", scoreboardEntry.ScoreboardItemId);
+            ViewData["ScoreboardItemId"] = new SelectList(GetScoreboardItems(), "Value", "Text", scoreboardEntry.ScoreboardItemId);
             return View(scoreboardEntry);
         }
 
@@ -151,7 +156,13 @@ namespace USSEScoreboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var scoreboardEntry = await _context.ScoreboardEntry.SingleOrDefaultAsync(m => m.ScoreboardEntryId == id);
+            var scoreboardEntry = await _context.ScoreboardEntry
+                .Include(s => s.ScoreboardItem)
+                .SingleOrDefaultAsync(m => m.ScoreboardEntryId == id);
+
+            //remove this amount from the total score
+            scoreboardEntry.ScoreboardItem.Total -= scoreboardEntry.Count;
+
             _context.ScoreboardEntry.Remove(scoreboardEntry);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -160,6 +171,18 @@ namespace USSEScoreboard.Controllers
         private bool ScoreboardEntryExists(int id)
         {
             return _context.ScoreboardEntry.Any(e => e.ScoreboardEntryId == id);
+        }
+
+        private List<SelectListItem> GetScoreboardItems()
+        {
+            var mySelects = _context.ScoreboardItem.Include(u => u.UserProfile)
+                 .Select(item => new SelectListItem()
+                 {
+                     Text = item.Title + " - " + item.UserProfile.FullName,
+                     Value = item.ScoreboardItemId.ToString()
+                 });
+
+            return mySelects.ToList();
         }
     }
 }

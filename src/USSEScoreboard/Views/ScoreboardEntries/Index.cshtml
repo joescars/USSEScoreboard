@@ -13,13 +13,16 @@
     <thead>
         <tr>
             <th>
+                Date Created
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Count)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
+                Scoreboard Item
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateModified)
+                Assigned To
             </th>
             <th></th>
         </tr>
@@ -28,16 +31,20 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @item.DateCreated.ToString("d")
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Count)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
+                @item.ScoreboardItem.Title
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateModified)
+                @item.ScoreboardItem.UserProfile.FullName
             </td>
+
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ScoreboardEntryId">Edit</a> |
+                @*<a asp-action="Edit" asp-route-id="@item.ScoreboardEntryId">Edit</a> |*@
                 <a asp-action="Details" asp-route-id="@item.ScoreboardEntryId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ScoreboardEntryId">Delete</a>
             </td>

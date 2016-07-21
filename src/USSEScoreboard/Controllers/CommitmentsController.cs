@@ -204,5 +204,26 @@ namespace USSEScoreboard.Controllers
                 return null;
             }
         }
+
+        public ActionResult GetCommitmentsList()
+        {
+            //var myList = _context.Commitment.Include(u => u.UserProfile).ToListAsync();
+            //return Json(myList);
+
+            // Used LINQ to create custom query with data we need
+            var commitmentsList = (from c in _context.Commitment
+                                   select new
+                                   {
+                                       c.Id,
+                                       c.Title,
+                                       c.Description,
+                                       c.Status,
+                                       c.DateCreated,
+                                       c.UserProfile.FullName
+                                   });
+
+            return Json(commitmentsList);
+        }
+
     }
 }

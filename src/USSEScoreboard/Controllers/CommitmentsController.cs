@@ -29,7 +29,33 @@ namespace USSEScoreboard.Controllers
         public async Task<IActionResult> Index()
         {
             var model = new ListCommitmentsViewModel();
-            model.Commitments = await _context.Commitment.Include(u => u.UserProfile).ToListAsync();
+            model.Commitments = await _context.Commitment
+                .Include(u => u.UserProfile)
+                .OrderByDescending(u => u.DateCreated).ToListAsync();
+            return View(model);
+        }
+
+        // GET: Committments by User
+        public async Task<IActionResult> SearchByUser(int id)
+        {
+            var model = new ListCommitmentsViewModel();
+            model.Commitments = await _context.Commitment
+                .Where(u => u.UserProfileId == id)
+                .Include(u => u.UserProfile)
+                .OrderByDescending(u => u.DateCreated)
+                .ToListAsync();
+            return View(model);
+        }
+
+        // GET: My Commitments (Logged in User)
+        public async Task<ActionResult> My()
+        {
+            var userId = _userManager.GetUserId(User);
+            var model = new ListCommitmentsViewModel();
+            model.Commitments = await _context.Commitment
+                .Where(u => u.UserProfile.UserId == userId)
+                .Include(u => u.UserProfile)
+                .OrderByDescending(u => u.DateCreated).ToListAsync();
             return View(model);
         }
 
@@ -55,7 +81,14 @@ namespace USSEScoreboard.Controllers
         {
             var model = new CreateCommitmentViewModel();
             model.Users = await _context.UserProfile.ToListAsync();
+            //Get the userId of the logged in user so we can default to this
+            var userId = _userManager.GetUserId(User);
+            model.SelectedUserID = model.Users
+                .Where(u => u.UserId == userId)
+                .Select(u => u.UserProfileId).First();
             return View(model);
+
+            
         }
 
         // POST: Commitments/Create
@@ -76,7 +109,7 @@ namespace USSEScoreboard.Controllers
                 commitment.UserProfileId = model.SelectedUserID;
                 _context.Add(commitment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("My");
 
             }
             return View(model);
@@ -144,7 +177,7 @@ namespace USSEScoreboard.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("My");
             }
             return View(commitment);
         }

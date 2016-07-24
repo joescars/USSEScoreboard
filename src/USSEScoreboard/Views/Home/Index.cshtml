@@ -35,10 +35,28 @@
                     <tr>
                         <td width="20%">@TeamMember.FullName</td>
                         <td width="16%" class="text-center"><a asp-controller="Commitments" asp-action="SearchByUser" asp-route-id="@TeamMember.UserProfileId" class="btn btn-primary btn-xs">2 of 3</a></td>
-                        <td class="text-center" width="16%"><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button></td>
-                        <td class="text-center" width="16%"><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button></td>
-                        <td width="16%" class="text-center"><a href="#" class="badge">3</a></td>
-                        <td width="16%" class="text-center"><a href="#" class="badge">2</a></td>
+                        <td class="text-center" width="16%"> 
+                            @if (TeamMember.IsCRM)
+                            {
+                                <button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button>
+                            }                        
+                        </td>
+                        <td class="text-center" width="16%">
+                            @if (TeamMember.IsExpenses)
+                            {
+                                <button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button>
+                            } 
+                        </td>
+                        <td width="16%" class="text-center"><a href="#" class="badge">@TeamMember.TotalPresentations</a></td>
+                        <td width="16%" class="text-center"><a href="#" class="badge">@TeamMember.TotalAscend</a></td>
                     </tr>
                 }
 
@@ -48,8 +66,8 @@
                     <td></td>
                     <td></td>
                     <td class="text-center warning"><span style="font-weight:bold;">Totals</span></td>
-                    <td class="text-center warning"><span class="badge">44</span></td>
-                    <td class="text-center warning"><span class="badge">12</span></td>
+                    <td class="text-center warning"><span class="badge">@ViewBag.TotalPresentations</span></td>
+                    <td class="text-center warning"><span class="badge">@ViewBag.TotalAscend</span></td>
                 </tr>
             </table>
             <!-- end table -->

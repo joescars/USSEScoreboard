@@ -14,6 +14,8 @@ namespace USSEScoreboard.Models
             this.IsCRM = false;
             this.IsExpenses = false;
             this.IsFRI = false;
+            this.TotalAscend = 0;
+            this.TotalPresentations = 0;
             this.DateCreated = DateTime.Now;
             this.DateModified = DateTime.Now;
         }

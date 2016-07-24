@@ -22,8 +22,17 @@ namespace USSEScoreboard.Controllers
 
         public IActionResult Index()
         {
+            //Team Profile Data
             var myTeam = _context.UserProfile.OrderBy(u => u.FirstName).ToList();
             ViewData["Team"] = myTeam;
+
+            //Totals
+            var TotalPresentations = _context.UserProfile.Sum(u => u.TotalPresentations);
+            ViewData["TotalPresentations"] = TotalPresentations;
+
+            var TotalAscend = _context.UserProfile.Sum(u => u.TotalAscend);
+            ViewData["TotalAscend"] = TotalAscend;
+           
             return View();
         }
 

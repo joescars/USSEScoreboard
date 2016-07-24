@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using USSEScoreboard.Data;
 using Microsoft.AspNetCore.Identity;
+using USSEScoreboard.Models;
 
 namespace USSEScoreboard.Controllers
 {

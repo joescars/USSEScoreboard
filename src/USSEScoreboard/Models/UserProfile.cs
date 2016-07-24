@@ -11,7 +11,11 @@ namespace USSEScoreboard.Models
     {
         public UserProfile()
         {
-            //this.Wigs = new HashSet<Wig>();
+            this.IsCRM = false;
+            this.IsExpenses = false;
+            this.IsFRI = false;
+            this.DateCreated = DateTime.Now;
+            this.DateModified = DateTime.Now;
         }
         public int UserProfileId { get; set; }
 
@@ -35,5 +39,14 @@ namespace USSEScoreboard.Models
 
         // Many to Many for Wigs
         public List<UserWig> UserWigs { get; set; }
+
+        public bool IsCRM { get; set; }
+        public bool IsExpenses { get; set; }
+        public bool IsFRI { get; set; }
+        public int TotalPresentations { get; set; }
+        public int TotalAscend { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
+
     }
 }

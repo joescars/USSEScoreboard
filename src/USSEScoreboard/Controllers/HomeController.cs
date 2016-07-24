@@ -22,7 +22,7 @@ namespace USSEScoreboard.Controllers
 
         public IActionResult Index()
         {
-            var myTeam = _context.UserProfile.ToList();
+            var myTeam = _context.UserProfile.OrderBy(u => u.FirstName).ToList();
             ViewData["Team"] = myTeam;
             return View();
         }

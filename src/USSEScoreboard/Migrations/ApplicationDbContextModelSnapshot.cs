@@ -243,11 +243,25 @@ namespace USSEScoreboard.Migrations
                     b.Property<int>("UserProfileId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateModified");
+
                     b.Property<string>("FirstName")
                         .HasAnnotation("MaxLength", 100);
 
+                    b.Property<bool>("IsCRM");
+
+                    b.Property<bool>("IsExpenses");
+
+                    b.Property<bool>("IsFRI");
+
                     b.Property<string>("LastName")
                         .HasAnnotation("MaxLength", 100);
+
+                    b.Property<int>("TotalAscend");
+
+                    b.Property<int>("TotalPresentations");
 
                     b.Property<string>("UserId");
 

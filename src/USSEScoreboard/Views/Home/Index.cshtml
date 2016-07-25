@@ -34,7 +34,9 @@
                 {
                     <tr>
                         <td width="20%">@TeamMember.FullName</td>
-                        <td width="16%" class="text-center"><a asp-controller="Commitments" asp-action="SearchByUser" asp-route-id="@TeamMember.UserProfileId" class="btn btn-primary btn-xs">2 of 3</a></td>
+                        <td width="16%" class="text-center">
+                            <a asp-controller="Commitments" asp-action="SearchByUser" asp-route-id="@TeamMember.UserProfileId" class="btn btn-primary btn-xs">2 of 3</a>
+                        </td>
                         <td class="text-center" width="16%"> 
                             @if (TeamMember.IsCRM)
                             {

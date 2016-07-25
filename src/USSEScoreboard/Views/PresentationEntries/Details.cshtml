@@ -1,0 +1,42 @@
+@model USSEScoreboard.Models.PresentationEntry
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PresentationEntry</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateModified)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateModified)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WeekEnding)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WeekEnding)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PresentationEntryId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

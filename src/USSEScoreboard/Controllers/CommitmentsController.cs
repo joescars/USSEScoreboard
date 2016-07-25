@@ -52,10 +52,17 @@ namespace USSEScoreboard.Controllers
         {
             var userId = _userManager.GetUserId(User);
             var model = new ListCommitmentsViewModel();
+
             model.Commitments = await _context.Commitment
                 .Where(u => u.UserProfile.UserId == userId)
                 .Include(u => u.UserProfile)
                 .OrderByDescending(u => u.DateCreated).ToListAsync();
+
+            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
+
+            model.IsCRM = up.IsCRM;
+            model.IsExpenses = up.IsExpenses;
+
             return View(model);
         }
 
@@ -208,6 +215,30 @@ namespace USSEScoreboard.Controllers
             _context.Commitment.Remove(commitment);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        // POST: Commitments/ToggleExpenses
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleExpenses()
+        {
+            var userId = _userManager.GetUserId(User);
+            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
+            up.IsExpenses = !up.IsExpenses;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("My");
+        }
+
+        // POST: Commitments/ToggleCRM
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleCRM()
+        {
+            var userId = _userManager.GetUserId(User);
+            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
+            up.IsCRM = !up.IsCRM;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("My");
         }
 
         private bool CommitmentExists(int id)

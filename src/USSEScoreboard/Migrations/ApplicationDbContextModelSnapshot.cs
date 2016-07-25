@@ -194,6 +194,28 @@ namespace USSEScoreboard.Migrations
                     b.ToTable("Commitment");
                 });
 
+            modelBuilder.Entity("USSEScoreboard.Models.PresentationEntry", b =>
+                {
+                    b.Property<int>("PresentationEntryId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<int>("Total");
+
+                    b.Property<int>("UserProfileId");
+
+                    b.Property<DateTime>("WeekEnding");
+
+                    b.HasKey("PresentationEntryId");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("PresentationEntry");
+                });
+
             modelBuilder.Entity("USSEScoreboard.Models.ScoreboardEntry", b =>
                 {
                     b.Property<int>("ScoreboardEntryId")
@@ -346,6 +368,14 @@ namespace USSEScoreboard.Migrations
                 {
                     b.HasOne("USSEScoreboard.Models.UserProfile", "UserProfile")
                         .WithMany("Commitments")
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("USSEScoreboard.Models.PresentationEntry", b =>
+                {
+                    b.HasOne("USSEScoreboard.Models.UserProfile", "UserProfile")
+                        .WithMany()
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

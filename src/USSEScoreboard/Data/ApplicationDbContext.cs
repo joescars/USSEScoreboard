@@ -47,5 +47,7 @@ namespace USSEScoreboard.Data
         public DbSet<ScoreboardItem> ScoreboardItem { get; set; }
         
         public DbSet<ScoreboardEntry> ScoreboardEntry { get; set; }
+
+        public DbSet<PresentationEntry> PresentationEntry { get; set; }
     }
 }

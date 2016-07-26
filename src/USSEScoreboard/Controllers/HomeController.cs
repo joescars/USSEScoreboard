@@ -23,7 +23,24 @@ namespace USSEScoreboard.Controllers
         public IActionResult Index()
         {
             //Team Profile Data
-            var myTeam = _context.UserProfile.OrderBy(u => u.FirstName).ToList();
+            //var myTeam = _context.UserProfile.OrderBy(u => u.FirstName).ToList();
+
+            var myTeam = (from u in _context.UserProfile
+                          select new DashboardRow
+                          {
+                              UserProfileId = u.UserProfileId,
+                              FullName = u.FullName,
+                              IsCRM = u.IsCRM,
+                              IsExpenses = u.IsExpenses,
+                              TotalPresentations = u.TotalPresentations,
+                              TotalAscend = u.TotalAscend,
+                              CommitTotal = u.Commitments
+                              .Where(c => c.Status == CommitmentStatus.InProgress 
+                              || c.Status == CommitmentStatus.Completed).Count(),
+                              CommitCompleted = u.Commitments
+                             .Where(c => c.Status == CommitmentStatus.Completed).Count(),
+                         });
+
             ViewData["Team"] = myTeam;
 
             //Totals

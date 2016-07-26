@@ -1,4 +1,4 @@
-@model USSEScoreboard.Models.PresentationEntry
+@model USSEScoreboard.Models.ScoreEntry
 
 @{
     ViewData["Title"] = "Details";
@@ -7,7 +7,7 @@
 <h2>Details</h2>
 
 <div>
-    <h4>PresentationEntry</h4>
+    <h4>ScoreEntry</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -21,6 +21,12 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.DateModified)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ScoreType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ScoreType)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Total)
@@ -37,6 +43,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.PresentationEntryId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.ScoreEntryId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

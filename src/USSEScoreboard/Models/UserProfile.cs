@@ -37,7 +37,7 @@ namespace USSEScoreboard.Models
 
         // Collections of Items
         public List<Commitment> Commitments { get; set; }
-        public List<ScoreboardItem> ScoreboardItems { get; set; }
+        //public List<ScoreboardItem> ScoreboardItems { get; set; }
 
         // Many to Many for Wigs
         public List<UserWig> UserWigs { get; set; }

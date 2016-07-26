@@ -44,10 +44,6 @@ namespace USSEScoreboard.Data
 
         public DbSet<UserProfile> UserProfile { get; set; }
 
-        public DbSet<ScoreboardItem> ScoreboardItem { get; set; }
-        
-        public DbSet<ScoreboardEntry> ScoreboardEntry { get; set; }
-
-        public DbSet<PresentationEntry> PresentationEntry { get; set; }
+        public DbSet<ScoreEntry> ScoreEntry { get; set; }
     }
 }

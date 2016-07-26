@@ -194,14 +194,16 @@ namespace USSEScoreboard.Migrations
                     b.ToTable("Commitment");
                 });
 
-            modelBuilder.Entity("USSEScoreboard.Models.PresentationEntry", b =>
+            modelBuilder.Entity("USSEScoreboard.Models.ScoreEntry", b =>
                 {
-                    b.Property<int>("PresentationEntryId")
+                    b.Property<int>("ScoreEntryId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("DateCreated");
 
                     b.Property<DateTime>("DateModified");
+
+                    b.Property<int>("ScoreType");
 
                     b.Property<int>("Total");
 
@@ -209,55 +211,11 @@ namespace USSEScoreboard.Migrations
 
                     b.Property<DateTime>("WeekEnding");
 
-                    b.HasKey("PresentationEntryId");
+                    b.HasKey("ScoreEntryId");
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("PresentationEntry");
-                });
-
-            modelBuilder.Entity("USSEScoreboard.Models.ScoreboardEntry", b =>
-                {
-                    b.Property<int>("ScoreboardEntryId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Count");
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<int>("ScoreboardItemId");
-
-                    b.HasKey("ScoreboardEntryId");
-
-                    b.HasIndex("ScoreboardItemId");
-
-                    b.ToTable("ScoreboardEntry");
-                });
-
-            modelBuilder.Entity("USSEScoreboard.Models.ScoreboardItem", b =>
-                {
-                    b.Property<int>("ScoreboardItemId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Title");
-
-                    b.Property<int>("Total");
-
-                    b.Property<int>("UserProfileId");
-
-                    b.HasKey("ScoreboardItemId");
-
-                    b.HasIndex("UserProfileId");
-
-                    b.ToTable("ScoreboardItem");
+                    b.ToTable("ScoreEntry");
                 });
 
             modelBuilder.Entity("USSEScoreboard.Models.UserProfile", b =>
@@ -372,26 +330,10 @@ namespace USSEScoreboard.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("USSEScoreboard.Models.PresentationEntry", b =>
+            modelBuilder.Entity("USSEScoreboard.Models.ScoreEntry", b =>
                 {
                     b.HasOne("USSEScoreboard.Models.UserProfile", "UserProfile")
                         .WithMany()
-                        .HasForeignKey("UserProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("USSEScoreboard.Models.ScoreboardEntry", b =>
-                {
-                    b.HasOne("USSEScoreboard.Models.ScoreboardItem", "ScoreboardItem")
-                        .WithMany()
-                        .HasForeignKey("ScoreboardItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("USSEScoreboard.Models.ScoreboardItem", b =>
-                {
-                    b.HasOne("USSEScoreboard.Models.UserProfile", "UserProfile")
-                        .WithMany("ScoreboardItems")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

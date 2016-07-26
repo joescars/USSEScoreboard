@@ -1,4 +1,4 @@
-@model USSEScoreboard.Models.PresentationEntry
+@model USSEScoreboard.Models.ScoreEntry
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,10 +8,10 @@
 
 <form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>PresentationEntry</h4>
+        <h4>ScoreEntry</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="PresentationEntryId" />
+    <input type="hidden" asp-for="ScoreEntryId" />
         <div class="form-group">
             <label asp-for="DateCreated" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -24,6 +24,13 @@
             <div class="col-md-10">
                 <input asp-for="DateModified" class="form-control" />
                 <span asp-validation-for="DateModified" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ScoreType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="ScoreType" class="form-control"></select>
+                <span asp-validation-for="ScoreType" class="text-danger" />
             </div>
         </div>
         <div class="form-group">

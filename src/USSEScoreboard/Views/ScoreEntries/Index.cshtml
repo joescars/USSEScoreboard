@@ -1,4 +1,4 @@
-@model IEnumerable<USSEScoreboard.Models.PresentationEntry>
+@model IEnumerable<USSEScoreboard.Models.ScoreEntry>
 
 @{
     ViewData["Title"] = "Index";
@@ -19,6 +19,9 @@
                 @Html.DisplayNameFor(model => model.DateModified)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ScoreType)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Total)
             </th>
             <th>
@@ -37,15 +40,18 @@
                 @Html.DisplayFor(modelItem => item.DateModified)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.ScoreType)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.WeekEnding)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PresentationEntryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PresentationEntryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PresentationEntryId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ScoreEntryId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ScoreEntryId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ScoreEntryId">Delete</a>
             </td>
         </tr>
 }

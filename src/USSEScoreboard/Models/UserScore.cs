@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace USSEScoreboard.Models
 {
-    public class DashboardRow
+    public class UserScore
     {
         public int UserProfileId { get; set; }
         public string FullName { get; set; }

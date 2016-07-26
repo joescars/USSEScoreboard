@@ -27,7 +27,7 @@ namespace USSEScoreboard.Controllers
 
             var myTeam = (from u in _context.UserProfile
                           orderby u.FullName ascending
-                          select new DashboardRow
+                          select new UserScore
                           {
                               UserProfileId = u.UserProfileId,
                               FullName = u.FullName,

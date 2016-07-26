@@ -30,19 +30,19 @@
                 </thead>
                 @* Start TE Table *@
 
-                @foreach (DashboardRow TeamMember in ViewBag.Team)
+                @foreach (UserScore UserScore in ViewBag.Team)
                 {
                     <tr>
-                        <td width="20%">@TeamMember.FullName</td>
+                        <td width="20%">@UserScore.FullName</td>
                         <td width="16%" class="text-center">
-                            <a asp-controller="Commitments" asp-action="SearchByUser" asp-route-id="@TeamMember.UserProfileId" class="btn btn-primary btn-xs">
-                                @TeamMember.CommitCompleted
+                            <a asp-controller="Commitments" asp-action="SearchByUser" asp-route-id="@UserScore.UserProfileId" class="btn btn-primary btn-xs">
+                                @UserScore.CommitCompleted
                                 of
-                                @TeamMember.CommitTotal
+                                @UserScore.CommitTotal
                             </a>
                         </td>
                         <td class="text-center" width="16%"> 
-                            @if (TeamMember.IsCRM)
+                            @if (UserScore.IsCRM)
                             {
                                 <button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
                             }
@@ -52,7 +52,7 @@
                             }                        
                         </td>
                         <td class="text-center" width="16%">
-                            @if (TeamMember.IsExpenses)
+                            @if (UserScore.IsExpenses)
                             {
                                 <button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
                             }
@@ -61,8 +61,8 @@
                                 <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button>
                             } 
                         </td>
-                        <td width="16%" class="text-center"><a href="#" class="badge">@TeamMember.TotalPresentations</a></td>
-                        <td width="16%" class="text-center"><a href="#" class="badge">@TeamMember.TotalAscend</a></td>
+                        <td width="16%" class="text-center"><a href="#" class="badge">@UserScore.TotalPresentations</a></td>
+                        <td width="16%" class="text-center"><a href="#" class="badge">@UserScore.TotalAscend</a></td>
                     </tr>
                 }
 

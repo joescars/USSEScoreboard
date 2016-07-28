@@ -101,53 +101,53 @@ namespace USSEScoreboard.Controllers
             return View();
         }
 
-        //
+        // ** DISABLED **
         // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser
-                {
-                    UserName = model.Email,
-                    Email = model.Email
-                };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    //Apply additional fields to userprofile
-                    var userProfile = new UserProfile
-                    {
-                        UserId = user.Id,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName
-                    };
-                    _context.UserProfile.Add(userProfile);
-                    await _context.SaveChangesAsync();
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser
+        //        {
+        //            UserName = model.Email,
+        //            Email = model.Email
+        //        };
+        //        var result = await _userManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            //Apply additional fields to userprofile
+        //            var userProfile = new UserProfile
+        //            {
+        //                UserId = user.Id,
+        //                FirstName = model.FirstName,
+        //                LastName = model.LastName
+        //            };
+        //            _context.UserProfile.Add(userProfile);
+        //            await _context.SaveChangesAsync();
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    // assign to default TE role
-                    await _userManager.AddToRoleAsync(user, "TE");
-                    return RedirectToLocal(returnUrl);
-                    //return RedirectToAction("RoleSetup", "Manage");
-                }
-                AddErrors(result);
-            }
+        //            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+        //            // Send an email with this link
+        //            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        //            //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+        //            //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+        //            //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+        //            await _signInManager.SignInAsync(user, isPersistent: false);
+        //            _logger.LogInformation(3, "User created a new account with password.");
+        //            // assign to default TE role
+        //            await _userManager.AddToRoleAsync(user, "TE");
+        //            return RedirectToLocal(returnUrl);
+        //            //return RedirectToAction("RoleSetup", "Manage");
+        //        }
+        //        AddErrors(result);
+        //    }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
+        //    // If we got this far, something failed, redisplay form
+        //    return View(model);
+        //}
 
         //
         // POST: /Account/LogOff

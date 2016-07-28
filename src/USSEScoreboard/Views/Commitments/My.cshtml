@@ -6,39 +6,24 @@
 
 <h2>My Commitments</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
-<!--
-TODO: Clean this up...     
--->
 <div class="container">
-    <div class="col-md-2">
-        <form asp-action="ToggleExpenses">
-            @if (Model.IsExpenses)
-            {
-                <input type="submit" class="btn btn-success" value="Toggle Expenses">
-            }
-            else
-            {
-                <input type="submit" class="btn btn-warning" value="Toggle Expenses">
-            }
-        </form>
-    </div>
-    <div class="col-md-2">
-        <form asp-action="ToggleCRM">
-            @if (Model.IsCRM)
-            {
-                <input type="submit" class="btn btn-success" value="Toggle CRM">
-            }
-            else
-            {
-                <input type="submit" class="btn btn-warning" value="Toggle CRM">
-            }
-        </form>
-    </div>
-    <div class="col-md-8"></div>
+    <a asp-action="Create" class="btn btn-primary">New Commitment</a>
+    @if (Model.IsExpenses)
+    {
+        <a class="btn btn-success" asp-action="ToggleExpenses">Toggle Expenses</a>
+    }
+    else
+    {
+        <a class="btn btn-warning" asp-action="ToggleExpenses">Toggle Expenses</a>
+    }
+    @if (Model.IsCRM)
+    {
+        <a class="btn btn-success" asp-action="ToggleCRM">Toggle CRM</a>
+    }
+    else
+    {
+        <a class="btn btn-warning" asp-action="ToggleCRM">Toggle CRM</a>
+    }
 </div>
     <table class="table table-striped">
         <thead>

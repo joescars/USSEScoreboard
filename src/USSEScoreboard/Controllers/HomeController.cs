@@ -34,10 +34,10 @@ namespace USSEScoreboard.Controllers
                               TotalPresentations = u.TotalPresentations,
                               TotalAscend = u.TotalAscend,
                               CommitTotal = u.Commitments
-                              .Where(c => c.Status == CommitmentStatus.InProgress 
-                              || c.Status == CommitmentStatus.Completed).Count(),
+                              .Where(c => c.Status == CommitmentStatus.Active 
+                              || c.Status == CommitmentStatus.Complete).Count(),
                               CommitCompleted = u.Commitments
-                             .Where(c => c.Status == CommitmentStatus.Completed).Count(),
+                             .Where(c => c.Status == CommitmentStatus.Complete).Count(),
                          });
 
             ViewData["Team"] = myTeam;

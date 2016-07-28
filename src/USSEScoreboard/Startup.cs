@@ -103,7 +103,7 @@ namespace USSEScoreboard
             var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             string[] roleNames =
             {
-                "Admin", "TE"
+                "Admin", "TE", "Director"
             };
             IdentityResult roleResult;
             foreach (var roleName in roleNames)

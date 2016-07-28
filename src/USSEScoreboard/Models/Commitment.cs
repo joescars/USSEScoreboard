@@ -10,11 +10,11 @@ namespace USSEScoreboard.Models
     public enum CommitmentStatus
     {
         [Description("Not Started")]
-        NotStarted,
+        Inactive,
         [Description("In Progress")]
-        InProgress,
+        Active,
         [Description("Completed")]
-        Completed
+        Complete
     }
     public class Commitment
     {

@@ -223,9 +223,8 @@ namespace USSEScoreboard.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Commitments/ToggleExpenses
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // GET: Commitments/ToggleExpenses
+        [HttpGet]
         public async Task<IActionResult> ToggleExpenses()
         {
             var userId = _userManager.GetUserId(User);
@@ -235,9 +234,8 @@ namespace USSEScoreboard.Controllers
             return RedirectToAction("My");
         }
 
-        // POST: Commitments/ToggleCRM
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // GET: Commitments/ToggleCRM
+        [HttpGet]
         public async Task<IActionResult> ToggleCRM()
         {
             var userId = _userManager.GetUserId(User);

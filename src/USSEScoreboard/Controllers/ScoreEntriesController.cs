@@ -168,6 +168,20 @@ namespace USSEScoreboard.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: ScoreEntries/ResetCRMExpenses
+        [HttpGet]
+        public async Task<IActionResult> ResetCRMExpenses()
+        {
+            var up = await _context.UserProfile.ToListAsync();
+            foreach (UserProfile u in up)
+            {
+                u.IsCRM = false;
+                u.IsExpenses = false;   
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
         private bool ScoreEntryExists(int id)
         {
             return _context.ScoreEntry.Any(e => e.ScoreEntryId == id);

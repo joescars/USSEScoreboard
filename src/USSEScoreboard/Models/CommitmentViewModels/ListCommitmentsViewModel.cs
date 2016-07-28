@@ -12,6 +12,7 @@ namespace USSEScoreboard.Models.CommitmentViewModels
         public IEnumerable<Commitment> Commitments { get; set; }
         public bool IsCRM { get; set; }
         public bool IsExpenses { get; set; }
+        public string SearchUserName { get; set; }
 
     }
 }

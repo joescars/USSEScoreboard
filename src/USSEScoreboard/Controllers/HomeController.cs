@@ -23,8 +23,6 @@ namespace USSEScoreboard.Controllers
         public IActionResult Index()
         {
             //Team Profile Data
-            //var myTeam = _context.UserProfile.OrderBy(u => u.FirstName).ToList();
-
             var myTeam = (from u in _context.UserProfile
                           orderby u.FullName ascending
                           select new UserScore

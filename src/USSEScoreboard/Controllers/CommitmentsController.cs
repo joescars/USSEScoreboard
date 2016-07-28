@@ -44,6 +44,12 @@ namespace USSEScoreboard.Controllers
                 .Include(u => u.UserProfile)
                 .OrderByDescending(u => u.DateCreated)
                 .ToListAsync();
+
+            model.SearchUserName = await _context.UserProfile
+                .Where(u => u.UserProfileId == id)
+                .Select(u => u.FullName)
+                .FirstOrDefaultAsync();
+
             return View(model);
         }
 

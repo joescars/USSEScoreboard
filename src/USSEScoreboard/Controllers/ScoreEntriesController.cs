@@ -22,7 +22,8 @@ namespace USSEScoreboard.Controllers
         // GET: ScoreEntries
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ScoreEntry.Include(s => s.UserProfile);
+            var applicationDbContext = _context.ScoreEntry.Include(s => s.UserProfile)
+                .OrderByDescending(s => s.DateCreated);
             return View(await applicationDbContext.ToListAsync());
         }
 

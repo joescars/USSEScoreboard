@@ -89,15 +89,16 @@ namespace USSEScoreboard
             });
 
             // Call custom function to create default roles
-            await CreateRoles(serviceProvider);
-
-            // Create default users
-            //await SeedData.Initialize(app.ApplicationServices);
-            await SeedDataLive.Initialize(app.ApplicationServices);
+            if (await CreateRoles(serviceProvider))
+            {
+                // Create default users
+                await SeedDataLive.Initialize(app.ApplicationServices);
+            }            
+            
         }
 
         // Create Default Roles
-        private async Task CreateRoles(IServiceProvider serviceProvider)
+        private async Task<bool> CreateRoles(IServiceProvider serviceProvider)
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -114,7 +115,7 @@ namespace USSEScoreboard
                     roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
-
+            return true;
         }
     }
 }

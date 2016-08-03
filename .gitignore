@@ -252,4 +252,6 @@ paket-files/
 *.sln.iml
 
 #Custom Settings
-SeedDataLive.cs
+appsettings.production.json
+PublishProfiles/
+initialusers.txt

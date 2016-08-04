@@ -182,6 +182,22 @@ namespace USSEScoreboard.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: ScoreEntries/ArchiveCommits
+        [HttpGet]
+        public async Task<IActionResult> ArchiveCommits()
+        {
+            var commits = await _context.Commitment
+                .Where(c => c.Status == CommitmentStatus.Complete)
+                .ToListAsync();
+            foreach (Commitment c in commits)
+            {
+                c.Status = CommitmentStatus.Archive;
+                c.DateModified = DateTime.Now;
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
         private bool ScoreEntryExists(int id)
         {
             return _context.ScoreEntry.Any(e => e.ScoreEntryId == id);

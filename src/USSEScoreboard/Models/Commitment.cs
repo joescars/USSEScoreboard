@@ -14,7 +14,9 @@ namespace USSEScoreboard.Models
         [Description("In Progress")]
         Active,
         [Description("Completed")]
-        Complete
+        Complete,
+        [Description("Archive")]
+        Archive
     }
     public class Commitment
     {
@@ -27,5 +29,16 @@ namespace USSEScoreboard.Models
         [ForeignKey("UserProfileId")]
         public int UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
+        public DateTime DateModified { get; set; }
+
+        [ForeignKey("WigId")]
+        public int WigId { get; set; }
+        public Wig Wig { get; set; }
+
+        public Commitment()
+        {
+            this.DateCreated = DateTime.Now;
+            this.DateModified = DateTime.Now;
+        }
     }
 }

@@ -26,6 +26,5 @@ namespace USSEScoreboard.Models
 
         // Many to Many for Wigs
         public List<UserWig> UserWigs { get; set; }
-
     }
 }

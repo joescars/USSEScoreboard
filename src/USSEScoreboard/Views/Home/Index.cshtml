@@ -32,7 +32,7 @@
                     <tr>
                         <td width="20%">@UserScore.FullName</td>
                         <td width="16%" class="text-center">
-                            <a asp-controller="Commitments" asp-action="SearchByUser" asp-route-id="@UserScore.UserProfileId" class="btn btn-primary btn-xs">
+                            <a asp-controller="Commitments" asp-action="SearchByUser" asp-route-id="@UserScore.UserProfileId" class="btn @(UserScore.CommitCompleted == UserScore.CommitTotal && UserScore.CommitCompleted > 0 ? "btn-success" : "btn-primary") btn-xs">
                                 @UserScore.CommitCompleted
                                 of
                                 @UserScore.CommitTotal

@@ -94,14 +94,13 @@ namespace USSEScoreboard.Controllers
         {
             var model = new CreateCommitmentViewModel();
             model.Users = await _context.UserProfile.ToListAsync();
+            model.Wigs = await _context.Wig.ToListAsync();
             //Get the userId of the logged in user so we can default to this
             var userId = _userManager.GetUserId(User);
             model.SelectedUserID = model.Users
                 .Where(u => u.UserId == userId)
                 .Select(u => u.UserProfileId).First();
             return View(model);
-
-            
         }
 
         // POST: Commitments/Create
@@ -109,7 +108,7 @@ namespace USSEScoreboard.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,Status,Title,SelectedUserID")] CreateCommitmentViewModel model)
+        public async Task<IActionResult> Create([Bind("Id,Description,Status,Title,SelectedUserID,SelectedWigId")] CreateCommitmentViewModel model)
         {
             //TODO: Remove CommitmentViewModel as it is no longer needed
             if (ModelState.IsValid)
@@ -120,6 +119,7 @@ namespace USSEScoreboard.Controllers
                 commitment.Status = model.Status;
                 commitment.Title = model.Title;
                 commitment.UserProfileId = model.SelectedUserID;
+                commitment.WigId = model.SelectedWigId;
                 _context.Add(commitment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("My");
@@ -151,8 +151,10 @@ namespace USSEScoreboard.Controllers
             model.Description = commitment.Description;
             model.Status = commitment.Status;
             model.SelectedUserID = commitment.UserProfileId;
+            model.SelectedWigId = commitment.WigId;
             model.DateCreated = commitment.DateCreated;
             model.Users = await _context.UserProfile.ToListAsync();
+            model.Wigs = await _context.Wig.ToListAsync();
 
             return View(model);
         }
@@ -164,7 +166,7 @@ namespace USSEScoreboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, 
             [Bind("Id,DateCreated,Description,Status,Title")] Commitment commitment,
-            int SelectedUserId)
+            int SelectedUserId, int SelectedWigId)
         {
             if (id != commitment.Id)
             {
@@ -176,6 +178,8 @@ namespace USSEScoreboard.Controllers
                 try
                 {
                     commitment.UserProfileId = SelectedUserId;
+                    commitment.WigId = SelectedWigId;
+                    commitment.DateModified = DateTime.Now;
                     _context.Update(commitment);
                     await _context.SaveChangesAsync();
                 }

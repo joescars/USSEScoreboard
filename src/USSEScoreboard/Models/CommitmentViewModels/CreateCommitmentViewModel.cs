@@ -25,7 +25,10 @@ namespace USSEScoreboard.Models.CommitmentViewModels
 
         [Description("Assigned To")]
         public int SelectedUserID { get; set; }
-                
+        
+        // Assigned Wig
+        public IList<Wig> Wigs { get; set; }  
+        public int SelectedWigId { get; set; }      
         public CreateCommitmentViewModel()
         {
             DateCreated = DateTime.Today;

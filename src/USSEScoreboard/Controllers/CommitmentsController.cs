@@ -227,6 +227,16 @@ namespace USSEScoreboard.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Commitments/Complete/1
+        public async Task<IActionResult> Complete(int? id)
+        {
+            var commitment = await _context.Commitment.SingleOrDefaultAsync(m => m.Id == id);
+            commitment.Status = CommitmentStatus.Complete;
+            commitment.DateModified = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("My");
+        }
+
         // GET: Commitments/ToggleExpenses
         [HttpGet]
         public async Task<IActionResult> ToggleExpenses()

@@ -7,23 +7,10 @@
 <h2>My Commitments <span class="small">(<a href="/Commitments">View All</a>)</span></h2> 
 
 <div class="container">
-    <a asp-action="Create" class="btn btn-primary">New Commitment</a>
-    @if (Model.IsExpenses)
-    {
-        <a class="btn btn-success" asp-action="ToggleExpenses">Toggle Expenses</a>
-    }
-    else
-    {
-        <a class="btn btn-warning" asp-action="ToggleExpenses">Toggle Expenses</a>
-    }
-    @if (Model.IsCRM)
-    {
-        <a class="btn btn-success" asp-action="ToggleCRM">Toggle CRM</a>
-    }
-    else
-    {
-        <a class="btn btn-warning" asp-action="ToggleCRM">Toggle CRM</a>
-    }
+    <a asp-action="Create" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Commitment</a>
+    <a class="btn btn-sm @(Model.IsExpenses ? "btn-success" : "btn-warning")" asp-action="ToggleExpenses">Toggle Expenses</a>
+    <a class="btn btn-sm @(Model.IsCRM ? "btn-success" : "btn-warning")" asp-action="ToggleCRM">Toggle CRM</a>
+    <a class="btn btn-sm @(Model.IsFRI ? "btn-success" : "btn-warning")" asp-action="ToggleFRI">Toggle FRI</a>
 </div>
 
     <table class="table table-striped">

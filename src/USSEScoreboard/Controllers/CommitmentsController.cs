@@ -68,6 +68,7 @@ namespace USSEScoreboard.Controllers
 
             model.IsCRM = up.IsCRM;
             model.IsExpenses = up.IsExpenses;
+            model.IsFRI = up.IsFRI;
 
             return View(model);
         }
@@ -255,6 +256,17 @@ namespace USSEScoreboard.Controllers
             var userId = _userManager.GetUserId(User);
             var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
             up.IsCRM = !up.IsCRM;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("My");
+        }
+
+        // GET: Commitments/ToggleFRI
+        [HttpGet]
+        public async Task<IActionResult> ToggleFRI()
+        {
+            var userId = _userManager.GetUserId(User);
+            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
+            up.IsFRI = !up.IsFRI;
             await _context.SaveChangesAsync();
             return RedirectToAction("My");
         }

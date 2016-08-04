@@ -21,8 +21,9 @@
                         <th class="text-center">Weekly Tasks</th>
                         <th class="text-center">CRM</th>
                         <th class="text-center">Expenses</th>
-                        <th class="text-center">Presentations</th>
-                        <th class="text-center">Ascend Working</th>
+                        <th class="text-center">FRI</th>
+                        @*<th class="text-center">Presentations</th>
+                        <th class="text-center">Ascend Working</th>*@
                     </tr>
                 </thead>
                 @* Start TE Table *@
@@ -30,15 +31,15 @@
                 @foreach (UserScore UserScore in ViewBag.Team)
                 {
                     <tr>
-                        <td width="20%">@UserScore.FullName</td>
-                        <td width="16%" class="text-center">
+                        <td width="32%">@UserScore.FullName</td>
+                        <td width="17%" class="text-center">
                             <a asp-controller="Commitments" asp-action="SearchByUser" asp-route-id="@UserScore.UserProfileId" class="btn @(UserScore.CommitCompleted == UserScore.CommitTotal && UserScore.CommitCompleted > 0 ? "btn-success" : "btn-primary") btn-xs">
                                 @UserScore.CommitCompleted
                                 of
                                 @UserScore.CommitTotal
                             </a>
                         </td>
-                        <td class="text-center" width="16%"> 
+                        <td class="text-center" width="17%"> 
                             @if (UserScore.IsCRM)
                             {
                                 <button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
@@ -48,7 +49,7 @@
                                 <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button>
                             }                        
                         </td>
-                        <td class="text-center" width="16%">
+                        <td class="text-center" width="17%">
                             @if (UserScore.IsExpenses)
                             {
                                 <button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
@@ -58,20 +59,32 @@
                                 <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button>
                             } 
                         </td>
-                        <td width="16%" class="text-center"><a href="#" class="badge">-</a>@*@UserScore.TotalPresentations*@</td>
-                        <td width="16%" class="text-center"><a href="#" class="badge">-</a>@*@UserScore.TotalAscend*@</td>
+                        <td class="text-center" width="17%">
+                            @if (UserScore.IsFRI)
+                            {
+                                <button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button>
+                            } 
+                        </td>
+                        @*<td width="16%" class="text-center"><a href="#" class="badge">@UserScore.TotalPresentations</a></td>
+                        <td width="16%" class="text-center"><a href="#" class="badge">@UserScore.TotalAscend</a></td>*@
                     </tr>
                 }
 
                 @* // End TE Table *@
-                <tr>
+                
+                @*<tr>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td class="text-center warning"><span style="font-weight:bold;">Totals</span></td>
                     <td class="text-center warning"><span class="badge">@ViewBag.TotalPresentations</span></td>
                     <td class="text-center warning"><span class="badge">@ViewBag.TotalAscend</span></td>
-                </tr>
+                </tr>*@
+
             </table>
             <!-- end table -->
         @*</div>*@

@@ -5,7 +5,20 @@
 }
 
 <h2>Track Progress</h2>
-
+@if (Context.Request.Query["msg"] == "reset")
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Success!</strong> CRM and Expenses Reeset
+    </div>
+}
+@if (Context.Request.Query["msg"] == "archived")
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Success!</strong> Completed Commitments Have Been Archived
+    </div>
+}
 <div class="container">
     <a asp-action="Create" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Track New Item</a>
     <a asp-action="ResetCRMExpenses" class="btn btn-primary"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset CRM &amp; Expenses</a>

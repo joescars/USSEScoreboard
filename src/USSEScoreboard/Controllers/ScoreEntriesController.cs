@@ -179,7 +179,7 @@ namespace USSEScoreboard.Controllers
                 u.IsExpenses = false;   
             }
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { msg = "reset" });
         }
 
         // GET: ScoreEntries/ArchiveCommits
@@ -195,7 +195,7 @@ namespace USSEScoreboard.Controllers
                 c.DateModified = DateTime.Now;
             }
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { msg = "archived"});
         }
 
         private bool ScoreEntryExists(int id)

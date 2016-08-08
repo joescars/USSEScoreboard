@@ -31,9 +31,9 @@ namespace USSEScoreboard.Models
         public UserProfile UserProfile { get; set; }
         public DateTime DateModified { get; set; }
 
-        [ForeignKey("WigId")]
-        public int WigId { get; set; }
-        public Wig Wig { get; set; }
+        [ForeignKey("LeadMeasureId")]
+        public int LeadMeasureId { get; set; }
+        public LeadMeasure LeadMeasure { get; set; }
 
         public Commitment()
         {

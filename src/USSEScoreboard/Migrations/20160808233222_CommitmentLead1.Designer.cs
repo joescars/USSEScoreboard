@@ -8,9 +8,10 @@ using USSEScoreboard.Data;
 namespace USSEScoreboard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160808233222_CommitmentLead1")]
+    partial class CommitmentLead1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -183,7 +184,7 @@ namespace USSEScoreboard.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int>("LeadMeasureId");
+                    b.Property<int?>("LeadMeasureId");
 
                     b.Property<int>("Status");
 
@@ -192,8 +193,6 @@ namespace USSEScoreboard.Migrations
                     b.Property<int>("UserProfileId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LeadMeasureId");
 
                     b.HasIndex("UserProfileId");
 
@@ -370,11 +369,6 @@ namespace USSEScoreboard.Migrations
 
             modelBuilder.Entity("USSEScoreboard.Models.Commitment", b =>
                 {
-                    b.HasOne("USSEScoreboard.Models.LeadMeasure", "LeadMeasure")
-                        .WithMany()
-                        .HasForeignKey("LeadMeasureId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("USSEScoreboard.Models.UserProfile", "UserProfile")
                         .WithMany("Commitments")
                         .HasForeignKey("UserProfileId")

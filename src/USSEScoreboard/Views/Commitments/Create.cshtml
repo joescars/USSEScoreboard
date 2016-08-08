@@ -38,13 +38,13 @@
                         <span asp-validation-for="Status" class="text-danger" />
                     </div>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <label class="col-md-2 control-label">Wig</label>
                     <div class="col-md-10">
                         <select asp-for="SelectedWigId" asp-items="@(new SelectList(Model.Wigs,"WigId","Title"))" class="form-control"></select>
                         <span asp-validation-for="SelectedWigId" class="text-danger" />
                     </div>
-                </div>
+                </div>*@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Member</label>
                     <div class="col-md-10">

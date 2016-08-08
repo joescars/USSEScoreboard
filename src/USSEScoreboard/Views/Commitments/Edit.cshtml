@@ -11,14 +11,8 @@
         <h4>Commitment</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
-        <div class="form-group">
-            <label asp-for="DateCreated" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="DateCreated" type="date" class="form-control" readonly/>
-                <span asp-validation-for="DateCreated" class="text-danger" />
-            </div>
-        </div>
+        <input type="hidden" asp-for="Id" />
+        <input asp-for="DateCreated" type="hidden" />
         <div class="form-group">
             <label asp-for="Title" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -29,7 +23,7 @@
         <div class="form-group">
             <label asp-for="Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
                 <span asp-validation-for="Description" class="text-danger" />
             </div>
         </div>

@@ -50,5 +50,7 @@ namespace USSEScoreboard.Data
         // Global Based Tracking. Currently in use.
         public DbSet<GlobalScoreEntry> GlobalScoreEntry { get; set; }
 
+        public DbSet<LeadMeasure> LeadMeasure { get; set; }
+
     }
 }

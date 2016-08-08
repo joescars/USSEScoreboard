@@ -198,6 +198,19 @@ namespace USSEScoreboard.Controllers
             return RedirectToAction("Index", new { msg = "archived"});
         }
 
+        // GET: ScoreEntries/ResetFRI
+        [HttpGet]
+        public async Task<IActionResult> ResetFRI()
+        {
+            var up = await _context.UserProfile.ToListAsync();
+            foreach (UserProfile u in up)
+            {
+                u.IsFRI = false;
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", new { msg = "resetfri" });
+        }
+
         private bool ScoreEntryExists(int id)
         {
             return _context.ScoreEntry.Any(e => e.ScoreEntryId == id);

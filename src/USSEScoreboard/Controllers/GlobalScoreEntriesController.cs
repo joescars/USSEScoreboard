@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using USSEScoreboard.Data;
 using USSEScoreboard.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace USSEScoreboard.Controllers
 {
+    [Authorize]
     public class GlobalScoreEntriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -147,5 +149,50 @@ namespace USSEScoreboard.Controllers
         {
             return _context.GlobalScoreEntry.Any(e => e.GlobalScoreEntryId == id);
         }
+
+        // Custom Commands for Admin
+        // GET: GlobalScoreEntries/ResetCRMExpenses
+        [HttpGet]
+        public async Task<IActionResult> ResetCRMExpenses()
+        {
+            var up = await _context.UserProfile.ToListAsync();
+            foreach (UserProfile u in up)
+            {
+                u.IsCRM = false;
+                u.IsExpenses = false;
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", new { msg = "reset" });
+        }
+
+        // GET: GlobalScoreEntries/ArchiveCommits
+        [HttpGet]
+        public async Task<IActionResult> ArchiveCommits()
+        {
+            var commits = await _context.Commitment
+                .Where(c => c.Status == CommitmentStatus.Complete)
+                .ToListAsync();
+            foreach (Commitment c in commits)
+            {
+                c.Status = CommitmentStatus.Archive;
+                c.DateModified = DateTime.Now;
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", new { msg = "archived" });
+        }
+
+        // GET: GlobalScoreEntries/ResetFRI
+        [HttpGet]
+        public async Task<IActionResult> ResetFRI()
+        {
+            var up = await _context.UserProfile.ToListAsync();
+            foreach (UserProfile u in up)
+            {
+                u.IsFRI = false;
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", new { msg = "resetfri" });
+        }
+
     }
 }

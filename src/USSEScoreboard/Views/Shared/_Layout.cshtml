@@ -37,7 +37,7 @@
                     <li><a asp-area="" asp-controller="Wigs" asp-action="Index">Wigs</a></li>
                     @if (User.Identity.IsAuthenticated && User.Identity.Name.Contains("Tommy"))
                     {
-                    <li><a asp-area="" asp-controller="ScoreEntries" asp-action="Index">Track Progress</a></li> 
+                    <li><a asp-area="" asp-controller="GlobalScoreEntries" asp-action="Index">Track Progress</a></li> 
                     }                   
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")

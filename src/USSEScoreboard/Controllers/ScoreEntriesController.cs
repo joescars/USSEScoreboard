@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using USSEScoreboard.Data;
 using USSEScoreboard.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace USSEScoreboard.Controllers
 {
+    [Authorize]
     public class ScoreEntriesController : Controller
     {
         private readonly ApplicationDbContext _context;

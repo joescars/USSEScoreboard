@@ -43,13 +43,31 @@ namespace USSEScoreboard.Controllers
 
             ViewData["Team"] = myTeam;
 
-            //Totals
+            /*
+            // Totals by User
             var TotalPresentations = _context.UserProfile.Sum(u => u.TotalPresentations);
             ViewData["TotalPresentations"] = TotalPresentations;
 
             var TotalAscend = _context.UserProfile.Sum(u => u.TotalAscend);
             ViewData["TotalAscend"] = TotalAscend;
-           
+            */
+
+            // Totals Globally
+            var TotalPresentations = _context.GlobalScoreEntry
+                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.Presentations)
+                .Sum(a => a.TimeFrameTotal);
+            ViewData["TotalPresentations"] = TotalPresentations;
+
+            var TotalAscendActive = _context.GlobalScoreEntry
+                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendActive)
+                .Sum(a => a.TimeFrameTotal);
+            ViewData["TotalAscendActive"] = TotalAscendActive;
+
+            var TotalAscendComplete = _context.GlobalScoreEntry
+                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendCompleted)
+                .Sum(a => a.TimeFrameTotal);
+            ViewData["TotalAscendComplete"] = TotalAscendComplete;
+
             return View();
         }
 

@@ -1,0 +1,59 @@
+@model IEnumerable<USSEScoreboard.Models.GlobalScoreEntry>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateModified)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GlobalScoreType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeFrameTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WeekEnding)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateModified)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GlobalScoreType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeFrameTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WeekEnding)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.GlobalScoreEntryId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.GlobalScoreEntryId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.GlobalScoreEntryId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

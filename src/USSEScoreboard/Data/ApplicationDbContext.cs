@@ -43,7 +43,12 @@ namespace USSEScoreboard.Data
         public DbSet<Wig> Wig { get; set; }
 
         public DbSet<UserProfile> UserProfile { get; set; }
-
+        
+        // Individual Based Tracking. Not used currently
         public DbSet<ScoreEntry> ScoreEntry { get; set; }
+
+        // Global Based Tracking. Currently in use.
+        public DbSet<GlobalScoreEntry> GlobalScoreEntry { get; set; }
+
     }
 }

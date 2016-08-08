@@ -1,0 +1,48 @@
+@model USSEScoreboard.Models.GlobalScoreEntry
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>GlobalScoreEntry</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateModified)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateModified)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GlobalScoreType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GlobalScoreType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeFrameTotal)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TimeFrameTotal)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WeekEnding)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WeekEnding)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.GlobalScoreEntryId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

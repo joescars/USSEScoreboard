@@ -25,8 +25,12 @@ namespace USSEScoreboard.Models.CommitmentViewModels
         [Description("Assigned To")]
         public int SelectedUserID { get; set; }
 
-        // Assigned Wig
+        //Wigs
         public IList<Wig> Wigs { get; set; }
-        public int SelectedWigId { get; set; }
+
+        // Assigned LeadMeasure
+        public IList<LeadMeasure> LeadMeasures { get; set; }
+        public int SelectedLeadMeasureId { get; set; }
+
     }
 }

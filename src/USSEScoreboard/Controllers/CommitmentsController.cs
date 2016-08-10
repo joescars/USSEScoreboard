@@ -257,6 +257,10 @@ namespace USSEScoreboard.Controllers
             return RedirectToAction("My");
         }
 
+        /***************************************************************
+           TODO: Refactor toggles into one method called from service
+        ***************************************************************/
+
         // GET: Commitments/ToggleExpenses
         [HttpGet]
         public async Task<IActionResult> ToggleExpenses()
@@ -264,10 +268,22 @@ namespace USSEScoreboard.Controllers
             var userId = _userManager.GetUserId(User);
             var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
             up.IsExpenses = !up.IsExpenses;
+            up.DateModified = DateTime.Now;
             await _context.SaveChangesAsync();
             return RedirectToAction("My");
         }
 
+        // GET: Commitments/ToggleExpensesUser/1
+        [HttpGet]
+        public async Task<IActionResult> ToggleExpensesUser(int id)
+        {
+            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserProfileId == id);
+            up.IsExpenses = !up.IsExpenses;
+            up.DateModified = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
+        }
+        
         // GET: Commitments/ToggleCRM
         [HttpGet]
         public async Task<IActionResult> ToggleCRM()
@@ -275,19 +291,43 @@ namespace USSEScoreboard.Controllers
             var userId = _userManager.GetUserId(User);
             var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
             up.IsCRM = !up.IsCRM;
+            up.DateModified = DateTime.Now;
             await _context.SaveChangesAsync();
             return RedirectToAction("My");
         }
 
-        // GET: Commitments/ToggleFRI
+        
+        // GET: Commitments/ToggleCRMUser/1 (userprofiled)
+        [HttpGet]
+        public async Task<IActionResult> ToggleCRMUser(int id)
+        {
+            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserProfileId == id);
+            up.IsCRM = !up.IsCRM;
+            up.DateModified = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index","Home");
+        }
+
+        // GET: Commitments/ToggleFRIUser/1
         [HttpGet]
         public async Task<IActionResult> ToggleFRI()
         {
             var userId = _userManager.GetUserId(User);
             var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
             up.IsFRI = !up.IsFRI;
+            up.DateModified = DateTime.Now;
             await _context.SaveChangesAsync();
             return RedirectToAction("My");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ToggleFRIUser(int id)
+        {
+            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserProfileId == id);
+            up.IsFRI = !up.IsFRI;
+            up.DateModified = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
         }
 
         private bool CommitmentExists(int id)

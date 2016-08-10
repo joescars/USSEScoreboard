@@ -38,19 +38,33 @@ namespace USSEScoreboard.Controllers
         // GET: Committments by User
         public async Task<IActionResult> SearchByUser(int id)
         {
-            var model = new ListCommitmentsViewModel();
-            model.Commitments = await _context.Commitment
-                .Where(u => u.UserProfileId == id)
-                .Include(u => u.UserProfile)
-                .OrderByDescending(u => u.DateCreated)
-                .ToListAsync();
+            var userId = _userManager.GetUserId(User);
+            var userProfileId = await _context.UserProfile
+                .Where(u => u.UserId == userId)
+                .Select(u => u.UserProfileId).FirstOrDefaultAsync();
+            // check if searching for logged in user
+            if (userProfileId == id)
+            {
+                // redirect to my commitments
+                return RedirectToAction("My");
+            }
+            else
+            {
+                // return search results of other user
+                var model = new ListCommitmentsViewModel();
+                model.Commitments = await _context.Commitment
+                    .Where(u => u.UserProfileId == id)
+                    .Include(u => u.UserProfile)
+                    .OrderByDescending(u => u.DateCreated)
+                    .ToListAsync();
 
-            model.SearchUserName = await _context.UserProfile
-                .Where(u => u.UserProfileId == id)
-                .Select(u => u.FullName)
-                .FirstOrDefaultAsync();
-
-            return View(model);
+                model.SearchUserName = await _context.UserProfile
+                    .Where(u => u.UserProfileId == id)
+                    .Select(u => u.FullName)
+                    .FirstOrDefaultAsync();
+                return View(model);
+            }
+           
         }
 
         // GET: My Commitments (Logged in User)

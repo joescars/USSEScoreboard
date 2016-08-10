@@ -1,9 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@*<div class="page-header">
-    <h1>SE Scoreboard <small>Do... or do not. There is no try.</small></h1>
-</div>*@
 
 @if (User.Identity.IsAuthenticated)
 {
@@ -32,7 +29,7 @@
                     @* Start TE Table *@
 
                     @foreach (UserScore UserScore in ViewBag.Team)
-                {
+                    {
                         <tr>
                             <td width="24%">@UserScore.FullName</td>
                             <td width="19%" class="text-center">
@@ -71,9 +68,7 @@
                                 {
                                     <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button>
                                 }
-                            </td>
-                            @*<td width="16%" class="text-center"><a href="#" class="badge">@UserScore.TotalPresentations</a></td>
-                        <td width="16%" class="text-center"><a href="#" class="badge">@UserScore.TotalAscend</a></td>*@
+                            </td>                           
                         </tr>
                     }
 

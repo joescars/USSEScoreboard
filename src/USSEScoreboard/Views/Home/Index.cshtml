@@ -39,35 +39,14 @@
                                     @UserScore.CommitTotal
                                 </a>
                             </td>
-                            <td class="text-center" width="19%">
-                                @if (UserScore.IsCRM)
-                                {
-                                    <button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button>
-                                }
+                            <td class="text-center" width="19%">                         
+                                <button class="btn @(UserScore.IsCRM ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsCRM ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></button>                         
                             </td>
                             <td class="text-center" width="19%">
-                                @if (UserScore.IsExpenses)
-                                {
-                                    <button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button>
-                                }
+                                <button class="btn @(UserScore.IsExpenses ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsExpenses ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></button>
                             </td>
                             <td class="text-center" width="19%">
-                                @if (UserScore.IsFRI)
-                                {
-                                    <button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></button>
-                                }
+                                <button class="btn @(UserScore.IsFRI ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsFRI ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></button>
                             </td>                           
                         </tr>
                     }

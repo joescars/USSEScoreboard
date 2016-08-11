@@ -52,5 +52,7 @@ namespace USSEScoreboard.Data
 
         public DbSet<LeadMeasure> LeadMeasure { get; set; }
 
+        public DbSet<Highlight> Highlight { get; set; }
+        
     }
 }

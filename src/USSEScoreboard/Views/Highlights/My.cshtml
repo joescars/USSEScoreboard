@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Highlights</h2>
+<h2>My Highlights</h2>
 
 <p>
     <a class="btn btn-primary btn-sm" asp-action="Create"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create New</a>
@@ -28,7 +28,7 @@
                 @item.UserProfile.FullName
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.HighlightId">@item.DateStart.ToString("D") <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> @item.DateEnd.ToString("D")</a>
+                <a asp-action="Details" asp-route-id="@item.HighlightId">@item.DateStart.ToString("D") -> @item.DateEnd.ToString("D")</a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.HighlightId">Edit</a> |

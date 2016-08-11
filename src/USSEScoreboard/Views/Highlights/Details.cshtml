@@ -4,45 +4,31 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<link href="~/lib/summernote/dist/summernote.css" rel="stylesheet">
 
-<div>
-    <h4>Highlight</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
-        <dd>
-            @Html.Raw(Model.Body)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateEnd)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateEnd)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateModified)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateModified)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateStart)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateStart)
-        </dd>
-    </dl>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Highlights for @Model.UserProfile.FullName @Model.DateStart.ToString("D") -> @Model.DateEnd.ToString("D")
+    </div>
+    <div class="panel-body">
+        @Html.Raw(Model.Body)
+    </div>
 </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.HighlightId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+
+    <script src="~/lib/summernote/dist/summernote.min.js"></script>
+    <script>
+            //$(document).ready(function() {
+            //    $('#Body').summernote({
+            //        height: 300
+            //    });
+            //});
+    </script>
+
+}

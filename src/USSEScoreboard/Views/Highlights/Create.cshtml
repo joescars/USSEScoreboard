@@ -4,6 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
+<link href="~/lib/summernote/dist/summernote.css" rel="stylesheet">
+
 <h2>Create</h2>
 
 <form asp-action="Create">
@@ -46,4 +48,14 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/lib/summernote/dist/summernote.min.js"></script>
+    <script>
+            $(document).ready(function() {
+                $('#Body').summernote({
+                    height: 300
+                });
+            });
+    </script>
+
 }

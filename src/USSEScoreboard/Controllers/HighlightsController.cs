@@ -31,6 +31,16 @@ namespace USSEScoreboard.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // GET: Highlights/My
+        public async Task<IActionResult> My()
+        {
+            var userId = _userManager.GetUserId(User);
+            var applicationDbContext = _context.Highlight
+                .Include(h => h.UserProfile)
+                .Where(u => u.UserProfile.UserId == userId);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
         // GET: Highlights/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -39,7 +49,7 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var highlight = await _context.Highlight.SingleOrDefaultAsync(m => m.HighlightId == id);
+            var highlight = await _context.Highlight.Include(u => u.UserProfile).SingleOrDefaultAsync(m => m.HighlightId == id);
             if (highlight == null)
             {
                 return NotFound();
@@ -78,7 +88,7 @@ namespace USSEScoreboard.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "UserProfileId", highlight.UserProfileId);
+            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "FullName", highlight.UserProfileId);
             return View(highlight);
         }
 
@@ -95,7 +105,7 @@ namespace USSEScoreboard.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "UserProfileId", highlight.UserProfileId);
+            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "FullName", highlight.UserProfileId);
             return View(highlight);
         }
 
@@ -115,6 +125,7 @@ namespace USSEScoreboard.Controllers
             {
                 try
                 {
+                    highlight.DateModified = DateTime.Now;
                     _context.Update(highlight);
                     await _context.SaveChangesAsync();
                 }
@@ -131,7 +142,7 @@ namespace USSEScoreboard.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "UserProfileId", highlight.UserProfileId);
+            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "FullName", highlight.UserProfileId);
             return View(highlight);
         }
 
@@ -143,7 +154,8 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var highlight = await _context.Highlight.SingleOrDefaultAsync(m => m.HighlightId == id);
+            var highlight = await _context.Highlight.Include(u => u.UserProfile)
+                .SingleOrDefaultAsync(m => m.HighlightId == id);
             if (highlight == null)
             {
                 return NotFound();

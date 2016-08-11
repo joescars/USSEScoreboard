@@ -34,12 +34,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Commitments" asp-action="My">My Commitments</a></li>                    
+                    <li><a asp-area="" asp-controller="Commitments" asp-action="My">Commitments</a></li>                    
+                    <li><a asp-area="" asp-controller="Highlights" asp-action="Index">Highlights</a></li>
                     @if (User.Identity.IsAuthenticated && User.Identity.Name.Contains("Tommy"))
                     {
                     <li><a asp-area="" asp-controller="Wigs" asp-action="Index">WIGS</a></li>
                     <li><a asp-area="" asp-controller="LeadMeasures" asp-action="Index">Lead Measures</a></li>
-                    <li><a asp-area="" asp-controller="GlobalScoreEntries" asp-action="Index">Track Progress</a></li> 
+                    <li><a asp-area="" asp-controller="GlobalScoreEntries" asp-action="Index">Tracking</a></li> 
                     }                   
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")

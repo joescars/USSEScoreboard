@@ -111,3 +111,7 @@ textarea {
 .bs-callout-info h4 {
     color: #5bc0de;
 }
+
+.commitTable .archived, .commitTable .archived a {
+    color: #a5a5a5;
+}

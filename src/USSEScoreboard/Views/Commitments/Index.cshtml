@@ -14,7 +14,7 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<table class="table table-striped">
+<table class="table table-striped commitTable">
     <thead>
         <tr>
             <th>Date Created</th>
@@ -27,16 +27,16 @@
     <tbody>
         @foreach (var item in Model.Commitments)
         {
-            <tr>
+            <tr class="@(item.Status == CommitmentStatus.Archive ? "archived" : "")">
                 <td>@item.DateCreated.ToString("d")</td>
                 <td>@item.Title</td>
                 <td>@item.UserProfile.FullName</td>
                 <td>@item.Status</td>
-                <td>                    
+                <td>
                     <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</a>
-                    
+
                 </td>
             </tr>
         }

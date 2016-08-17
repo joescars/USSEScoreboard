@@ -27,7 +27,7 @@ namespace USSEScoreboard.Controllers
         // GET: Highlights
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Highlight.Include(h => h.UserProfile);
+            var applicationDbContext = _context.Highlight.Include(h => h.UserProfile).OrderByDescending(h => h.DateCreated);
             return View(await applicationDbContext.ToListAsync());
         }
 

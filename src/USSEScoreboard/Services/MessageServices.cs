@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SendGrid;
+using System.Net.Mail;
 
 namespace USSEScoreboard.Services
 {
@@ -13,6 +15,20 @@ namespace USSEScoreboard.Services
         public Task SendEmailAsync(string email, string subject, string message)
         {
             // Plug in your email service here to send an email.
+            SendGridMessage m = new SendGridMessage();
+            m.AddTo(email);
+            m.From = new MailAddress("admin@sedash.azurewebsites.net", "Dashboard Admin");
+            m.Subject = subject;
+            m.Html = message;
+
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
+
+            // create a Web transport, using API Key
+            var transportWeb = new Web(apiKey);
+
+            // Send the email, which returns an awaitable task.
+            transportWeb.DeliverAsync(m);
+
             return Task.FromResult(0);
         }
 

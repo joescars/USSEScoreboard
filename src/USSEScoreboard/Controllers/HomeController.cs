@@ -64,9 +64,19 @@ namespace USSEScoreboard.Controllers
             ViewData["TotalAscendActive"] = TotalAscendActive;
 
             var TotalAscendComplete = _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendCompleted)
+                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendCodeCompleted)
                 .Sum(a => a.TimeFrameTotal);
             ViewData["TotalAscendComplete"] = TotalAscendComplete;
+
+            var TotalAscendProposed = _context.GlobalScoreEntry
+                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendProposed)
+                .Sum(a => a.TimeFrameTotal);
+            ViewData["TotalAscendProposed"] = TotalAscendProposed;
+
+            var TotalAscendWins = _context.GlobalScoreEntry
+                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendWins)
+                .Sum(a => a.TimeFrameTotal);
+            ViewData["TotalAscendWins"] = TotalAscendWins;
 
             return View();
         }

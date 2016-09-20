@@ -10,10 +10,14 @@ namespace USSEScoreboard.Models
     {
         [Description("Total Community Presentations")]
         Presentations,
-        [Description("Ascend Projects Active")]
+        [Description("Ascend Active")]
         AscendActive,
-        [Description("Ascend Projects Completed")]
-        AscendCompleted
+        [Description("Ascend Code Completed")]
+        AscendCodeCompleted,
+        [Description("Ascend Proposed")]
+        AscendProposed,
+        [Description("Ascend Win")]
+        AscendWins
     }
 
     public class GlobalScoreEntry

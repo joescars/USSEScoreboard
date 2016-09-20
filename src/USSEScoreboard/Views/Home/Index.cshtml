@@ -67,16 +67,24 @@
                 @*<div class="panel-body">*@
                     <table class="table table-striped">
                         <tr>
-                            <td>Total Presentations:</td>
+                            <td width="65%">Total Presentations:</td>
                             <td><span class="badge">@ViewBag.TotalPresentations</span></td>
+                        </tr>
+                        <tr>
+                            <td>Ascend Proposed:</td>
+                            <td><span class="badge">@ViewBag.TotalAscendProposed</span></td>
                         </tr>
                         <tr>
                             <td>Ascend Active:</td>
                             <td><span class="badge">@ViewBag.TotalAscendActive</span></td>
                         </tr>
                         <tr>
-                            <td>Ascend Complete:</td>
+                            <td>Ascend Code Complete:</td>
                             <td><span class="badge">@ViewBag.TotalAscendComplete</span></td>
+                        </tr>
+                        <tr>
+                            <td>Ascend Wins:</td>
+                            <td><span class="badge">@ViewBag.TotalAscendWins</span></td>
                         </tr>
                     </table>
                 @*</div>*@

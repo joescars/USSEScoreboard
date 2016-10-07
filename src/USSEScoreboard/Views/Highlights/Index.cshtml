@@ -1,4 +1,4 @@
-@model IEnumerable<USSEScoreboard.Models.Highlight>
+@model IEnumerable<USSEScoreboard.Models.HighlightListItem>
 
 @{
     ViewData["Title"] = "Index";
@@ -25,7 +25,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @item.UserProfile.FullName
+                @item.FullName
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.HighlightId">@item.DateStart.ToString("D") <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> @item.DateEnd.ToString("D")</a>

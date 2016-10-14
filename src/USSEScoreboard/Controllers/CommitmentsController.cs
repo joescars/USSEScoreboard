@@ -83,6 +83,7 @@ namespace USSEScoreboard.Controllers
             model.IsCRM = up.IsCRM;
             model.IsExpenses = up.IsExpenses;
             model.IsFRI = up.IsFRI;
+            model.IsAscendNotes = up.IsAscendNotes;
 
             return View(model);
         }
@@ -325,6 +326,29 @@ namespace USSEScoreboard.Controllers
         {
             var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserProfileId == id);
             up.IsFRI = !up.IsFRI;
+            up.DateModified = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        // GET: Commitments/ToggleAscendNotes
+        [HttpGet]
+        public async Task<IActionResult> ToggleAscendNotes()
+        {
+            var userId = _userManager.GetUserId(User);
+            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
+            up.IsAscendNotes = !up.IsAscendNotes;
+            up.DateModified = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("My");
+        }
+
+        // GET: Commitments/ToggleAscendNotes/User/1
+        [HttpGet]
+        public async Task<IActionResult> ToggleAscendNotesUser(int id)
+        {
+            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserProfileId == id);
+            up.IsAscendNotes = !up.IsAscendNotes;
             up.DateModified = DateTime.Now;
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");

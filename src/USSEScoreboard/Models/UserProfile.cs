@@ -14,6 +14,7 @@ namespace USSEScoreboard.Models
             this.IsCRM = false;
             this.IsExpenses = false;
             this.IsFRI = false;
+            this.IsAscendNotes = false;
             this.TotalAscend = 0;
             this.TotalPresentations = 0;
             this.DateCreated = DateTime.Now;
@@ -45,6 +46,7 @@ namespace USSEScoreboard.Models
         public bool IsCRM { get; set; }
         public bool IsExpenses { get; set; }
         public bool IsFRI { get; set; }
+        public bool IsAscendNotes { get; set; }
         public int TotalPresentations { get; set; }
         public int TotalAscend { get; set; }
         public DateTime DateCreated { get; set; }

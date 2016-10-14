@@ -32,6 +32,7 @@ namespace USSEScoreboard.Controllers
                               IsCRM = u.IsCRM,
                               IsExpenses = u.IsExpenses,
                               IsFRI = u.IsFRI,
+                              IsAscendNotes = u.IsAscendNotes,
                               TotalPresentations = u.TotalPresentations,
                               TotalAscend = u.TotalAscend,
                               CommitTotal = u.Commitments

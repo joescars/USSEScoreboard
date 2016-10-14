@@ -300,6 +300,8 @@ namespace USSEScoreboard.Migrations
                     b.Property<string>("FirstName")
                         .HasAnnotation("MaxLength", 100);
 
+                    b.Property<bool>("IsAscendNotes");
+
                     b.Property<bool>("IsCRM");
 
                     b.Property<bool>("IsExpenses");

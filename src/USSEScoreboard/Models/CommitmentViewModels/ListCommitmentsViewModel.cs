@@ -13,6 +13,7 @@ namespace USSEScoreboard.Models.CommitmentViewModels
         public bool IsCRM { get; set; }
         public bool IsExpenses { get; set; }
         public bool IsFRI { get; set; }
+        public bool IsAscendNotes { get; set; }
         public string SearchUserName { get; set; }
 
     }

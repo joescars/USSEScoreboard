@@ -153,13 +153,14 @@ namespace USSEScoreboard.Controllers
         // Custom Commands for Admin
         // GET: GlobalScoreEntries/ResetCRMExpenses
         [HttpGet]
-        public async Task<IActionResult> ResetCRMExpenses()
+        public async Task<IActionResult> ResetWeeklyItems()
         {
             var up = await _context.UserProfile.ToListAsync();
             foreach (UserProfile u in up)
             {
                 u.IsCRM = false;
                 u.IsExpenses = false;
+                u.IsAscendNotes = false;
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", new { msg = "reset" });

@@ -22,6 +22,7 @@
                             <th class="text-center">CRM <a href="https://microsoftcorp9.crm.dynamics.com/main.aspx" title="Launch CRM in new window" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a></th>
                             <th class="text-center">Expenses <a href="http://msexpense2" title="Launch Expenses in new window" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a></th>
                             <th class="text-center">FRI <a href="http://aka.ms/roleguide" title="Launch Role Guide in new window" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a></th>
+                            <th class="text-center">A+ <a href="http://aka.ms/ascendplus" title="Ascend+ Notes and Updates" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a></th>
                         </tr>
                     </thead>
                     @* Start TE Table *@
@@ -37,15 +38,18 @@
                                     @UserScore.CommitTotal
                                 </a>
                             </td>
-                            <td class="text-center" width="19%">                         
+                            <td class="text-center" width="14%">                         
                                 <a asp-controller="Commitments" asp-action="ToggleCRMUser" asp-route-id="@UserScore.UserProfileId" title="Toggle CRM for @UserScore.FullName" class="btn @(UserScore.IsCRM ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsCRM ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></a>                         
                             </td>
-                            <td class="text-center" width="19%">
+                            <td class="text-center" width="14%">
                                 <a asp-controller="Commitments" asp-action="ToggleExpensesUser" asp-route-id="@UserScore.UserProfileId" title="Toggle Expenses for @UserScore.FullName" class="btn @(UserScore.IsExpenses ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsExpenses ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></a>
                             </td>
-                            <td class="text-center" width="19%">
+                            <td class="text-center" width="14%">
                                 <a asp-controller="Commitments" asp-action="ToggleFRIUser" asp-route-id="@UserScore.UserProfileId" title="Toggle FRI for @UserScore.FullName" class="btn @(UserScore.IsFRI ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsFRI ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></a>
-                            </td>                           
+                            </td>  
+                            <td class="text-center" width="14%">
+                                <a asp-controller="Commitments" asp-action="ToggleAscendNotesUser" asp-route-id="@UserScore.UserProfileId" title="Toggle FRI for @UserScore.FullName" class="btn @(UserScore.IsAscendNotes ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsAscendNotes ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></a>
+                            </td>                                                      
                         </tr>
                     }
 

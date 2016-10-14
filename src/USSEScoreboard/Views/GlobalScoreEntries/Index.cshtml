@@ -9,7 +9,7 @@
 {
     <div class="alert alert-success" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Success!</strong> CRM and Expenses Reeset for all users.
+        <strong>Success!</strong> CRM, Expenses &amp; Ascend Notes Reset for all users.
     </div>
 }
 @if (Context.Request.Query["msg"] == "archived")
@@ -28,7 +28,7 @@
 }
 <div class="container">
     <a asp-action="Create" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Track New Item</a>
-    <a asp-action="ResetCRMExpenses" class="btn btn-primary"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset CRM &amp; Expenses</a>
+    <a asp-action="ResetWeeklyItems" class="btn btn-primary"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset CRM, Expenses &amp; Ascend Notes</a>
     <a asp-action="ResetFRI" class="btn btn-primary"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset FRI</a>
     <a asp-action="ArchiveCommits" class="btn btn-primary"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Archive Completed Commits</a>
 </div>

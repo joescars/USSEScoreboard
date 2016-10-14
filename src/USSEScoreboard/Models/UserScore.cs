@@ -12,6 +12,7 @@ namespace USSEScoreboard.Models
         public bool IsCRM { get; set; }
         public bool IsExpenses { get; set; }
         public bool IsFRI { get; set; }
+        public bool IsAscendNotes { get; set; }
         public int TotalPresentations { get; set; }
         public int TotalAscend { get; set; }
         public int CommitTotal { get; set; }

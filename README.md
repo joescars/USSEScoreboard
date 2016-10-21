@@ -1,6 +1,6 @@
 # US South East Scoreboard
 
-This is a generic tool built to help manage commitments and goal for our team. It has a custom structure based on a changing set of rules. 
+This is a generic tool built to help manage commitments and goals for our team. It has a custom structure based on a changing set of rules. 
 
 The main goal of this tool is to allow us to view a "scoreboard" giving us instant feedback as to where we stand as a team. 
 

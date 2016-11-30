@@ -357,6 +357,28 @@ namespace USSEScoreboard.Migrations
                     b.ToTable("Wig");
                 });
 
+            modelBuilder.Entity("USSEScoreboard.Models.WIGSetting", b =>
+                {
+                    b.Property<int>("WIGSettingId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("AscendWinGoal");
+
+                    b.Property<double>("CommunityWinGoal");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("WIGSettingId");
+
+                    b.ToTable("WigSetting");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")

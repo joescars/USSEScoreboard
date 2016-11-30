@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using USSEScoreboard.Data;
 using USSEScoreboard.Models;
 using USSEScoreboard.Services;
+using USSEScoreboard.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace USSEScoreboard
@@ -51,6 +52,7 @@ namespace USSEScoreboard
             services.AddMvc();
 
             // Add application services.
+            services.AddScoped<IWIGSettingRepository, WIGSettingRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }

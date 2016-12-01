@@ -183,6 +183,28 @@ namespace USSEScoreboard.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Search(DateTime startDate, DateTime endDate)
+        {
+
+            var searchResults = _context.Highlight
+                .Include(h => h.UserProfile)
+                .Where(h => h.DateStart >= startDate && h.DateEnd <= endDate)
+                .Select(h => new HighlightSearchResult
+                {
+                    HighlightId = h.HighlightId,
+                    FullName = h.UserProfile.FullName,
+                    Body = h.Body,
+                    DateStart = h.DateStart,
+                    DateEnd = h.DateEnd,
+                    DateCreated = h.DateCreated
+                })
+                .OrderBy(h => h.DateCreated)
+                .OrderBy(h => h.FullName);
+
+            return View(await searchResults.ToListAsync());
+            
+        }
+
         private bool HighlightExists(int id)
         {
             return _context.Highlight.Any(e => e.HighlightId == id);

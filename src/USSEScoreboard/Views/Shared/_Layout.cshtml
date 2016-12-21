@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -41,11 +44,12 @@
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                         <li><a asp-area="" asp-controller="Commitments" asp-action="My">Commitments</a></li>
                         <li><a asp-area="" asp-controller="Highlights" asp-action="Index">Highlights</a></li>
-                        @if (User.Identity.IsAuthenticated && User.Identity.Name.Contains("Tommy"))
+                        @if (await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole"))
                         {
                             <li><a asp-area="" asp-controller="Wigs" asp-action="Index">WIGS</a></li>
                             <li><a asp-area="" asp-controller="LeadMeasures" asp-action="Index">Lead Measures</a></li>
                             <li><a asp-area="" asp-controller="GlobalScoreEntries" asp-action="Index">Tracking</a></li>
+
                         }
                     </ul>
                     @await Html.PartialAsync("_LoginPartial")

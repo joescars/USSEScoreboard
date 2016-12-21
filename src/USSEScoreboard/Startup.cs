@@ -51,8 +51,15 @@ namespace USSEScoreboard
 
             services.AddMvc();
 
+            //Policies
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+            });
+
             // Add application services.
             services.AddScoped<IWIGSettingRepository, WIGSettingRepository>();
+            services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
@@ -94,7 +101,8 @@ namespace USSEScoreboard
             if (await CreateRoles(serviceProvider))
             {
                 // Create default users
-                await SeedDataLive.Initialize(app.ApplicationServices);
+                //await SeedDataLive.Initialize(app.ApplicationServices);
+                //await SeedDataLive.AssignAdminRoles(app.ApplicationServices);
             }            
             
         }

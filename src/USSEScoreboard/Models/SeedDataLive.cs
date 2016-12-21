@@ -40,8 +40,8 @@ namespace USSEScoreboard.Models
             // Create users
             foreach (SeedUser su in initialUsers)
             {
-                //if (context.UserProfile.Any(aa => aa.FirstName == su.FirstName))
-                //    continue;
+                if (context.UserProfile.Any(aa => aa.FirstName == su.FirstName))
+                    continue;
                 var u = new ApplicationUser { UserName = su.Email, Email = su.Email };
                 var result = await userManager.CreateAsync(u, su.Password);
                 if (result.Succeeded)
@@ -58,6 +58,22 @@ namespace USSEScoreboard.Models
                 await userManager.AddToRoleAsync(u, "TE");
             }
 
+        }
+
+        public async static Task AssignAdminRoles(IServiceProvider serviceProvider)
+        {
+            var context = serviceProvider.GetService<ApplicationDbContext>();
+            var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
+
+            var u = await userManager.FindByEmailAsync("Homer.Simpson@TheSimpsons.com");
+            if (u!= null)
+            {                
+                var result = await userManager.IsInRoleAsync(u, "Admin");
+                if (result == false)
+                {
+                    await userManager.AddToRoleAsync(u, "Admin");
+                }
+            }
         }
 
     }

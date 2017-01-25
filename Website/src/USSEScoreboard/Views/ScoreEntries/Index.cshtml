@@ -1,0 +1,82 @@
+@model IEnumerable<USSEScoreboard.Models.ScoreEntry>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Track Progress</h2>
+@if (Context.Request.Query["msg"] == "reset")
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Success!</strong> CRM and Expenses Reeset for all users.
+    </div>
+}
+@if (Context.Request.Query["msg"] == "archived")
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Success!</strong> Completed Commitments Have Been Archived
+    </div>
+}
+@if (Context.Request.Query["msg"] == "resetfri")
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Success!</strong> FRI has been reset for all users.
+    </div>
+}
+<div class="container">
+    <a asp-action="Create" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Track New Item</a>
+    <a asp-action="ResetCRMExpenses" class="btn btn-primary"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset CRM &amp; Expenses</a>
+    <a asp-action="ResetFRI" class="btn btn-primary"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset FRI</a>
+    <a asp-action="ArchiveCommits" class="btn btn-primary"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Archive Completed Commits</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScoreType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WeekEnding)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                @item.UserProfile.FullName
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ScoreType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @item.WeekEnding.ToString("D")
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ScoreEntryId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ScoreEntryId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ScoreEntryId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

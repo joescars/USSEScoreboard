@@ -1,0 +1,141 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    //Show Dashboard if Logged In
+    <div class="container">
+        <div class="col-md-8">
+            <!-- start panel -->
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <strong>Individual Contributor stats</strong>
+                </div>
+
+                <!-- start table -->
+                <table class="table table-striped table-hover table-bordered" style="background-color: #FFF;">
+                    <thead>
+                        <tr>
+                            <th style="border-top: 1px solid #fff !important; border-left: 1px solid #fff !important;">&nbsp;</th>
+                            <th class="text-center">Weekly Tasks <a href="/Commitments/My"><i class="fa fa-external-link" aria-hidden="true"></i></a></th>
+                            <th class="text-center">CRM <a href="https://usdxevangelism.crm.dynamics.com/main.aspx" title="Launch CRM in new window" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a></th>
+                            <th class="text-center">Expenses <a href="http://msexpense2" title="Launch Expenses in new window" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a></th>                            
+                            <th class="text-center">A+ <a href="http://aka.ms/ascendplus" title="Ascend+ Notes and Updates" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a></th>
+                            <th class="text-center">FRI <a href="http://aka.ms/roleguide" title="Launch Role Guide in new window" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a></th>
+                        </tr>
+                    </thead>
+                    @* Start TE Table *@
+
+                    @foreach (UserScore UserScore in ViewBag.Team)
+                    {
+                        <tr>
+                            <td width="24%">@UserScore.FullName</td>
+                            <td width="19%" class="text-center">
+                                <a asp-controller="Commitments" asp-action="SearchByUser" asp-route-id="@UserScore.UserProfileId" class="btn @(UserScore.CommitCompleted == UserScore.CommitTotal && UserScore.CommitCompleted > 0 ? "btn-success" : "btn-primary") btn-xs">
+                                    @UserScore.CommitCompleted
+                                    of
+                                    @UserScore.CommitTotal
+                                </a>
+                            </td>
+                            <td class="text-center" width="14%">                         
+                                <a asp-controller="Commitments" asp-action="ToggleCRMUser" asp-route-id="@UserScore.UserProfileId" title="Toggle CRM for @UserScore.FullName" class="btn @(UserScore.IsCRM ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsCRM ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></a>                         
+                            </td>
+                            <td class="text-center" width="14%">
+                                <a asp-controller="Commitments" asp-action="ToggleExpensesUser" asp-route-id="@UserScore.UserProfileId" title="Toggle Expenses for @UserScore.FullName" class="btn @(UserScore.IsExpenses ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsExpenses ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></a>
+                            </td>  
+                            <td class="text-center" width="14%">
+                                <a asp-controller="Commitments" asp-action="ToggleAscendNotesUser" asp-route-id="@UserScore.UserProfileId" title="Toggle FRI for @UserScore.FullName" class="btn @(UserScore.IsAscendNotes ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsAscendNotes ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></a>
+                            </td>
+                            <td class="text-center" width="14%">
+                                <a asp-controller="Commitments" asp-action="ToggleFRIUser" asp-route-id="@UserScore.UserProfileId" title="Toggle FRI for @UserScore.FullName" class="btn @(UserScore.IsFRI ? "btn-success" : "btn-danger") btn-xs"><span class="glyphicon @(UserScore.IsFRI ? "glyphicon-ok-circle" : "glyphicon-warning-sign")" aria-hidden="true"></span></a>
+                            </td>                                                                                  
+                        </tr>
+                    }
+
+                    @* // End TE Table *@
+
+                </table>
+                <!-- end TE table -->
+
+            </div>
+            <!-- end panel -->
+
+        </div>
+        <div class="col-md-4">
+            <!-- start global score panel -->
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <strong>Southeast Team Totals</strong>
+                </div>
+                @*<div class="panel-body">*@
+                    <table class="table table-striped">
+                        <tr>
+                            <td width="65%">Total Presentations:</td>
+                            <td><span class="badge">@ViewBag.TotalPresentations</span></td>
+                        </tr>
+                        <tr>
+                            <td>Ascend Proposed:</td>
+                            <td><span class="badge">@ViewBag.TotalAscendProposed</span></td>
+                        </tr>
+                        <tr>
+                            <td>Ascend Active:</td>
+                            <td><span class="badge">@ViewBag.TotalAscendActive</span></td>
+                        </tr>
+                        <tr>
+                            <td>Ascend Code Complete:</td>
+                            <td><span class="badge">@ViewBag.TotalAscendComplete</span></td>
+                        </tr>
+                        <tr>
+                            <td>Ascend Wins:</td>
+                            <td><span class="badge">@ViewBag.TotalAscendWins</span></td>
+                        </tr>
+                    </table>
+                @*</div>*@
+            </div>
+            <!-- end global score panel-->       
+            <!-- start trending table -->
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                   <strong>Lead Measure Trend To Date</strong>
+                </div>
+                <div class="panel-body">
+                    <label>Community Wins</label>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped @ViewBag.CommunityProgressClass" role="progressbar" aria-valuenow="@ViewBag.CommunityProgress" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.CommunityProgress%">
+                            Trending &#64; @ViewBag.CommunityProgress%
+                        </div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped @ViewBag.CommunityOverallClass" role="progressbar" aria-valuenow="@ViewBag.CommunityOverall" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.CommunityOverall%">
+                            Overall &#64; @ViewBag.CommunityOverall%
+                        </div>
+                    </div>
+                    <label>Ascend Wins</label>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped @ViewBag.AscendProgressClass" role="progressbar" aria-valuenow="@ViewBag.AscendProgress" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.AscendProgress%">
+                            Trending &#64; @ViewBag.AscendProgress%
+                        </div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped @ViewBag.AscendOverallClass" role="progressbar" aria-valuenow="@ViewBag.AscendOverall" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.AscendOverall%">
+                            Overall &#64; @ViewBag.AscendOverall%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- start trending table -->     
+        </div>
+    </div>
+
+}
+else
+{
+    //Not Logged In Do not Show
+    <div class="alert alert-warning">
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        Please <a asp-controller="Account" asp-action="Login">login</a> to access the Dashboard
+    </div>
+}
+
+

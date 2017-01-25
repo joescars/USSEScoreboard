@@ -1,0 +1,90 @@
+@model USSEScoreboard.Models.CommitmentViewModels.CreateCommitmentViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@inject UserManager<ApplicationUser> UserManager
+
+<h2>Create</h2>
+<h4>Commitment</h4>
+<hr />
+
+<div class="container">
+    <div class="col-md-6">
+        <!-- start create -->
+        <form asp-action="Create">
+            <div class="form-horizontal">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Title" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <textarea asp-for="Description" class="form-control" rows="5" ></textarea>
+                        <span asp-validation-for="Description" class="text-danger" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Status" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <select asp-for="Status" asp-items="Html.GetEnumSelectList<CommitmentStatus>()" class="form-control"></select>
+                        <span asp-validation-for="Status" class="text-danger" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Lead Measure</label>
+                    <div class="col-md-10">
+                        
+                        <select asp-for="SelectedLeadMeasureId" asp-items="@(new SelectList((from s in Model.LeadMeasures.ToList() select new { LeadMeasureId = s.LeadMeasureId, NewTitle = s.Wig.Title + " : " + s.Description }),"LeadMeasureId","NewTitle"))" class="form-control"></select>
+                        <span asp-validation-for="SelectedLeadMeasureId" class="text-danger" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Member</label>
+                    <div class="col-md-10">
+                        <select asp-for="SelectedUserID" asp-items="@(new SelectList(Model.Users,"UserProfileId","FullName"))" class="form-control"></select>
+                        <span asp-validation-for="SelectedUserID" class="text-danger" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- end create -->
+    </div>
+    <div class="col-md-6">
+
+                <!-- start wigs -->
+                @foreach (Wig w in Model.Wigs)
+                {
+                    <div class="bs-callout bs-callout-primary">
+                        <h4>@w.Title</h4>
+                        @w.Description
+                    </div>
+                }
+                <!-- end wigs-->
+
+    </div>
+</div>
+
+
+
+
+<div>
+    <a asp-action="My">Back to My Commitments</a><br/><br />
+    <a asp-action="Index">Back to All Commitments</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

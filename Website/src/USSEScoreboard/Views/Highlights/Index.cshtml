@@ -1,0 +1,61 @@
+@model IEnumerable<USSEScoreboard.Models.HighlightListItem>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div>
+    <div class="row">
+        <div class="col-md-2">
+            <h2 style="margin-top:0px;padding-top:0px;">
+                Highlights
+            </h2>
+        </div>
+        <div class="col-md-4">
+            <a class="btn btn-primary btn-sm" asp-action="Create"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create New</a>
+        </div>
+        <div class="col-md-6">
+            <form asp-action="Search">
+                <div class="form-inline">
+                    <input id="startDate" name="startDate" type="date" class="form-control input-sm" />
+                    <input id="endDate" name="endDate" type="date" class="form-control input-sm" />
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search By Date Range
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Team Member
+                </th>
+                <th>
+                    Time Period
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.FullName
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.HighlightId">@item.DateStart.ToString("D") <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> @item.DateEnd.ToString("D")</a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.HighlightId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.HighlightId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.HighlightId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

@@ -1,0 +1,45 @@
+@model USSEScoreboard.Models.CommitmentViewModels.ListCommitmentsViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>All Commitments</h2>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/evangelist.js"></script>
+<script src="~/js/evangelistCommitment.js"></script>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table table-striped commitTable">
+    <thead>
+        <tr>
+            <th>Date Created</th>
+            <th>Title</th>
+            <th>Owner</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Commitments)
+        {
+            <tr class="@(item.Status == CommitmentStatus.Archive ? "archived" : "")">
+                <td>@item.DateCreated.ToString("d")</td>
+                <td>@item.Title</td>
+                <td>@item.UserProfile.FullName</td>
+                <td>@item.Status</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

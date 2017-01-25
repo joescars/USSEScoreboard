@@ -1,0 +1,54 @@
+@model USSEScoreboard.Models.CommitmentViewModels.ListCommitmentsViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>My Commitments <span class="small">(<a href="/Commitments">View All</a>)</span></h2> 
+
+<div class="container">
+    <a asp-action="Create" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Commitment</a>
+    <a class="btn btn-sm @(Model.IsExpenses ? "btn-success" : "btn-warning")" asp-action="ToggleExpenses">Toggle Expenses</a>
+    <a class="btn btn-sm @(Model.IsCRM ? "btn-success" : "btn-warning")" asp-action="ToggleCRM">Toggle CRM</a>
+    <a class="btn btn-sm @(Model.IsFRI ? "btn-success" : "btn-warning")" asp-action="ToggleFRI">Toggle FRI</a>
+    <a class="btn btn-sm @(Model.IsAscendNotes ? "btn-success" : "btn-warning")" asp-action="ToggleAscendNotes">Toggle Ascend Notes</a>
+</div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date Created</th>
+                <th>Title</th>
+                <th>Owner</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Commitments)
+            {
+                <tr>
+                    <td>@item.DateCreated.ToString("d")</td>
+                    <td>@item.Title</td>
+                    <td>@item.UserProfile.FullName</td>
+                    <td>@item.Status</td>
+                    <td>
+                        @if (@item.Status == CommitmentStatus.Active)
+                        {
+
+                            <a asp-action="Complete" asp-route-id="@item.Id" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Mark as Complete</a>
+                        }
+                        else
+                        {
+                            <button disabled class="btn btn-xs"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Mark as Complete</button>
+                        }
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit</a> 
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Details</a> 
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

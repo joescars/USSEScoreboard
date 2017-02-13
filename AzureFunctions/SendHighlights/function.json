@@ -1,0 +1,17 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "name": "req",
+      "type": "httpTrigger",
+      "direction": "in"
+    },
+    {
+      "type": "sendGrid",
+      "name": "message",
+      "apiKey": "SendGridApiKey",
+      "direction": "out"
+    }
+  ],
+  "disabled": true
+}

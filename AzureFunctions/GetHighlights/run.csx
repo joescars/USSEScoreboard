@@ -15,7 +15,7 @@ public static async void Run(TimerInfo myTimer, TraceWriter log)
     var usersToSend = await GetUsers();
     foreach (DashboardUser d in usersToSend)
     {
-        //await SendReport(highlights, d.Email);
+        await SendReport(highlights, d.Email);
         log.Info($"Sending Email to {d.Email}");
     }
     log.Info("Function Complete");  

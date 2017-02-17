@@ -15,7 +15,7 @@ public static async void Run(TimerInfo myTimer, TraceWriter log)
     var usersToSend = await GetUsers();
     foreach (DashboardUser d in usersToSend)
     {
-        await SendReport(highlights, d.Email);
+        //await SendReport(highlights, d.Email);
         log.Info($"Sending Email to {d.Email}");
     }
     log.Info("Function Complete");  
@@ -30,8 +30,7 @@ static Task SendReport(string body, string email)
     request.Method = "POST";
 
     HighlightMessage hm = new HighlightMessage();
-    //hm.email = email;
-    hm.email = "joeraio@gmail.com";
+    hm.email = email;
     hm.messagebody = body;
 
     string postData = JsonConvert.SerializeObject(hm);
@@ -62,8 +61,10 @@ static async Task<string> GetHighlights()
     
     using (var db = new HighlightContext())
     {
-        DateTime startDate = new DateTime(2017, 2, 10);
-        DateTime endDate = new DateTime(2017, 2, 12);
+        // Runs on Monday to set for items ending 
+        // previous Sunday or Friday
+        DateTime startDate = DateTime.Today.AddDays(-1);
+        DateTime endDate = DateTime.Today.AddDays(-1);
 
         body += "<h3>Highlights for Week Ending " + startDate.ToShortDateString() + "</h3>";
         body += "<hr size=\"1\">";
@@ -168,3 +169,4 @@ public class HighlightContext : DbContext
     public virtual DbSet<UserProfile> UserProfiles { get; set; }
     public virtual DbSet<DashboardUser> DashboardUsers { get; set; }
 }
+

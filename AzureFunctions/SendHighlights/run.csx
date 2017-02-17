@@ -9,7 +9,7 @@ using SendGrid.Helpers.Mail;
 public static Mail Run(HttpRequestMessage req, TraceWriter log, out Mail message)
 {
     log.Info("C# HTTP trigger function processed a request.");
-    bool isInterceptor = ConfigurationManager.AppSettings["isInterceptor"];
+    bool isInterceptor = Convert.ToBoolean(ConfigurationManager.AppSettings["isInterceptor"]);
     string interceptorEmail = ConfigurationManager.AppSettings["interceptorEmail"];
 
     //Retrieve Object and Convert

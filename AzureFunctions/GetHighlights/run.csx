@@ -63,7 +63,7 @@ static async Task<string> GetHighlights()
     {
         // Runs on Monday to set for items ending 
         // previous Sunday or Friday
-        DateTime startDate = DateTime.Today.AddDays(-1);
+        DateTime startDate = DateTime.Today.AddDays(-3);
         DateTime endDate = DateTime.Today.AddDays(-1);
 
         body += "<h3>Highlights for Week Ending " + startDate.ToShortDateString() + "</h3>";

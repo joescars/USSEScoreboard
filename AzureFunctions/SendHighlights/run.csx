@@ -24,7 +24,7 @@ public static Mail Run(HttpRequestMessage req, TraceWriter log, out Mail message
         sendTo = interceptorEmail;
     }
 
-    log.Info($"Sending to: {hm.email}");
+    log.Info($"Sending to: {sendTo}");
 
     Email from = new Email("admin@sedash.azurewebsites.net","Southeast Dashboard");
     string subject = "South East Weekly Highlights";

@@ -5,7 +5,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     //Show Dashboard if Logged In
-    <div class="container">
+    <div class="container-fluid">
         <div class="col-md-8">
             <!-- start panel -->
             <div class="panel panel-info">
@@ -14,7 +14,7 @@
                 </div>
 
                 <!-- start table -->
-                <table class="table table-striped table-hover table-bordered" style="background-color: #FFF;">
+                <table class="table table-striped table-hover table-bordered table-responsive" style="background-color: #FFF;">
                     <thead>
                         <tr>
                             <th style="border-top: 1px solid #fff !important; border-left: 1px solid #fff !important;">&nbsp;</th>

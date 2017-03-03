@@ -67,7 +67,7 @@ static async Task<string> GetHighlights()
         DateTime startDate = currDate.AddDays(-7);
         DateTime endDate = currDate.AddDays(-1);
 
-        body += "<h3>Highlights for Week Ending " + endDate.AddDays(-3).ToShortDateString() + "</h3>";
+        body += "<h3>Highlights for Week Ending " + currDate.AddDays(-3).ToShortDateString() + "</h3>";
         body += "<hr size=\"1\">";
 
         var myQuery = await db.Highlights

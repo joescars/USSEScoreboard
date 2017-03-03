@@ -63,11 +63,11 @@ static async Task<string> GetHighlights()
     {
         // Runs on Monday to set for any items 
         // entered previous Mon -> Sun
-        DateTime currDate = new DateTime(2017,3,6); //DateTime.Today;
+        DateTime currDate = DateTime.Today;
         DateTime startDate = currDate.AddDays(-7);
         DateTime endDate = currDate.AddDays(-1);
 
-        body += "<h3>Highlights for Week Ending " + startDate.ToShortDateString() + "</h3>";
+        body += "<h3>Highlights for Week Ending " + endDate.ToShortDateString() + "</h3>";
         body += "<hr size=\"1\">";
 
         var myQuery = await db.Highlights

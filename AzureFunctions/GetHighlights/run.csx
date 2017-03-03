@@ -61,17 +61,18 @@ static async Task<string> GetHighlights()
     
     using (var db = new HighlightContext())
     {
-        // Runs on Monday to set for items ending 
-        // previous Sunday or Friday
-        DateTime startDate = DateTime.Today.AddDays(-3);
-        DateTime endDate = DateTime.Today.AddDays(-1);
+        // Runs on Monday to set for any items 
+        // entered previous Mon -> Sun
+        DateTime currDate = new DateTime(2017,3,6); //DateTime.Today;
+        DateTime startDate = currDate.AddDays(-7);
+        DateTime endDate = currDate.AddDays(-1);
 
         body += "<h3>Highlights for Week Ending " + startDate.ToShortDateString() + "</h3>";
         body += "<hr size=\"1\">";
 
         var myQuery = await db.Highlights
         .Include(h => h.UserProfile)
-        .Where(h => h.DateEnd >= startDate && h.DateEnd <= endDate)
+        .Where(h => h.DateStart >= startDate && h.DateEnd <= endDate)
         .Select(h => new HighlightSearchResult
         {
             HighlightId = h.HighlightId,

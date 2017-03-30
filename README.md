@@ -16,5 +16,6 @@ Built using the following tools and languages:
 * [Entity Framework Core 1.0](https://docs.efproject.net/en/latest/)
 * [Microsoft Azure PaaS Services](https://azure.microsoft.com/)
     * [Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/)
+    * [Azure Functions](https://azure.microsoft.com/en-us/services/functions/)
     * [SQL Server](https://azure.microsoft.com/en-us/services/sql-database/)
 * [Bootstrap](http://getbootstrap.com/)

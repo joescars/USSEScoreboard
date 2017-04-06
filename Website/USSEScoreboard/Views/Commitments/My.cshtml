@@ -8,10 +8,10 @@
 
 <div class="container">
     <a asp-action="Create" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Commitment</a>
-    <a class="btn btn-sm @(Model.IsExpenses ? "btn-success" : "btn-warning")" asp-action="ToggleExpenses">Toggle Expenses</a>
-    <a class="btn btn-sm @(Model.IsCRM ? "btn-success" : "btn-warning")" asp-action="ToggleCRM">Toggle CRM</a>
-    <a class="btn btn-sm @(Model.IsFRI ? "btn-success" : "btn-warning")" asp-action="ToggleFRI">Toggle FRI</a>
-    <a class="btn btn-sm @(Model.IsAscendNotes ? "btn-success" : "btn-warning")" asp-action="ToggleAscendNotes">Toggle Ascend Notes</a>
+    <a class="btn btn-sm @(Model.IsExpenses ? "btn-success" : "btn-warning")" asp-action="ToggleExpensesUser" asp-route-id="@Model.UserProfileId">Toggle Expenses</a>
+    <a class="btn btn-sm @(Model.IsCRM ? "btn-success" : "btn-warning")" asp-action="ToggleCRMUser" asp-route-id="@Model.UserProfileId">Toggle CRM</a>
+    <a class="btn btn-sm @(Model.IsFRI ? "btn-success" : "btn-warning")" asp-action="ToggleFRIUser" asp-route-id="@Model.UserProfileId">Toggle FRI</a>
+    <a class="btn btn-sm @(Model.IsAscendNotes ? "btn-success" : "btn-warning")" asp-action="ToggleAscendNotesUser" asp-route-id="@Model.UserProfileId">Toggle Ascend Notes</a>
 </div>
 
     <table class="table table-striped">

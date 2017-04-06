@@ -89,6 +89,7 @@ namespace USSEScoreboard.Controllers
             model.IsExpenses = up.IsExpenses;
             model.IsFRI = up.IsFRI;
             model.IsAscendNotes = up.IsAscendNotes;
+            model.UserProfileId = up.UserProfileId;
 
             return View(model);
         }
@@ -263,97 +264,39 @@ namespace USSEScoreboard.Controllers
             return RedirectToAction("My");
         }
 
-        /***************************************************************
-           TODO: Refactor toggles into one method called from service
-        ***************************************************************/
-
-        // GET: Commitments/ToggleExpenses
-        [HttpGet]
-        public async Task<IActionResult> ToggleExpenses()
-        {
-            var userId = _userManager.GetUserId(User);
-            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
-            up.IsExpenses = !up.IsExpenses;
-            up.DateModified = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("My");
-        }
-
         // GET: Commitments/ToggleExpensesUser/1
         [HttpGet]
         public async Task<IActionResult> ToggleExpensesUser(int id)
         {
-            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserProfileId == id);
-            up.IsExpenses = !up.IsExpenses;
-            up.DateModified = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
-        }
-        
-        // GET: Commitments/ToggleCRM
-        [HttpGet]
-        public async Task<IActionResult> ToggleCRM()
-        {
-            var userId = _userManager.GetUserId(User);
-            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
-            up.IsCRM = !up.IsCRM;
-            up.DateModified = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("My");
-        }
+            await _toggleService.ToggleUserExpense(id);
+            return Redirect(Request.Headers["Referer"].ToString());
+            //if (stay) return Redirect(Request.Headers["Referer"].ToString(););
+            //return RedirectToAction("Index", "Home");
 
-        
+        }
+       
         // GET: Commitments/ToggleCRMUser/1 (userprofiled)
         [HttpGet]
         public async Task<IActionResult> ToggleCRMUser(int id)
         {
             await _toggleService.ToggleUserCRM(id);
-            return RedirectToAction("Index","Home");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         // GET: Commitments/ToggleFRIUser/1
         [HttpGet]
-        public async Task<IActionResult> ToggleFRI()
-        {
-            var userId = _userManager.GetUserId(User);
-            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
-            up.IsFRI = !up.IsFRI;
-            up.DateModified = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("My");
-        }
-
-        [HttpGet]
         public async Task<IActionResult> ToggleFRIUser(int id)
         {
-            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserProfileId == id);
-            up.IsFRI = !up.IsFRI;
-            up.DateModified = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
-        }
-
-        // GET: Commitments/ToggleAscendNotes
-        [HttpGet]
-        public async Task<IActionResult> ToggleAscendNotes()
-        {
-            var userId = _userManager.GetUserId(User);
-            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
-            up.IsAscendNotes = !up.IsAscendNotes;
-            up.DateModified = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("My");
+            await _toggleService.ToggleUserFRI(id);
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         // GET: Commitments/ToggleAscendNotes/User/1
         [HttpGet]
         public async Task<IActionResult> ToggleAscendNotesUser(int id)
         {
-            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserProfileId == id);
-            up.IsAscendNotes = !up.IsAscendNotes;
-            up.DateModified = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            await _toggleService.ToggleUserAscendNotes(id);
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         private bool CommitmentExists(int id)

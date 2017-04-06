@@ -8,5 +8,8 @@ namespace USSEScoreboard.Services
     public interface IToggleService
     {
         Task ToggleUserCRM(int userId);
+        Task ToggleUserExpense(int userId);
+        Task ToggleUserFRI(int userId);
+        Task ToggleUserAscendNotes(int userId);
     }
 }

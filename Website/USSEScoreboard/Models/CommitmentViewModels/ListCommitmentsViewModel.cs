@@ -10,6 +10,7 @@ namespace USSEScoreboard.Models.CommitmentViewModels
     public class ListCommitmentsViewModel
     {
         public IEnumerable<Commitment> Commitments { get; set; }
+        public int UserProfileId { get; set; }
         public bool IsCRM { get; set; }
         public bool IsExpenses { get; set; }
         public bool IsFRI { get; set; }

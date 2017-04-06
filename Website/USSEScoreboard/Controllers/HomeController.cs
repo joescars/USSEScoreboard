@@ -16,74 +16,39 @@ namespace USSEScoreboard.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWIGSettingRepository _wigSettingRepository;
+        private readonly IDashboardService _dashboardService;
 
         public HomeController(
             ApplicationDbContext context, 
             UserManager<ApplicationUser> userManager,
-            IWIGSettingRepository wigSettingRepository)
+            IWIGSettingRepository wigSettingRepository,
+            IDashboardService dashboardService)
         {
             _context = context;
             _userManager = userManager;
             _wigSettingRepository = wigSettingRepository;
+            _dashboardService = dashboardService;
         }
 
         public IActionResult Index()
         {
             //Team Profile Data
-            var myTeam = (from u in _context.UserProfile
-                          orderby u.FullName ascending
-                          select new UserScore
-                          {
-                              UserProfileId = u.UserProfileId,
-                              FullName = u.FullName,
-                              IsCRM = u.IsCRM,
-                              IsExpenses = u.IsExpenses,
-                              IsFRI = u.IsFRI,
-                              IsAscendNotes = u.IsAscendNotes,
-                              TotalPresentations = u.TotalPresentations,
-                              TotalAscend = u.TotalAscend,
-                              CommitTotal = u.Commitments
-                              .Where(c => c.Status == CommitmentStatus.Active 
-                              || c.Status == CommitmentStatus.Complete).Count(),
-                              CommitCompleted = u.Commitments
-                             .Where(c => c.Status == CommitmentStatus.Complete).Count(),
-                         });
-
-            ViewData["Team"] = myTeam;
-
-            /*
-            // Totals by User
-            var TotalPresentations = _context.UserProfile.Sum(u => u.TotalPresentations);
-            ViewData["TotalPresentations"] = TotalPresentations;
-
-            var TotalAscend = _context.UserProfile.Sum(u => u.TotalAscend);
-            ViewData["TotalAscend"] = TotalAscend;
-            */
+            ViewData["Team"] = _dashboardService.GetTeamScores();
 
             // Totals Globally
-            var TotalPresentations = _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.Presentations)
-                .Sum(a => a.TimeFrameTotal);
+            var TotalPresentations = _dashboardService.GetTotalPresentations();
             ViewData["TotalPresentations"] = TotalPresentations;
 
-            var TotalAscendActive = _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendActive)
-                .Sum(a => a.TimeFrameTotal);
+            var TotalAscendActive = _dashboardService.GetTotalAscendActive();
             ViewData["TotalAscendActive"] = TotalAscendActive;
 
-            var TotalAscendComplete = _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendCodeCompleted)
-                .Sum(a => a.TimeFrameTotal);
+            var TotalAscendComplete = _dashboardService.GetTotalAscendComplete();
             ViewData["TotalAscendComplete"] = TotalAscendComplete;
 
-            var TotalAscendProposed = _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendProposed)
-                .Sum(a => a.TimeFrameTotal);
+            var TotalAscendProposed = _dashboardService.GetTotalAscendProposed();
             ViewData["TotalAscendProposed"] = TotalAscendProposed;
 
-            var TotalAscendWins = _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendWins)
-                .Sum(a => a.TimeFrameTotal);
+            var TotalAscendWins = _dashboardService.GetTotalAscendWins();
             ViewData["TotalAscendWins"] = TotalAscendWins;
 
             // Grab the settings from the repo

@@ -60,6 +60,7 @@ namespace USSEScoreboard
             // Add application services.
             services.AddScoped<IWIGSettingRepository, WIGSettingRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            services.AddScoped<IToggleService, ToggleService>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }

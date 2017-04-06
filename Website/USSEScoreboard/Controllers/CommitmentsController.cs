@@ -10,6 +10,7 @@ using USSEScoreboard.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using USSEScoreboard.Models.CommitmentViewModels;
+using USSEScoreboard.Services;
 
 namespace USSEScoreboard.Controllers
 {
@@ -18,11 +19,15 @@ namespace USSEScoreboard.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IToggleService _toggleService;
 
-        public CommitmentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CommitmentsController(ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager,
+            IToggleService toggleService)
         {
             _context = context;    
             _userManager = userManager;
+            _toggleService = toggleService;
         }
 
         // GET: Commitments
@@ -302,10 +307,7 @@ namespace USSEScoreboard.Controllers
         [HttpGet]
         public async Task<IActionResult> ToggleCRMUser(int id)
         {
-            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserProfileId == id);
-            up.IsCRM = !up.IsCRM;
-            up.DateModified = DateTime.Now;
-            await _context.SaveChangesAsync();
+            await _toggleService.ToggleUserCRM(id);
             return RedirectToAction("Index","Home");
         }
 

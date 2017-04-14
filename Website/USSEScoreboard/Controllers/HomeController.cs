@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using USSEScoreboard.Models;
 using USSEScoreboard.Services;
 using USSEScoreboard.Interfaces;
+using USSEScoreboard.Models.HomeViewModels;
 
 namespace USSEScoreboard.Controllers
 {
@@ -32,43 +33,40 @@ namespace USSEScoreboard.Controllers
 
         public IActionResult Index()
         {
+
+            var model = new DashboardViewModel();
+
             //Team Profile Data
-            ViewData["Team"] = _dashboardService.GetTeamScores();
+            model.TeamTotals = _dashboardService.GetTeamScores();
 
             // Totals Globally
-            var TotalPresentations = _dashboardService.GetTotalPresentations();
-            ViewData["TotalPresentations"] = TotalPresentations;
-
-            var TotalAscendActive = _dashboardService.GetTotalAscendActive();
-            ViewData["TotalAscendActive"] = TotalAscendActive;
-
-            var TotalAscendComplete = _dashboardService.GetTotalAscendComplete();
-            ViewData["TotalAscendComplete"] = TotalAscendComplete;
-
-            var TotalAscendProposed = _dashboardService.GetTotalAscendProposed();
-            ViewData["TotalAscendProposed"] = TotalAscendProposed;
-
-            var TotalAscendWins = _dashboardService.GetTotalAscendWins();
-            ViewData["TotalAscendWins"] = TotalAscendWins;
+            model.TotalPresentations = _dashboardService.GetTotalPresentations();
+            model.TotalAscendActive = _dashboardService.GetTotalAscendActive();
+            model.TotalAscendComplete = _dashboardService.GetTotalAscendComplete();
+            model.TotalAscendProposed = _dashboardService.GetTotalAscendProposed();
+            model.TotalAscendWins = _dashboardService.GetTotalAscendWins();
 
             // Grab the settings from the repo
             WIGSetting wg = _wigSettingRepository.GetSettings();
             ProgressCalculator pg = new ProgressCalculator();
             ProgressCalculator.Result result = pg.CalculateProgress(
-                wg.StartDate, wg.EndDate, wg.AscendWinGoal, 
-                wg.CommunityWinGoal, TotalAscendWins, TotalPresentations);
+                wg.StartDate, wg.EndDate, wg.AscendWinGoal,
+                wg.CommunityWinGoal, model.TotalAscendWins, model.TotalPresentations);
 
-            ViewData["AscendProgress"] = result.AscendProgressPct;
-            ViewData["AscendOverall"] = result.AscendOverallPct;
-            ViewData["CommunityProgress"] = result.CommunityProgressPct;
-            ViewData["CommunityOverall"] = result.CommunityOverallPct;
+            // Overalls
+            model.AscendProgress = result.AscendProgressPct;
+            model.AscendOverall = result.AscendOverallPct;
+            model.CommunityProgress = result.CommunityProgressPct;
+            model.CommunityOverall = result.CommunityOverallPct;
 
-            ViewData["AscendProgressClass"] = GetProgressBarClass(result.AscendProgressPct);
-            ViewData["AscendOverallClass"] = GetProgressBarClass(result.AscendOverallPct);
-            ViewData["CommunityProgressClass"] = GetProgressBarClass(result.CommunityProgressPct);
-            ViewData["CommunityOverallClass"] = GetProgressBarClass(result.CommunityOverallPct);
+            // Assigned classes
+            model.AscendProgressClass = GetProgressBarClass(result.AscendProgressPct);
+            model.AscendOverallClass = GetProgressBarClass(result.AscendOverallPct);
+            model.CommunityProgressClass = GetProgressBarClass(result.CommunityProgressPct);
+            model.CommunityOverallClass = GetProgressBarClass(result.CommunityOverallPct);
 
-            return View();
+            return View(model);
+            
         }
 
         public IActionResult About()
@@ -90,7 +88,7 @@ namespace USSEScoreboard.Controllers
             return View();
         }
 
-        private string GetProgressBarClass(int Value)
+        public string GetProgressBarClass(int Value)
         {
             //progress-bar-info
             //progress-bar-success

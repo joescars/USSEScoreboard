@@ -1,4 +1,6 @@
-﻿@{
+﻿@model USSEScoreboard.Models.HomeViewModels.DashboardViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -27,7 +29,7 @@
                     </thead>
                     @* Start TE Table *@
 
-                    @foreach (UserScore UserScore in ViewBag.Team)
+                    @foreach (UserScore UserScore in Model.TeamTotals)
                     {
                         <tr>
                             <td width="24%">@UserScore.FullName</td>
@@ -72,23 +74,23 @@
                     <table class="table table-striped">
                         <tr>
                             <td width="65%">Total Presentations:</td>
-                            <td><span class="badge">@ViewBag.TotalPresentations</span></td>
+                            <td><span class="badge">@Model.TotalPresentations</span></td>
                         </tr>
                         <tr>
                             <td>Ascend Proposed:</td>
-                            <td><span class="badge">@ViewBag.TotalAscendProposed</span></td>
+                            <td><span class="badge">@Model.TotalAscendProposed</span></td>
                         </tr>
                         <tr>
                             <td>Ascend Active:</td>
-                            <td><span class="badge">@ViewBag.TotalAscendActive</span></td>
+                            <td><span class="badge">@Model.TotalAscendActive</span></td>
                         </tr>
                         <tr>
                             <td>Ascend Code Complete:</td>
-                            <td><span class="badge">@ViewBag.TotalAscendComplete</span></td>
+                            <td><span class="badge">@Model.TotalAscendComplete</span></td>
                         </tr>
                         <tr>
                             <td>Ascend Wins:</td>
-                            <td><span class="badge">@ViewBag.TotalAscendWins</span></td>
+                            <td><span class="badge">@Model.TotalAscendWins</span></td>
                         </tr>
                     </table>
                 @*</div>*@
@@ -102,24 +104,24 @@
                 <div class="panel-body">
                     <label>Community Wins</label>
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped @ViewBag.CommunityProgressClass" role="progressbar" aria-valuenow="@ViewBag.CommunityProgress" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.CommunityProgress%">
-                            Trending &#64; @ViewBag.CommunityProgress%
+                        <div class="progress-bar progress-bar-striped @Model.CommunityProgressClass" role="progressbar" aria-valuenow="@Model.CommunityProgress" aria-valuemin="0" aria-valuemax="100" style="width: @Model.CommunityProgress%">
+                            Trending &#64; @Model.CommunityProgress%
                         </div>
                     </div>
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped @ViewBag.CommunityOverallClass" role="progressbar" aria-valuenow="@ViewBag.CommunityOverall" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.CommunityOverall%">
-                            Overall &#64; @ViewBag.CommunityOverall%
+                        <div class="progress-bar progress-bar-striped @Model.CommunityOverallClass" role="progressbar" aria-valuenow="@Model.CommunityOverall" aria-valuemin="0" aria-valuemax="100" style="width: @Model.CommunityOverall%">
+                            Overall &#64; @Model.CommunityOverall%
                         </div>
                     </div>
                     <label>Ascend Wins</label>
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped @ViewBag.AscendProgressClass" role="progressbar" aria-valuenow="@ViewBag.AscendProgress" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.AscendProgress%">
-                            Trending &#64; @ViewBag.AscendProgress%
+                        <div class="progress-bar progress-bar-striped @Model.AscendProgressClass" role="progressbar" aria-valuenow="@Model.AscendProgress" aria-valuemin="0" aria-valuemax="100" style="width: @Model.AscendProgress%">
+                            Trending &#64; @Model.AscendProgress%
                         </div>
                     </div>
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped @ViewBag.AscendOverallClass" role="progressbar" aria-valuenow="@ViewBag.AscendOverall" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.AscendOverall%">
-                            Overall &#64; @ViewBag.AscendOverall%
+                        <div class="progress-bar progress-bar-striped @Model.AscendOverallClass" role="progressbar" aria-valuenow="@Model.AscendOverall" aria-valuemin="0" aria-valuemax="100" style="width: @Model.AscendOverall%">
+                            Overall &#64; @Model.AscendOverall%
                         </div>
                     </div>
                 </div>

@@ -10,7 +10,7 @@ using USSEScoreboard.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using USSEScoreboard.Models.CommitmentViewModels;
-using USSEScoreboard.Services;
+using USSEScoreboard.Interfaces;
 
 namespace USSEScoreboard.Controllers
 {

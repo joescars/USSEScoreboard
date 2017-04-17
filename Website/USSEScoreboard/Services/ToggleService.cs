@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using USSEScoreboard.Data;
 using USSEScoreboard.Models;
+using USSEScoreboard.Interfaces;
 
 namespace USSEScoreboard.Services
 {

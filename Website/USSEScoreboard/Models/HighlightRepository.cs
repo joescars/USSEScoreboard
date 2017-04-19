@@ -100,5 +100,16 @@ namespace USSEScoreboard.Models
         {
             return _context.Highlight.Any(e => e.HighlightId == id);
         }
+
+        public DateTime GetStartOfWeek()
+        {
+            var dt = DateTime.Now;
+            int diff = dt.DayOfWeek - DayOfWeek.Monday;
+            if (diff < 0)
+            {
+                diff += 7;
+            }
+            return dt.AddDays(-1 * diff).Date;
+        }
     }
 }

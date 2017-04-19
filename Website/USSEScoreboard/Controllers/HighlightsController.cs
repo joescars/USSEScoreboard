@@ -62,8 +62,11 @@ namespace USSEScoreboard.Controllers
         // GET: Highlights/Create
         public IActionResult Create()
         {
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "UserProfileId");
-            return View();
+            var model = new Highlight();
+            var WeekStart = _highlightRepository.GetStartOfWeek();
+            model.DateStart = WeekStart;
+            model.DateEnd = WeekStart.AddDays(4);
+            return View(model);
         }
 
         // POST: Highlights/Create

@@ -16,5 +16,6 @@ namespace USSEScoreboard.Interfaces
         Task UpdateHighlightAsync(Highlight h);
         Task DeleteHighlightAsync(Highlight h);
         bool HighlightExists(int id);
+        DateTime GetStartOfWeek();
     }
 }

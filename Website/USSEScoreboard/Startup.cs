@@ -63,6 +63,7 @@ namespace USSEScoreboard
             services.AddScoped<IToggleService, ToggleService>();
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<ICommitmentRepository, CommitmentRepository>();
+            services.AddScoped<IHighlightRepository, HighlightRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }

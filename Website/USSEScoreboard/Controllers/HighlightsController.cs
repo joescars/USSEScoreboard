@@ -9,6 +9,7 @@ using USSEScoreboard.Data;
 using USSEScoreboard.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using USSEScoreboard.Interfaces;
 
 namespace USSEScoreboard.Controllers
 {
@@ -17,36 +18,28 @@ namespace USSEScoreboard.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHighlightRepository _highlightRepository;
 
-        public HighlightsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public HighlightsController(ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager,
+            IHighlightRepository highlightrepository)
         {
             _context = context;
             _userManager = userManager;
+            _highlightRepository = highlightrepository;
         }
 
         // GET: Highlights
         public async Task<IActionResult> Index()
         {
-            var teamHighlights = _context.Highlight
-                .Include(h => h.UserProfile)
-                .Select(h => new HighlightListItem {
-                    HighlightId = h.HighlightId,
-                    FullName = h.UserProfile.FullName,
-                    DateStart = h.DateStart,
-                    DateEnd = h.DateEnd,
-                    DateCreated = h.DateCreated})
-                .OrderByDescending(h => h.DateCreated);
-            return View(await teamHighlights.ToListAsync());
+            return View(await _highlightRepository.GetHighlightsAsync());
         }
 
         // GET: Highlights/My
         public async Task<IActionResult> My()
         {
-            var userId = _userManager.GetUserId(User);
-            var applicationDbContext = _context.Highlight
-                .Include(h => h.UserProfile)
-                .Where(u => u.UserProfile.UserId == userId);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = _userManager.GetUserId(User);            
+            return View(await _highlightRepository.GetHighlightsByUserId(userId));
         }
 
         // GET: Highlights/Details/5
@@ -57,7 +50,7 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var highlight = await _context.Highlight.Include(u => u.UserProfile).SingleOrDefaultAsync(m => m.HighlightId == id);
+            var highlight = await _highlightRepository.GetHighlightByIdAsync(id);
             if (highlight == null)
             {
                 return NotFound();
@@ -87,13 +80,8 @@ namespace USSEScoreboard.Controllers
                 var userProfileId = await _context.UserProfile
                     .Where(u => u.UserId == userId)
                     .Select(u => u.UserProfileId).FirstOrDefaultAsync();
-
-                highlight.UserProfileId = userProfileId;
-                highlight.DateCreated = DateTime.Now;
-                highlight.DateModified = DateTime.Now;
-
-                _context.Add(highlight);
-                await _context.SaveChangesAsync();
+                                
+                await _highlightRepository.SaveHighlightAsync(highlight, userProfileId);
                 return RedirectToAction("Index");
             }
             ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "FullName", highlight.UserProfileId);
@@ -108,7 +96,7 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var highlight = await _context.Highlight.SingleOrDefaultAsync(m => m.HighlightId == id);
+            var highlight = await _highlightRepository.GetHighlightByIdAsync(id);
             if (highlight == null)
             {
                 return NotFound();
@@ -133,13 +121,11 @@ namespace USSEScoreboard.Controllers
             {
                 try
                 {
-                    highlight.DateModified = DateTime.Now;
-                    _context.Update(highlight);
-                    await _context.SaveChangesAsync();
+                    await _highlightRepository.UpdateHighlightAsync(highlight);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HighlightExists(highlight.HighlightId))
+                    if (!_highlightRepository.HighlightExists(highlight.HighlightId))
                     {
                         return NotFound();
                     }
@@ -162,8 +148,7 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var highlight = await _context.Highlight.Include(u => u.UserProfile)
-                .SingleOrDefaultAsync(m => m.HighlightId == id);
+            var highlight = await _highlightRepository.GetHighlightByIdAsync(id);
             if (highlight == null)
             {
                 return NotFound();
@@ -177,37 +162,15 @@ namespace USSEScoreboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var highlight = await _context.Highlight.SingleOrDefaultAsync(m => m.HighlightId == id);
-            _context.Highlight.Remove(highlight);
-            await _context.SaveChangesAsync();
+            var highlight = await _highlightRepository.GetHighlightByIdAsync(id);
+            await _highlightRepository.DeleteHighlightAsync(highlight);
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Search(DateTime startDate, DateTime endDate)
         {
-
-            var searchResults = _context.Highlight
-                .Include(h => h.UserProfile)
-                .Where(h => h.DateStart >= startDate && h.DateEnd <= endDate)
-                .Select(h => new HighlightSearchResult
-                {
-                    HighlightId = h.HighlightId,
-                    FullName = h.UserProfile.FullName,
-                    Body = h.Body,
-                    DateStart = h.DateStart,
-                    DateEnd = h.DateEnd,
-                    DateCreated = h.DateCreated
-                })
-                .OrderBy(h => h.DateCreated)
-                .OrderBy(h => h.FullName);
-
-            return View(await searchResults.ToListAsync());
-            
+            return View(await _highlightRepository.GetHighlightsByDateRange(startDate, endDate));
         }
 
-        private bool HighlightExists(int id)
-        {
-            return _context.Highlight.Any(e => e.HighlightId == id);
-        }
     }
 }

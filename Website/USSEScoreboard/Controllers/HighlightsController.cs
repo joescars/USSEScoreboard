@@ -16,17 +16,17 @@ namespace USSEScoreboard.Controllers
     [Authorize]
     public class HighlightsController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHighlightRepository _highlightRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
 
-        public HighlightsController(ApplicationDbContext context, 
-            UserManager<ApplicationUser> userManager,
-            IHighlightRepository highlightrepository)
+        public HighlightsController(UserManager<ApplicationUser> userManager,
+            IHighlightRepository highlightrepository,
+            IUserProfileRepository userProfileRepository)
         {
-            _context = context;
             _userManager = userManager;
             _highlightRepository = highlightrepository;
+            _userProfileRepository = userProfileRepository;
         }
 
         // GET: Highlights
@@ -80,14 +80,12 @@ namespace USSEScoreboard.Controllers
             {
                 // Get User Profile
                 var userId = _userManager.GetUserId(User);
-                var userProfileId = await _context.UserProfile
-                    .Where(u => u.UserId == userId)
-                    .Select(u => u.UserProfileId).FirstOrDefaultAsync();
-                                
-                await _highlightRepository.SaveHighlightAsync(highlight, userProfileId);
+                var up = await _userProfileRepository
+                    .GetUserProfileByUserIdAsync(userId);
+
+                await _highlightRepository.SaveHighlightAsync(highlight, up.UserProfileId);
                 return RedirectToAction("Index");
             }
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "FullName", highlight.UserProfileId);
             return View(highlight);
         }
 
@@ -104,7 +102,7 @@ namespace USSEScoreboard.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "FullName", highlight.UserProfileId);
+            ViewData["UserProfileId"] = new SelectList(await _userProfileRepository.GetUserProfilesAsync(), "UserProfileId", "FullName", highlight.UserProfileId);
             return View(highlight);
         }
 
@@ -139,7 +137,6 @@ namespace USSEScoreboard.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["UserProfileId"] = new SelectList(_context.UserProfile, "UserProfileId", "FullName", highlight.UserProfileId);
             return View(highlight);
         }
 

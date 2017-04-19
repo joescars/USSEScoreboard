@@ -8,7 +8,8 @@ namespace USSEScoreboard.Interfaces
 {
     public interface IUserProfileRepository
     {
-
-        UserProfile GetUserProfileByUserIdAsync(string userId);
+        string GetUserProfileFirstName(string userId);
+        Task<UserProfile> GetUserProfileByUserIdAsync(string userId);
+        Task<IEnumerable<UserProfile>> GetUserProfilesAsync();
     }
 }

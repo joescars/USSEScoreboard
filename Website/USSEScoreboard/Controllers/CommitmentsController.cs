@@ -20,23 +20,24 @@ namespace USSEScoreboard.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IToggleService _toggleService;
+        private readonly ICommitmentRepository _commitmentRepository;
 
         public CommitmentsController(ApplicationDbContext context, 
             UserManager<ApplicationUser> userManager,
-            IToggleService toggleService)
+            IToggleService toggleService,
+            ICommitmentRepository commitmentRespository)
         {
             _context = context;    
             _userManager = userManager;
             _toggleService = toggleService;
+            _commitmentRepository = commitmentRespository;
         }
 
         // GET: Commitments
         public async Task<IActionResult> Index()
         {
             var model = new ListCommitmentsViewModel();
-            model.Commitments = await _context.Commitment
-                .Include(u => u.UserProfile)
-                .OrderByDescending(u => u.DateCreated).ToListAsync();
+            model.Commitments = await _commitmentRepository.GetCommitmentsAsync();
             return View(model);
         }
 
@@ -57,11 +58,7 @@ namespace USSEScoreboard.Controllers
             {
                 // return search results of other user
                 var model = new ListCommitmentsViewModel();
-                model.Commitments = await _context.Commitment
-                    .Where(u => u.UserProfileId == id)
-                    .Include(u => u.UserProfile)
-                    .OrderByDescending(u => u.DateCreated)
-                    .ToListAsync();
+                model.Commitments = await _commitmentRepository.GetCommitmentsByUserProfileAsync(id);
 
                 model.SearchUserName = await _context.UserProfile
                     .Where(u => u.UserProfileId == id)
@@ -78,10 +75,7 @@ namespace USSEScoreboard.Controllers
             var userId = _userManager.GetUserId(User);
             var model = new ListCommitmentsViewModel();
 
-            model.Commitments = await _context.Commitment
-                .Where(u => u.UserProfile.UserId == userId)
-                .Include(u => u.UserProfile)
-                .OrderByDescending(u => u.DateCreated).ToListAsync();
+            model.Commitments = await _commitmentRepository.GetCommitmentsByUserAsync(userId);
 
             var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
 
@@ -102,7 +96,7 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var commitment = await _context.Commitment.SingleOrDefaultAsync(m => m.Id == id);
+            var commitment = await _commitmentRepository.GetCommitmentAsync(id);
             if (commitment == null)
             {
                 return NotFound();
@@ -139,14 +133,15 @@ namespace USSEScoreboard.Controllers
             if (ModelState.IsValid)
             {
                 var commitment = new Commitment();
+
                 commitment.DateCreated = DateTime.Now;
                 commitment.Description = model.Description;
                 commitment.Status = model.Status;
                 commitment.Title = model.Title;
                 commitment.UserProfileId = model.SelectedUserID;
                 commitment.LeadMeasureId = model.SelectedLeadMeasureId;
-                _context.Add(commitment);
-                await _context.SaveChangesAsync();
+
+                await _commitmentRepository.SaveCommitmentAsync(commitment);
                 return RedirectToAction("My");
 
             }
@@ -163,9 +158,7 @@ namespace USSEScoreboard.Controllers
 
             var model = new EditCommitmentViewModel();
 
-            var commitment = await _context.Commitment
-                .Include(u => u.UserProfile)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var commitment = await _commitmentRepository.GetCommitmentAsync(id);
             if (commitment == null)
             {
                 return NotFound();
@@ -206,9 +199,8 @@ namespace USSEScoreboard.Controllers
                 {
                     commitment.UserProfileId = SelectedUserId;
                     commitment.LeadMeasureId = SelectedLeadMeasureId;
-                    commitment.DateModified = DateTime.Now;
-                    _context.Update(commitment);
-                    await _context.SaveChangesAsync();
+
+                    await _commitmentRepository.UpdateCommitmentAsync(commitment);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -234,7 +226,7 @@ namespace USSEScoreboard.Controllers
                 return NotFound();
             }
 
-            var commitment = await _context.Commitment.SingleOrDefaultAsync(m => m.Id == id);
+            var commitment = await _commitmentRepository.GetCommitmentAsync(id);
             if (commitment == null)
             {
                 return NotFound();
@@ -248,7 +240,7 @@ namespace USSEScoreboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var commitment = await _context.Commitment.SingleOrDefaultAsync(m => m.Id == id);
+            var commitment = await _commitmentRepository.GetCommitmentAsync(id);
             _context.Commitment.Remove(commitment);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -257,10 +249,7 @@ namespace USSEScoreboard.Controllers
         // GET: Commitments/Complete/1
         public async Task<IActionResult> Complete(int? id)
         {
-            var commitment = await _context.Commitment.SingleOrDefaultAsync(m => m.Id == id);
-            commitment.Status = CommitmentStatus.Complete;
-            commitment.DateModified = DateTime.Now;
-            await _context.SaveChangesAsync();
+            await _commitmentRepository.MarkComplete(id);
             return RedirectToAction("My");
         }
 
@@ -270,9 +259,6 @@ namespace USSEScoreboard.Controllers
         {
             await _toggleService.ToggleUserExpense(id);
             return Redirect(Request.Headers["Referer"].ToString());
-            //if (stay) return Redirect(Request.Headers["Referer"].ToString(););
-            //return RedirectToAction("Index", "Home");
-
         }
        
         // GET: Commitments/ToggleCRMUser/1 (userprofiled)

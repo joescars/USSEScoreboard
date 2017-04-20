@@ -16,6 +16,14 @@ namespace USSEScoreboard.Models
         {
             _context = context;
         }
+
+        public async Task<UserProfile> GetUserProfileByUserProfileIdAsync(int userProfileId)
+        {
+            return await _context.UserProfile
+                .Where(u => u.UserProfileId == userProfileId)
+                .SingleOrDefaultAsync();
+        }
+
         public async Task<UserProfile> GetUserProfileByUserIdAsync(string userId)
         {
             return await _context.UserProfile
@@ -30,9 +38,18 @@ namespace USSEScoreboard.Models
                 .SingleOrDefault().FirstName;
         }
 
+        public async Task<int> GetUserPofileIdByUserIdAsync(string userId)
+        {
+            return await _context.UserProfile
+                .Where(u => u.UserId == userId)
+                .Select(u => u.UserProfileId).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<UserProfile>> GetUserProfilesAsync()
         {
             return await _context.UserProfile.ToListAsync();
         }
+
+
     }
 }

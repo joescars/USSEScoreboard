@@ -21,16 +21,19 @@ namespace USSEScoreboard.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IToggleService _toggleService;
         private readonly ICommitmentRepository _commitmentRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
 
         public CommitmentsController(ApplicationDbContext context, 
             UserManager<ApplicationUser> userManager,
             IToggleService toggleService,
-            ICommitmentRepository commitmentRespository)
+            ICommitmentRepository commitmentRespository,
+            IUserProfileRepository userProfileRepository)
         {
             _context = context;    
             _userManager = userManager;
             _toggleService = toggleService;
             _commitmentRepository = commitmentRespository;
+            _userProfileRepository = userProfileRepository;
         }
 
         // GET: Commitments
@@ -45,9 +48,8 @@ namespace USSEScoreboard.Controllers
         public async Task<IActionResult> SearchByUser(int id)
         {
             var userId = _userManager.GetUserId(User);
-            var userProfileId = await _context.UserProfile
-                .Where(u => u.UserId == userId)
-                .Select(u => u.UserProfileId).FirstOrDefaultAsync();
+            var userProfileId = await _userProfileRepository.GetUserPofileIdByUserIdAsync(userId);
+
             // check if searching for logged in user
             if (userProfileId == id)
             {
@@ -60,10 +62,9 @@ namespace USSEScoreboard.Controllers
                 var model = new ListCommitmentsViewModel();
                 model.Commitments = await _commitmentRepository.GetCommitmentsByUserProfileAsync(id);
 
-                model.SearchUserName = await _context.UserProfile
-                    .Where(u => u.UserProfileId == id)
-                    .Select(u => u.FullName)
-                    .FirstOrDefaultAsync();
+                var u = await _userProfileRepository.GetUserProfileByUserProfileIdAsync(id);
+                model.SearchUserName = u.FirstName;
+
                 return View(model);
             }
            
@@ -77,7 +78,7 @@ namespace USSEScoreboard.Controllers
 
             model.Commitments = await _commitmentRepository.GetCommitmentsByUserAsync(userId);
 
-            var up = await _context.UserProfile.SingleOrDefaultAsync(u => u.UserId == userId);
+            var up = await _userProfileRepository.GetUserProfileByUserIdAsync(userId);
 
             model.IsCRM = up.IsCRM;
             model.IsExpenses = up.IsExpenses;
@@ -109,7 +110,7 @@ namespace USSEScoreboard.Controllers
         public async Task<ViewResult> Create()
         {
             var model = new CreateCommitmentViewModel();
-            model.Users = await _context.UserProfile.ToListAsync();
+            model.Users = await _userProfileRepository.GetUserProfilesAsync();
             model.Wigs = await _context.Wig.ToListAsync();
             model.LeadMeasures = await _context.LeadMeasure
                 .Include(w => w.Wig)
@@ -171,7 +172,7 @@ namespace USSEScoreboard.Controllers
             model.SelectedUserID = commitment.UserProfileId;
             model.SelectedLeadMeasureId = commitment.LeadMeasureId;
             model.DateCreated = commitment.DateCreated;
-            model.Users = await _context.UserProfile.ToListAsync();
+            model.Users = await _userProfileRepository.GetUserProfilesAsync();
             model.LeadMeasures = await _context.LeadMeasure
                 .Include(w => w.Wig)
                 .ToListAsync();
@@ -241,8 +242,7 @@ namespace USSEScoreboard.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var commitment = await _commitmentRepository.GetCommitmentAsync(id);
-            _context.Commitment.Remove(commitment);
-            await _context.SaveChangesAsync();
+            await _commitmentRepository.DeleteCommitmentAsync(commitment);
             return RedirectToAction("Index");
         }
 
@@ -287,7 +287,7 @@ namespace USSEScoreboard.Controllers
 
         private bool CommitmentExists(int id)
         {
-            return _context.Commitment.Any(e => e.Id == id);
+            return _commitmentRepository.CommitmentExists(id);
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync()
@@ -313,11 +313,10 @@ namespace USSEScoreboard.Controllers
             }
         }
 
+        // TODO: Confirm this is no longer used and delete
+
         public ActionResult GetCommitmentsList()
         {
-            //var myList = _context.Commitment.Include(u => u.UserProfile).ToListAsync();
-            //return Json(myList);
-
             // Used LINQ to create custom query with data we need
             var commitmentsList = (from c in _context.Commitment
                                    select new

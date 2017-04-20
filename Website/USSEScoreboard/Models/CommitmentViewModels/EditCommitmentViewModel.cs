@@ -20,7 +20,7 @@ namespace USSEScoreboard.Models.CommitmentViewModels
         public DateTime DateCreated { get; set; }
 
         // Used for assigning to users
-        public IList<UserProfile> Users { get; set; }
+        public IEnumerable<UserProfile> Users { get; set; }
 
         [Description("Assigned To")]
         public int SelectedUserID { get; set; }

@@ -14,6 +14,8 @@ namespace USSEScoreboard.Interfaces
         Task SaveCommitmentAsync(Commitment c);
         Task UpdateCommitmentAsync(Commitment c);
         Task MarkComplete(int? id);
+        Task DeleteCommitmentAsync(Commitment c);
+        bool CommitmentExists(int id);
         Task<IEnumerable<Commitment>> GetCommitmentsByUserAsync(string userId);
         Task<IEnumerable<Commitment>> GetCommitmentsByUserProfileAsync(int userProfileId);
     }

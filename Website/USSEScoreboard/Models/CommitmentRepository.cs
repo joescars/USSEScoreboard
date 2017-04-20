@@ -71,5 +71,15 @@ namespace USSEScoreboard.Models
                     .ToListAsync();
         }
 
+        public async Task DeleteCommitmentAsync(Commitment c)
+        {
+            _context.Remove(c);
+            await _context.SaveChangesAsync();
+        }
+
+        public bool CommitmentExists(int id)
+        {
+            return _context.Commitment.Any(e => e.Id == id);
+        }
     }
 }

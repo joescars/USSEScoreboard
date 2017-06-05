@@ -148,7 +148,7 @@ public class UserProfile
     }
     public bool IsActiveTeamMember { get; set; }
     public string UserId { get; set; }
-    public virtual DashboardUser User { get; set; }    
+    public DashboardUser User { get; set; }    
 }
 
 public class HighlightSearchResult

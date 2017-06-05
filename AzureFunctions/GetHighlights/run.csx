@@ -103,11 +103,11 @@ static async Task<List<DashboardUser>> GetUsers()
     using (var db = new HighlightContext())
     {
         var myUsers = await db.UserProfiles
-            .Include(u => u.DashboardUsers)
+            .Include(u => u.User)
             .Where(u => u.IsActiveTeamMember == true)
             .Select(u => new DashboardUser {
-                Id = u.DashboardUser.Id,
-                Email = u.DashboardUser.Email
+                Id = u.User.Id,
+                Email = u.User.Email
             })
             .ToListAsync();
         return myUsers;

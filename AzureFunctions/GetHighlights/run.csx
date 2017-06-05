@@ -102,16 +102,24 @@ static async Task<List<DashboardUser>> GetUsers()
 {
     using (var db = new HighlightContext())
     {
-        var myUsers = await db.UserProfiles
-            .Include(u => u.User)
-            .Where(u => u.IsActiveTeamMember == true)
-            .Select(u => new DashboardUser {
-                Id = u.User.Id,
-                Email = u.User.Email
-            })
-            .ToListAsync();
-        return myUsers;
+        List<DashboardUser> myUsers = new List<DashboardUser>();
+        myUsers = await db.DashboardUsers.ToListAsync();    
+        List<DashboardUser> myUsersToSend = new List<DashboardUser>();
+
+        foreach (DashboardUser u in myUsers)
+        {
+            UserProfile up = await db.UserProfiles
+            .Where(uup => uup.UserId == u.Id).SingleOrDefaultAsync();
+            if (up.IsActiveTeamMember) {
+                myUsersToSend.Add(u);
+            }
+        }
+        return myUsersToSend;
     }
+}
+
+public class SendUser {
+    public string Email {get;set;}
 }
 
 [Table("Highlight")]
@@ -147,8 +155,7 @@ public class UserProfile
         get { return FirstName + " " + LastName; }
     }
     public bool IsActiveTeamMember { get; set; }
-    public string UserId { get; set; }
-    public DashboardUser User { get; set; }    
+    public string UserId { get; set; }    
 }
 
 public class HighlightSearchResult

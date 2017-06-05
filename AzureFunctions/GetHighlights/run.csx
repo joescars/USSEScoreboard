@@ -102,8 +102,13 @@ static async Task<List<DashboardUser>> GetUsers()
 {
     using (var db = new HighlightContext())
     {
-        var myUsers = await db.DashboardUsers
+        var myUsers = await db.UserProfiles
+            .Include(u => u.DashboardUsers)
             .Where(u => u.IsActiveTeamMember == true)
+            .Select(u => new DashboardUser {
+                Id = u.DashboardUser.Id,
+                Email = u.DashboardUser.Email
+            })
             .ToListAsync();
         return myUsers;
     }
@@ -142,6 +147,8 @@ public class UserProfile
         get { return FirstName + " " + LastName; }
     }
     public bool IsActiveTeamMember { get; set; }
+    public string UserId { get; set; }
+    public virtual DashboardUser User { get; set; }    
 }
 
 public class HighlightSearchResult

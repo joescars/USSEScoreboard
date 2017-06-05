@@ -20,6 +20,7 @@ namespace USSEScoreboard.Services
         public IQueryable<UserScore> GetTeamScores()
         {
             var myTeam = (from u in _context.UserProfile
+                          where u.IsActiveTeamMember == true
                           orderby u.FullName ascending
                           select new UserScore
                           {

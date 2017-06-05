@@ -72,7 +72,8 @@ static async Task<string> GetHighlights()
 
         var myQuery = await db.Highlights
         .Include(h => h.UserProfile)
-        .Where(h => h.DateStart >= startDate && h.DateEnd <= endDate)
+        .Where(h => h.UserProfile.IsActiveTeamMember == true && 
+        h.DateStart >= startDate && h.DateEnd <= endDate)
         .Select(h => new HighlightSearchResult
         {
             HighlightId = h.HighlightId,
@@ -140,6 +141,7 @@ public class UserProfile
     {
         get { return FirstName + " " + LastName; }
     }
+    public bool IsActiveTeamMember { get; set; }
 }
 
 public class HighlightSearchResult

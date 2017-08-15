@@ -44,7 +44,10 @@
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                         <li><a asp-area="" asp-controller="Commitments" asp-action="My">Commitments</a></li>
                         <li><a asp-area="" asp-controller="Highlights" asp-action="Index">Highlights</a></li>
-                        @if (await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole"))
+                        @{ 
+                            var aResult = await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole");
+                        }
+                        @if (aResult.Succeeded)
                         {
                             <li><a asp-area="" asp-controller="Wigs" asp-action="Index">WIGS</a></li>
                             <li><a asp-area="" asp-controller="LeadMeasures" asp-action="Index">Lead Measures</a></li>

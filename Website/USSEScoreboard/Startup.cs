@@ -90,7 +90,7 @@ namespace USSEScoreboard
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            app.UseAuthentication();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
@@ -100,14 +100,14 @@ namespace USSEScoreboard
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
+                        
             // Call custom function to create default roles
-            if (await CreateRoles(serviceProvider))
-            {
+            //if (await CreateRoles(serviceProvider))
+            //{
                 // Create default users
                 //await SeedDataLive.Initialize(app.ApplicationServices);
                 //await SeedDataLive.AssignAdminRoles(app.ApplicationServices);
-            }            
+            //}            
             
         }
 

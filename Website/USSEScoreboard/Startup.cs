@@ -14,6 +14,10 @@ using USSEScoreboard.Models;
 using USSEScoreboard.Services;
 using USSEScoreboard.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authentication;
 
 namespace USSEScoreboard
 {
@@ -49,6 +53,31 @@ namespace USSEScoreboard
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // Add Authentication services.
+            services.AddAuthentication(sharedOptions =>
+            {
+                sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            // Configure the OWIN pipeline to use cookie auth.
+            .AddCookie()
+            // Configure the OWIN pipeline to use OpenID Connect auth.
+            .AddOpenIdConnect(option =>
+            {
+                option.ClientId = Configuration["AzureAD:ClientId"];
+                option.Authority = String.Format(Configuration["AzureAd:AadInstance"], Configuration["AzureAd:Tenant"]);
+                option.SignedOutRedirectUri = Configuration["AzureAd:PostLogoutRedirectUri"];
+                //option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                //{
+                //    ValidateIssuer = true
+                //    // ValidIssuers = new List<string> { "https://microsoft.onmicrosoft.com" }
+                //};
+                option.Events = new OpenIdConnectEvents
+                {
+                    OnRemoteFailure = OnAuthenticationFailed,
+                };
+            });
+
             services.AddMvc();
 
             //Policies
@@ -74,6 +103,8 @@ namespace USSEScoreboard
             ILoggerFactory loggerFactory,
             IServiceProvider serviceProvider)
         {
+            app.UseAuthentication();
+            
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -90,7 +121,7 @@ namespace USSEScoreboard
 
             app.UseStaticFiles();
 
-            app.UseAuthentication();
+            
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
@@ -109,6 +140,15 @@ namespace USSEScoreboard
                 //await SeedDataLive.AssignAdminRoles(app.ApplicationServices);
             //}            
             
+        }
+
+        // Handle sign-in errors differently than generic errors.
+        private Task OnAuthenticationFailed(RemoteFailureContext context)
+        {
+            context.HandleResponse();
+            var message = Regex.Replace(context.Failure.Message, @"[^\u001F-\u007F]+", string.Empty);
+            context.Response.Redirect("/Home/Error?message=" + message);
+            return Task.FromResult(0);
         }
 
         // Create Default Roles

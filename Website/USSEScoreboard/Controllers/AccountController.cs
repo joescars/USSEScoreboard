@@ -13,6 +13,9 @@ using USSEScoreboard.Models.AccountViewModels;
 using USSEScoreboard.Services;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using USSEScoreboard.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace USSEScoreboard.Controllers
 {
@@ -45,51 +48,58 @@ namespace USSEScoreboard.Controllers
 
         //
         // GET: /Account/Login
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public IActionResult Login(string returnUrl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
+        //    return View();
+        //}
+
         [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
+        public async Task Login()
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            if (HttpContext.User == null || !HttpContext.User.Identity.IsAuthenticated)
+                await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties { RedirectUri = "/" });
         }
 
         //
         // POST: /Account/Login
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation(1, "User logged in.");
-                    return RedirectToLocal(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning(2, "User account locked out.");
-                    return View("Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
-            }
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
+        //    if (ModelState.IsValid)
+        //    {
+        //        // This doesn't count login failures towards account lockout
+        //        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+        //        var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+        //        if (result.Succeeded)
+        //        {
+        //            _logger.LogInformation(1, "User logged in.");
+        //            return RedirectToLocal(returnUrl);
+        //        }
+        //        if (result.RequiresTwoFactor)
+        //        {
+        //            return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+        //        }
+        //        if (result.IsLockedOut)
+        //        {
+        //            _logger.LogWarning(2, "User account locked out.");
+        //            return View("Lockout");
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        //            return View(model);
+        //        }
+        //    }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
+        //    // If we got this far, something failed, redisplay form
+        //    return View(model);
+        //}
 
         //
         // GET: /Account/Register
@@ -457,6 +467,13 @@ namespace USSEScoreboard.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid code.");
                 return View(model);
             }
+        }
+
+        [HttpGet]
+        public async Task EndSession()
+        {
+            // If AAD sends a single sign-out message to the app, end the user's session, but don't redirect to AAD for sign out.
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         #region Helpers

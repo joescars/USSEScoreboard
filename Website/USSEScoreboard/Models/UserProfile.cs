@@ -35,7 +35,7 @@ namespace USSEScoreboard.Models
 
         [ForeignKey("UserId")]
         public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
+        //public virtual ApplicationUser User { get; set; }
 
         // Collections of Items
         public List<Commitment> Commitments { get; set; }

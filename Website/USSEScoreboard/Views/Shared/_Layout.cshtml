@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Authorization
-@inject IAuthorizationService AuthorizationService
+@*@inject IAuthorizationService AuthorizationService*@
 
 <!DOCTYPE html>
 <html>
@@ -44,7 +44,7 @@
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                         <li><a asp-area="" asp-controller="Commitments" asp-action="My">Commitments</a></li>
                         <li><a asp-area="" asp-controller="Highlights" asp-action="Index">Highlights</a></li>
-                        @{ 
+                        @*@{ 
                             var aResult = await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole");
                         }
                         @if (aResult.Succeeded)
@@ -53,7 +53,7 @@
                             <li><a asp-area="" asp-controller="LeadMeasures" asp-action="Index">Lead Measures</a></li>
                             <li><a asp-area="" asp-controller="GlobalScoreEntries" asp-action="Index">Tracking</a></li>
 
-                        }
+                        }*@
                     </ul>
                     @await Html.PartialAsync("_LoginPartial")
                 </div>

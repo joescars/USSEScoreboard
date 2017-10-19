@@ -18,19 +18,18 @@ namespace USSEScoreboard.Controllers
     public class CommitmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly UserManager<ApplicationUser> _userManager;
         private readonly IToggleService _toggleService;
         private readonly ICommitmentRepository _commitmentRepository;
         private readonly IUserProfileRepository _userProfileRepository;
 
-        public CommitmentsController(ApplicationDbContext context, 
-            UserManager<ApplicationUser> userManager,
+        public CommitmentsController(ApplicationDbContext context,             
             IToggleService toggleService,
             ICommitmentRepository commitmentRespository,
             IUserProfileRepository userProfileRepository)
         {
             _context = context;    
-            _userManager = userManager;
+            //_userManager = userManager;
             _toggleService = toggleService;
             _commitmentRepository = commitmentRespository;
             _userProfileRepository = userProfileRepository;
@@ -47,7 +46,7 @@ namespace USSEScoreboard.Controllers
         // GET: Committments by User
         public async Task<IActionResult> SearchByUser(int id)
         {
-            var userId = _userManager.GetUserId(User);
+            var userId = ""; //TODO
             var userProfileId = await _userProfileRepository.GetUserPofileIdByUserIdAsync(userId);
 
             // check if searching for logged in user
@@ -73,7 +72,7 @@ namespace USSEScoreboard.Controllers
         // GET: My Commitments (Logged in User)
         public async Task<ActionResult> My()
         {
-            var userId = _userManager.GetUserId(User);
+            var userId = ""; //TODO
             var model = new ListCommitmentsViewModel();
 
             model.Commitments = await _commitmentRepository.GetCommitmentsByUserAsync(userId);
@@ -116,7 +115,7 @@ namespace USSEScoreboard.Controllers
                 .Include(w => w.Wig)
                 .ToListAsync();
             //Get the userId of the logged in user so we can default to this
-            var userId = _userManager.GetUserId(User);
+            var userId = ""; //TODO
             model.SelectedUserID = model.Users
                 .Where(u => u.UserId == userId)
                 .Select(u => u.UserProfileId).First();
@@ -290,28 +289,28 @@ namespace USSEScoreboard.Controllers
             return _commitmentRepository.CommitmentExists(id);
         }
 
-        private Task<ApplicationUser> GetCurrentUserAsync()
-        {
-            return _userManager.GetUserAsync(HttpContext.User);
-        }
+        //private Task<ApplicationUser> GetCurrentUserAsync()
+        //{
+        //    return _userManager.GetUserAsync(HttpContext.User);
+        //}
 
-        private Task<IList<ApplicationUser>> GetUsersAsync()
-        {
-            return null;
-        }
+        //private Task<IList<ApplicationUser>> GetUsersAsync()
+        //{
+        //    return null;
+        //}
 
-        private Task<ApplicationUser> GetUserByIdAsync(string id)
-        {
-            var user = _userManager.FindByIdAsync(id);
-            if (user != null)
-            {
-                return user;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        //private Task<ApplicationUser> GetUserByIdAsync(string id)
+        //{
+        //    var user = _userManager.FindByIdAsync(id);
+        //    if (user != null)
+        //    {
+        //        return user;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
 
         // TODO: Confirm this is no longer used and delete
 

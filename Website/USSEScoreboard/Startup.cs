@@ -45,13 +45,15 @@ namespace USSEScoreboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
 
             // Add Authentication services.
             services.AddAuthentication(sharedOptions =>
@@ -67,24 +69,17 @@ namespace USSEScoreboard
                 option.ClientId = Configuration["AzureAD:ClientId"];
                 option.Authority = String.Format(Configuration["AzureAd:AadInstance"], Configuration["AzureAd:Tenant"]);
                 option.SignedOutRedirectUri = Configuration["AzureAd:PostLogoutRedirectUri"];
-                //option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                //{
-                //    ValidateIssuer = true
-                //    // ValidIssuers = new List<string> { "https://microsoft.onmicrosoft.com" }
-                //};
                 option.Events = new OpenIdConnectEvents
                 {
                     OnRemoteFailure = OnAuthenticationFailed,
                 };
             });
 
-            services.AddMvc();
-
             //Policies
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-            });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+            //});
 
             // Add application services.
             services.AddScoped<IWIGSettingRepository, WIGSettingRepository>();
@@ -119,9 +114,7 @@ namespace USSEScoreboard
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
-
-            
+            app.UseStaticFiles();            
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
@@ -132,14 +125,6 @@ namespace USSEScoreboard
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
                         
-            // Call custom function to create default roles
-            //if (await CreateRoles(serviceProvider))
-            //{
-                // Create default users
-                //await SeedDataLive.Initialize(app.ApplicationServices);
-                //await SeedDataLive.AssignAdminRoles(app.ApplicationServices);
-            //}            
-            
         }
 
         // Handle sign-in errors differently than generic errors.
@@ -151,25 +136,5 @@ namespace USSEScoreboard
             return Task.FromResult(0);
         }
 
-        // Create Default Roles
-        private async Task<bool> CreateRoles(IServiceProvider serviceProvider)
-        {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            string[] roleNames =
-            {
-                "Admin", "TE", "Director"
-            };
-            IdentityResult roleResult;
-            foreach (var roleName in roleNames)
-            {
-                var roleExist = await RoleManager.RoleExistsAsync(roleName);
-                if (!roleExist)
-                {
-                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
-                }
-            }
-            return true;
-        }
     }
 }

@@ -15,16 +15,14 @@ namespace USSEScoreboard.Controllers
 {
     [Authorize]
     public class HighlightsController : Controller
-    {
-        private readonly UserManager<ApplicationUser> _userManager;
+    {        
         private readonly IHighlightRepository _highlightRepository;
         private readonly IUserProfileRepository _userProfileRepository;
 
-        public HighlightsController(UserManager<ApplicationUser> userManager,
+        public HighlightsController(
             IHighlightRepository highlightrepository,
             IUserProfileRepository userProfileRepository)
-        {
-            _userManager = userManager;
+        {            
             _highlightRepository = highlightrepository;
             _userProfileRepository = userProfileRepository;
         }
@@ -38,7 +36,7 @@ namespace USSEScoreboard.Controllers
         // GET: Highlights/My
         public async Task<IActionResult> My()
         {
-            var userId = _userManager.GetUserId(User);            
+            var userId = ""; //TODO   
             return View(await _highlightRepository.GetHighlightsByUserId(userId));
         }
 
@@ -79,7 +77,7 @@ namespace USSEScoreboard.Controllers
             if (ModelState.IsValid)
             {
                 // Get User Profile
-                var userId = _userManager.GetUserId(User);
+                var userId = ""; //TODO
                 var up = await _userProfileRepository
                     .GetUserProfileByUserIdAsync(userId);
 

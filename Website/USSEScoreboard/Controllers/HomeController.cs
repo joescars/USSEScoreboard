@@ -15,26 +15,26 @@ namespace USSEScoreboard.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWIGSettingRepository _wigSettingRepository;
         private readonly IDashboardService _dashboardService;
 
         public HomeController(
-            ApplicationDbContext context, 
-            UserManager<ApplicationUser> userManager,
+            ApplicationDbContext context,             
             IWIGSettingRepository wigSettingRepository,
             IDashboardService dashboardService)
         {
             _context = context;
-            _userManager = userManager;
+            //_userManager = userManager;
             _wigSettingRepository = wigSettingRepository;
             _dashboardService = dashboardService;
         }
 
         public IActionResult Index()
         {
-
+            
             var model = new DashboardViewModel();
+            
 
             //Team Profile Data
             model.TeamTotals = _dashboardService.GetTeamScores();

@@ -24,8 +24,10 @@ namespace USSEScoreboard.Models
             List<SeedUser> initialUsers = new List<SeedUser>();
 
             // User Data
-            initialUsers.Add(
-                new SeedUser { FirstName = "Homer", LastName = "Simpson", Email = "Home.Simpson@TheSimpsons.com", Password = "DuffBeer2015:)" }
+            initialUsers.AddRange(
+                new List<SeedUser> {
+                    new SeedUser { FirstName = "Homer", LastName = "Simpson", Email = "doh@thesimpsons.com", Password = "DuffBeer!" }
+                }                
             );
 
             var context = serviceProvider.GetService<ApplicationDbContext>();
@@ -34,7 +36,7 @@ namespace USSEScoreboard.Models
             // Look for any users.
             if (context.UserProfile.Any())
             {
-                return;   // DB has been seeded
+                // return;   // DB has been seeded
             }
 
             // Create users

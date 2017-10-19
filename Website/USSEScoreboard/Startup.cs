@@ -39,7 +39,7 @@ namespace USSEScoreboard
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -66,10 +66,20 @@ namespace USSEScoreboard
             services.AddScoped<IHighlightRepository, HighlightRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            // Build the intermediate service provider
+            var serviceProvider = services.BuildServiceProvider();
+
+            //resolve implementations
+            var dbContext = serviceProvider.GetService<ApplicationDbContext>();
+
+            //return the provider
+            return serviceProvider;
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
+        public async void Configure(IApplicationBuilder app, 
             IHostingEnvironment env, 
             ILoggerFactory loggerFactory,
             IServiceProvider serviceProvider)
@@ -100,15 +110,15 @@ namespace USSEScoreboard
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-                        
+
             // Call custom function to create default roles
             //if (await CreateRoles(serviceProvider))
             //{
-                // Create default users
-                //await SeedDataLive.Initialize(app.ApplicationServices);
-                //await SeedDataLive.AssignAdminRoles(app.ApplicationServices);
-            //}            
-            
+            //    // Create default users
+            //   await SeedDataLive.Initialize(app.ApplicationServices);
+            //   await SeedDataLive.AssignAdminRoles(app.ApplicationServices);
+            //}
+           
         }
 
         // Create Default Roles

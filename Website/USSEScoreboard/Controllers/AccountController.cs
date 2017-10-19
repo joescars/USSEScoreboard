@@ -27,6 +27,7 @@ namespace USSEScoreboard.Controllers
         {
             if (HttpContext.User == null || !HttpContext.User.Identity.IsAuthenticated)
                 await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties { RedirectUri = "/" });
+
         }
 
         // GET: /Account/LogOff

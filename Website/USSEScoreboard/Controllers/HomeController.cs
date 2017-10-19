@@ -34,37 +34,10 @@ namespace USSEScoreboard.Controllers
         {
             
             var model = new DashboardViewModel();
-            
 
             //Team Profile Data
             model.TeamTotals = _dashboardService.GetTeamScores();
-
-            // Totals Globally
-            model.TotalPresentations = _dashboardService.GetTotalPresentations();
-            model.TotalAscendActive = _dashboardService.GetTotalAscendActive();
-            model.TotalAscendComplete = _dashboardService.GetTotalAscendComplete();
-            model.TotalAscendProposed = _dashboardService.GetTotalAscendProposed();
-            model.TotalAscendWins = _dashboardService.GetTotalAscendWins();
-
-            // Grab the settings from the repo
-            WIGSetting wg = _wigSettingRepository.GetSettings();
-            ProgressCalculator pg = new ProgressCalculator();
-            ProgressCalculator.Result result = pg.CalculateProgress(
-                wg.StartDate, wg.EndDate, wg.AscendWinGoal,
-                wg.CommunityWinGoal, model.TotalAscendWins, model.TotalPresentations);
-
-            // Overalls
-            model.AscendProgress = result.AscendProgressPct;
-            model.AscendOverall = result.AscendOverallPct;
-            model.CommunityProgress = result.CommunityProgressPct;
-            model.CommunityOverall = result.CommunityOverallPct;
-
-            // Assigned classes
-            model.AscendProgressClass = GetProgressBarClass(result.AscendProgressPct);
-            model.AscendOverallClass = GetProgressBarClass(result.AscendOverallPct);
-            model.CommunityProgressClass = GetProgressBarClass(result.CommunityProgressPct);
-            model.CommunityOverallClass = GetProgressBarClass(result.CommunityOverallPct);
-
+            
             return View(model);
             
         }

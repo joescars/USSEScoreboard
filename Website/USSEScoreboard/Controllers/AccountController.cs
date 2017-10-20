@@ -21,6 +21,13 @@ namespace USSEScoreboard.Controllers
 {
     public class AccountController : Controller
     {
+        //private readonly ApplicationDbContext _context;
+
+        //public AccountController(ApplicationDbContext context)
+        //{
+        //    _context = context;            
+        //}
+
         // GET: /Account/Login
         [HttpGet]
         public async Task Login()
@@ -51,7 +58,9 @@ namespace USSEScoreboard.Controllers
         [HttpGet]
         public async Task<IActionResult> ProcessUser()
         {
-            //do something
+            // check to see if user exists in local store
+            // if yes, redirect
+            // if no, create profile, then redirect
             return RedirectToAction("index", "highlights");
         }
     }

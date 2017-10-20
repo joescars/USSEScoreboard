@@ -15,18 +15,13 @@ namespace USSEScoreboard.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
-        //private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IWIGSettingRepository _wigSettingRepository;
         private readonly IDashboardService _dashboardService;
 
         public HomeController(
             ApplicationDbContext context,             
-            IWIGSettingRepository wigSettingRepository,
             IDashboardService dashboardService)
         {
             _context = context;
-            //_userManager = userManager;
-            _wigSettingRepository = wigSettingRepository;
             _dashboardService = dashboardService;
         }
 

@@ -51,10 +51,6 @@ namespace USSEScoreboard
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
-
             // Add Authentication services.
             services.AddAuthentication(sharedOptions =>
             {
@@ -81,12 +77,10 @@ namespace USSEScoreboard
             //    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
             //});
 
-            // Add application services.
-            services.AddScoped<IWIGSettingRepository, WIGSettingRepository>();
+            // Add application services.          
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IToggleService, ToggleService>();
             services.AddScoped<IDashboardService, DashboardService>();
-            services.AddScoped<ICommitmentRepository, CommitmentRepository>();
             services.AddScoped<IHighlightRepository, HighlightRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();

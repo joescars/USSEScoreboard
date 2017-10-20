@@ -26,8 +26,8 @@ namespace USSEScoreboard.Controllers
         public async Task Login()
         {
             if (HttpContext.User == null || !HttpContext.User.Identity.IsAuthenticated)
-                await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties { RedirectUri = "/" });
-
+                await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties { RedirectUri = "/Account/ProcessUser" });
+           
         }
 
         // GET: /Account/LogOff
@@ -46,6 +46,13 @@ namespace USSEScoreboard.Controllers
         {
             // If AAD sends a single sign-out message to the app, end the user's session, but don't redirect to AAD for sign out.
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ProcessUser()
+        {
+            //do something
+            return RedirectToAction("index", "highlights");
         }
     }
 }

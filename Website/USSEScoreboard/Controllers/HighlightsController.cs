@@ -10,6 +10,7 @@ using USSEScoreboard.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using USSEScoreboard.Interfaces;
+using System.Security.Claims;
 
 namespace USSEScoreboard.Controllers
 {
@@ -77,7 +78,9 @@ namespace USSEScoreboard.Controllers
             if (ModelState.IsValid)
             {
                 // Get User Profile
-                var userId = ""; //TODO
+                // TODO Clean this up
+                var userId = User.Claims
+                    .Where(x => x.Type.EndsWith("/claims/objectidentifier")).First().Value;
                 var up = await _userProfileRepository
                     .GetUserProfileByUserIdAsync(userId);
 

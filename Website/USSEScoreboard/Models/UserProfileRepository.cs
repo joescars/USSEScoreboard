@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using USSEScoreboard.Data;
 using USSEScoreboard.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace USSEScoreboard.Models
 {
@@ -50,6 +51,34 @@ namespace USSEScoreboard.Models
             return await _context.UserProfile.ToListAsync();
         }
 
+        public async Task<bool> ValidateUserProfileAsync(IEnumerable<Claim> claims)
+        {            
+            var firstName = GetClaimValue(claims, "/claims/givenname");
+            var lastName = GetClaimValue(claims, "/claims/surname");
+            var objectId = GetClaimValue(claims, "/claims/objectidentifier");
+            var email = GetClaimValue(claims, "/claims/name");
 
+            // look up user by email
+            if(!_context.UserProfile.Any(u => u.EmailAddress == email))
+            {
+                UserProfile up = new UserProfile
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    EmailAddress = email,
+                    UserId = objectId
+                };
+                _context.UserProfile.Add(up);
+                await _context.SaveChangesAsync();
+            }
+            
+            // we are done
+            return true;
+        }
+
+        private string GetClaimValue(IEnumerable<Claim> claims, string type)
+        {
+            return claims.Where(x => x.Type.EndsWith(type)).First().Value;
+        }
     }
 }

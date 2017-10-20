@@ -16,24 +16,25 @@ using USSEScoreboard.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using USSEScoreboard.Interfaces;
 
 namespace USSEScoreboard.Controllers
 {
     public class AccountController : Controller
     {
-        //private readonly ApplicationDbContext _context;
+        private readonly IUserProfileRepository _userProfileRepository;
 
-        //public AccountController(ApplicationDbContext context)
-        //{
-        //    _context = context;            
-        //}
+        public AccountController(IUserProfileRepository userProfileRepository)
+        {
+            _userProfileRepository = userProfileRepository;
+        }
 
         // GET: /Account/Login
         [HttpGet]
         public async Task Login()
         {
             if (HttpContext.User == null || !HttpContext.User.Identity.IsAuthenticated)
-                await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties { RedirectUri = "/Account/ProcessUser" });
+                await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties { RedirectUri = "/Account/PostLogin" });
            
         }
 
@@ -56,12 +57,16 @@ namespace USSEScoreboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ProcessUser()
+        public async Task<IActionResult> PostLogin()
         {
             // check to see if user exists in local store
             // if yes, redirect
-            // if no, create profile, then redirect
+            // if no, create profile, then redirect 
+
+            await _userProfileRepository.ValidateUserProfileAsync(User.Claims);
+
             return RedirectToAction("index", "highlights");
         }
+
     }
 }

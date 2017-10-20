@@ -22,9 +22,10 @@ namespace USSEScoreboard.Models
             this.DateModified = DateTime.Now;
         }
         public int UserProfileId { get; set; }
-        
+
         //used to store azure AD UserId
-        public string UserId;
+        [StringLength(100)]
+        public string UserId { get; set; }
 
         [StringLength(100)]
         public string FirstName { get; set; }

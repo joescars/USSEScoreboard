@@ -76,6 +76,9 @@ namespace USSEScoreboard.Migrations
 
                     b.Property<int>("TotalPresentations");
 
+                    b.Property<string>("UserId")
+                        .HasMaxLength(100);
+
                     b.HasKey("UserProfileId");
 
                     b.ToTable("UserProfile");

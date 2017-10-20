@@ -26,7 +26,8 @@ namespace USSEScoreboard.Migrations
                     IsFRI = table.Column<bool>(type: "bit", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     TotalAscend = table.Column<int>(type: "int", nullable: false),
-                    TotalPresentations = table.Column<int>(type: "int", nullable: false)
+                    TotalPresentations = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {

@@ -24,7 +24,7 @@ namespace USSEScoreboard.Models
         public int UserProfileId { get; set; }
 
         //used to store azure AD UserId
-        [StringLength(100)]
+        [StringLength(450)]
         public string UserId { get; set; }
 
         [StringLength(100)]

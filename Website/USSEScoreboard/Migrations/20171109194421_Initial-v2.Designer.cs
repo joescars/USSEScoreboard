@@ -11,8 +11,8 @@ using USSEScoreboard.Data;
 namespace USSEScoreboard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20171020185954_Initial-Trim")]
-    partial class InitialTrim
+    [Migration("20171109194421_Initial-v2")]
+    partial class Initialv2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,7 +78,7 @@ namespace USSEScoreboard.Migrations
                     b.Property<int>("TotalPresentations");
 
                     b.Property<string>("UserId")
-                        .HasMaxLength(100);
+                        .HasMaxLength(450);
 
                     b.HasKey("UserProfileId");
 

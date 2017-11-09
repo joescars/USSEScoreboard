@@ -77,7 +77,7 @@ namespace USSEScoreboard.Migrations
                     b.Property<int>("TotalPresentations");
 
                     b.Property<string>("UserId")
-                        .HasMaxLength(100);
+                        .HasMaxLength(450);
 
                     b.HasKey("UserProfileId");
 

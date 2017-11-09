@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace USSEScoreboard.Migrations
 {
-    public partial class InitialTrim : Migration
+    public partial class Initialv2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,7 +27,7 @@ namespace USSEScoreboard.Migrations
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     TotalAscend = table.Column<int>(type: "int", nullable: false),
                     TotalPresentations = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true)
                 },
                 constraints: table =>
                 {

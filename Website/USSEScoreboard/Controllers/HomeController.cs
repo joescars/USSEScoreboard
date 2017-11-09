@@ -16,13 +16,16 @@ namespace USSEScoreboard.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IDashboardService _dashboardService;
+        private readonly IToggleService _toggleService;
 
         public HomeController(
             ApplicationDbContext context,             
-            IDashboardService dashboardService)
+            IDashboardService dashboardService,
+            IToggleService toggleService)
         {
             _context = context;
             _dashboardService = dashboardService;
+            _toggleService = toggleService;
         }
 
         public IActionResult Index()
@@ -75,6 +78,38 @@ namespace USSEScoreboard.Controllers
                 return "progress-bar-warning";
             }
 
+        }
+
+        // GET: Commitments/ToggleExpensesUser/1
+        [HttpGet]
+        public async Task<IActionResult> ToggleExpensesUser(int id)
+        {
+            await _toggleService.ToggleUserExpense(id);
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        // GET: Commitments/ToggleCRMUser/1 (userprofiled)
+        [HttpGet]
+        public async Task<IActionResult> ToggleCRMUser(int id)
+        {
+            await _toggleService.ToggleUserCRM(id);
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        // GET: Commitments/ToggleFRIUser/1
+        [HttpGet]
+        public async Task<IActionResult> ToggleFRIUser(int id)
+        {
+            await _toggleService.ToggleUserFRI(id);
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        // GET: Commitments/ToggleAscendNotes/User/1
+        [HttpGet]
+        public async Task<IActionResult> ToggleAscendNotesUser(int id)
+        {
+            await _toggleService.ToggleUserAscendNotes(id);
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }

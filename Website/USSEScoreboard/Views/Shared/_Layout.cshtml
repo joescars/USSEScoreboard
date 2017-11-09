@@ -42,7 +42,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-area="" asp-controller="Commitments" asp-action="My">Commitments</a></li>
+                        @*<li><a asp-area="" asp-controller="Commitments" asp-action="My">Commitments</a></li>*@
                         <li><a asp-area="" asp-controller="Highlights" asp-action="Index">Highlights</a></li>
                         @*@{ 
                             var aResult = await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole");
@@ -64,7 +64,7 @@
             @RenderBody()
             <hr />
             <footer>
-                <p>&copy; 2016 - USSEScoreboard</p>
+                <p>&copy; @DateTime.Now.Year.ToString() - USSEScoreboard</p>
             </footer>
         </div>
 

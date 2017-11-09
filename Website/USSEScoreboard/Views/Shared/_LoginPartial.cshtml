@@ -3,15 +3,13 @@
 @using USSEScoreboard.Interfaces
 
 @inject IUserProfileRepository UserProfileRepository
-@*@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager*@
 
 @if (User.Identity.IsAuthenticated)
 {
     <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.Identity.Name!</a>
+                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.Claims.Where(x => x.Type.EndsWith("/claims/givenname")).First().Value!</a>
                
             </li>
             <li>

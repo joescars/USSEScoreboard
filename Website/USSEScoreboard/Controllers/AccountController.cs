@@ -65,7 +65,7 @@ namespace USSEScoreboard.Controllers
 
             await _userProfileRepository.ValidateUserProfileAsync(User.Claims);
 
-            return RedirectToAction("index", "highlights");
+            return RedirectToAction("index", "home");
         }
 
     }

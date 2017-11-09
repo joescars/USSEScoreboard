@@ -58,22 +58,42 @@ namespace USSEScoreboard.Models
             var objectId = GetClaimValue(claims, "/claims/objectidentifier");
             var email = GetClaimValue(claims, "/claims/name");
 
-            // look up user by email
-            if(!_context.UserProfile.Any(u => u.EmailAddress == email))
+            // lets first lookup by the *objectId*
+            if (!_context.UserProfile.Any(u => u.UserId == objectId))
             {
-                UserProfile up = new UserProfile
+                // if its not found, lets then lookup by *first* and *last* name
+                if (_context.UserProfile.Any(u => u.FirstName == firstName && u.LastName == lastName))
                 {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    EmailAddress = email,
-                    UserId = objectId
-                };
-                _context.UserProfile.Add(up);
-                await _context.SaveChangesAsync();
+                    // profile found, update record if needed
+                    UserProfile up = await _context.UserProfile
+                        .Where(u => u.FirstName == firstName && u.LastName == lastName).FirstAsync();
+
+                    up.UserId = objectId;
+                    up.EmailAddress = email;
+                    up.DateModified = DateTime.Now;
+                    await _context.SaveChangesAsync();
+
+                }
+                else
+                {
+                    // if not found, create a new userprofile record
+                    UserProfile up = new UserProfile
+                    {
+                        FirstName = firstName,
+                        LastName = lastName,
+                        EmailAddress = email,
+                        UserId = objectId
+                    };
+                    _context.UserProfile.Add(up);
+                    await _context.SaveChangesAsync();
+                }
+
             }
             
+            // if userid found we are all set, do nothing        
             // we are done
             return true;
+
         }
 
         private string GetClaimValue(IEnumerable<Claim> claims, string type)

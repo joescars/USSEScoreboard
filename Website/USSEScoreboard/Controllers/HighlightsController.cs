@@ -37,8 +37,17 @@ namespace USSEScoreboard.Controllers
         // GET: Highlights/My
         public async Task<IActionResult> My()
         {
-            var userId = ""; //TODO   
+            // Get User Profile
+            // TODO Clean this up
+            var userId = User.Claims
+                .Where(x => x.Type.EndsWith("/claims/objectidentifier")).First().Value;
             return View(await _highlightRepository.GetHighlightsByUserId(userId));
+        }
+
+        public async Task<IActionResult> ByUser(int id)
+        {
+            // Get User Profile
+            return View(await _highlightRepository.GetHighlightsByUserProfileId(id));
         }
 
         // GET: Highlights/Details/5

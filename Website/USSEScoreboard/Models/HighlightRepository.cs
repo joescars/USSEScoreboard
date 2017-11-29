@@ -56,6 +56,22 @@ namespace USSEScoreboard.Models
                 .OrderByDescending(h => h.DateCreated).ToListAsync();
         }
 
+        public async Task<List<HighlightListItem>> GetHighlightsByUserProfileId(int userProfileId)
+        {
+            return await _context.Highlight
+                .Include(h => h.UserProfile)
+                .Where(h => h.UserProfileId == userProfileId)
+                .Select(h => new HighlightListItem
+                {
+                    HighlightId = h.HighlightId,
+                    FullName = h.UserProfile.FullName,
+                    DateStart = h.DateStart,
+                    DateEnd = h.DateEnd,
+                    DateCreated = h.DateCreated
+                })
+                .OrderByDescending(h => h.DateCreated).ToListAsync();
+        }
+
         public async Task<List<HighlightSearchResult>> GetHighlightsByDateRange(DateTime start, DateTime end)
         {
             return await _context.Highlight

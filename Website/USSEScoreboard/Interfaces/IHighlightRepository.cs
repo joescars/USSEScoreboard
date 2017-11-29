@@ -10,6 +10,7 @@ namespace USSEScoreboard.Interfaces
     {
         Task<List<HighlightListItem>> GetHighlightsAsync();
         Task<List<HighlightListItem>> GetHighlightsByUserId(string userId);
+        Task<List<HighlightListItem>> GetHighlightsByUserProfileId(int userProfileId);
         Task<List<HighlightSearchResult>> GetHighlightsByDateRange(DateTime start, DateTime end);
         Task<Highlight> GetHighlightByIdAsync(int? id);
         Task SaveHighlightAsync(Highlight h, int userProfileId);

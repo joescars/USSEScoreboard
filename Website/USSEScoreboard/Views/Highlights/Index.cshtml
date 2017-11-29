@@ -28,34 +28,4 @@
     </div>
 </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Team Member
-                </th>
-                <th>
-                    Time Period
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @item.FullName
-                    </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.HighlightId">@item.DateStart.ToString("D") <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> @item.DateEnd.ToString("D")</a>
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.HighlightId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.HighlightId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.HighlightId">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+@await Html.PartialAsync("_Grid")

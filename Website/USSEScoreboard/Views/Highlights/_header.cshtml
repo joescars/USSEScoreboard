@@ -1,0 +1,29 @@
+﻿@model USSEScoreboard.Models.HighlightViewModels.ListHighlightsViewModel
+
+<div>
+    <div class="row">
+        <div class="col-md-2">
+            <h2 style="margin-top:0px;padding-top:0px;">
+                Highlights
+            </h2>
+        </div>
+        <div class="col-md-4">
+            <a class="btn btn-primary btn-sm" asp-action="Create"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create New</a>
+        </div>
+        <div class="col-md-6">
+            <form asp-action="Search">
+                <div class="form-inline">
+                    <input id="startDate" name="startDate" type="date" class="form-control input-sm" />
+                    <input id="endDate" name="endDate" type="date" class="form-control input-sm" />
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search By Date Range
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*<select asp-for="SearchByUserProfileId" class="form-control" asp-items="Model.ActiverUserList">
+    <option>-- Select --</option>
+</select>*@

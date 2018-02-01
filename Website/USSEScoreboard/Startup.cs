@@ -14,6 +14,12 @@ using USSEScoreboard.Models;
 using USSEScoreboard.Services;
 using USSEScoreboard.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace USSEScoreboard
 {
@@ -41,28 +47,47 @@ namespace USSEScoreboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddMvc();
-
-            //Policies
-            services.AddAuthorization(options =>
+            // Add Authentication services.
+            services.AddAuthentication(sharedOptions =>
             {
-                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            // Configure the OWIN pipeline to use cookie auth.
+            .AddCookie()
+            // Configure the OWIN pipeline to use OpenID Connect auth.
+            .AddOpenIdConnect(option =>
+            {
+                option.ClientId = Configuration["AzureAD:ClientId"];
+                option.Authority = String.Format(Configuration["AzureAd:AadInstance"], Configuration["AzureAd:Tenant"]);
+                option.SignedOutRedirectUri = Configuration["AzureAd:PostLogoutRedirectUri"];
+                option.Events = new OpenIdConnectEvents
+                {
+                    OnRemoteFailure = OnAuthenticationFailed,
+                };
             });
 
-            // Add application services.
-            services.AddScoped<IWIGSettingRepository, WIGSettingRepository>();
+            //Policies
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+            //});
+
+            // Add application services.          
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IToggleService, ToggleService>();
             services.AddScoped<IDashboardService, DashboardService>();
-            services.AddScoped<ICommitmentRepository, CommitmentRepository>();
             services.AddScoped<IHighlightRepository, HighlightRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
@@ -84,8 +109,15 @@ namespace USSEScoreboard
             ILoggerFactory loggerFactory,
             IServiceProvider serviceProvider)
         {
+            app.UseAuthentication();
+            
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            var options = new RewriteOptions()
+                .AddRedirectToHttps();
+
+            app.UseRewriter(options);
 
             if (env.IsDevelopment())
             {
@@ -98,9 +130,7 @@ namespace USSEScoreboard
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
-
-            app.UseAuthentication();
+            app.UseStaticFiles();            
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
@@ -110,36 +140,17 @@ namespace USSEScoreboard
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            // Call custom function to create default roles
-            //if (await CreateRoles(serviceProvider))
-            //{
-            //    // Create default users
-            //   await SeedDataLive.Initialize(app.ApplicationServices);
-            //   await SeedDataLive.AssignAdminRoles(app.ApplicationServices);
-            //}
-           
+                        
         }
 
-        // Create Default Roles
-        private async Task<bool> CreateRoles(IServiceProvider serviceProvider)
+        // Handle sign-in errors differently than generic errors.
+        private Task OnAuthenticationFailed(RemoteFailureContext context)
         {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            string[] roleNames =
-            {
-                "Admin", "TE", "Director"
-            };
-            IdentityResult roleResult;
-            foreach (var roleName in roleNames)
-            {
-                var roleExist = await RoleManager.RoleExistsAsync(roleName);
-                if (!roleExist)
-                {
-                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
-                }
-            }
-            return true;
+            context.HandleResponse();
+            var message = Regex.Replace(context.Failure.Message, @"[^\u001F-\u007F]+", string.Empty);
+            context.Response.Redirect("/Home/Error?message=" + message);
+            return Task.FromResult(0);
         }
+
     }
 }

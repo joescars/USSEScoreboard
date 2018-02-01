@@ -13,10 +13,10 @@ public static async void Run(TimerInfo myTimer, TraceWriter log)
     log.Info($"C# Timer trigger function executed at: {DateTime.Now}"); 
     string highlights = await GetHighlights(); 
     var usersToSend = await GetUsers();
-    foreach (DashboardUser d in usersToSend)
+    foreach (UserProfile d in usersToSend)
     {
-        await SendReport(highlights, d.Email);
-        log.Info($"Sending Email to {d.Email}");
+        await SendReport(highlights, d.EmailAddress);
+        log.Info($"Sending Email to {d.EmailAddress}");
     }
     log.Info("Function Complete");  
 }
@@ -98,28 +98,15 @@ static async Task<string> GetHighlights()
     return body;
 }
 
-static async Task<List<DashboardUser>> GetUsers()
+static async Task<List<UserProfile>> GetUsers()
 {
     using (var db = new HighlightContext())
     {
-        List<DashboardUser> myUsers = new List<DashboardUser>();
-        myUsers = await db.DashboardUsers.ToListAsync();    
-        List<DashboardUser> myUsersToSend = new List<DashboardUser>();
+        List<UserProfile> myUsersToSend = await db.UserProfiles
+            .Where(u => u.IsActiveTeamMember == true).ToListAsync();
 
-        foreach (DashboardUser u in myUsers)
-        {
-            UserProfile up = await db.UserProfiles
-            .Where(uup => uup.UserId == u.Id).SingleOrDefaultAsync();
-            if (up.IsActiveTeamMember) {
-                myUsersToSend.Add(u);
-            }
-        }
         return myUsersToSend;
     }
-}
-
-public class SendUser {
-    public string Email {get;set;}
 }
 
 [Table("Highlight")]
@@ -136,14 +123,6 @@ public class Highlight
 
 }
 
-[Table("AspNetUsers")]
-public class DashboardUser
-{
-    // Only mapp the fields we need to use
-    public string Id { get; set; }
-    public string Email { get; set; }
-}
-
 [Table("UserProfile")]
 public class UserProfile
 {
@@ -156,6 +135,7 @@ public class UserProfile
     }
     public bool IsActiveTeamMember { get; set; }
     public string UserId { get; set; }    
+    public string EmailAddress { get; set; }
 }
 
 public class HighlightSearchResult
@@ -184,6 +164,5 @@ public class HighlightContext : DbContext
     }
     public virtual DbSet<Highlight> Highlights { get; set; }
     public virtual DbSet<UserProfile> UserProfiles { get; set; }
-    public virtual DbSet<DashboardUser> DashboardUsers { get; set; }
 }
 

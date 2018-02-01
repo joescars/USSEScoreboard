@@ -8,7 +8,7 @@ using USSEScoreboard.Models;
 
 namespace USSEScoreboard.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -22,39 +22,11 @@ namespace USSEScoreboard.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
 
-            // Create the Many-To-Many relationship for Wigs
-            builder.Entity<UserWig>()
-                .HasKey(w => new { w.UserProfileId, w.WigId });
-
-            builder.Entity<UserWig>()
-                .HasOne(uw => uw.UserProfile)
-                .WithMany(u => u.UserWigs)
-                .HasForeignKey(uw => uw.UserProfileId);
-
-            builder.Entity<UserWig>()
-                .HasOne(uw => uw.Wig)
-                .WithMany(u => u.UserWigs)
-                .HasForeignKey(uw => uw.WigId);
-
         }
-
-        public DbSet<Commitment> Commitment { get; set; }
-
-        public DbSet<Wig> Wig { get; set; }
 
         public DbSet<UserProfile> UserProfile { get; set; }
         
-        // Individual Based Tracking. Not used currently
-        public DbSet<ScoreEntry> ScoreEntry { get; set; }
-
-        // Global Based Tracking. Currently in use.
-        public DbSet<GlobalScoreEntry> GlobalScoreEntry { get; set; }
-
-        public DbSet<LeadMeasure> LeadMeasure { get; set; }
-
         public DbSet<Highlight> Highlight { get; set; }
-
-        public DbSet<WIGSetting> WigSetting { get; set; }
 
     }
 }

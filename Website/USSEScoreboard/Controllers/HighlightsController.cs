@@ -10,21 +10,21 @@ using USSEScoreboard.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using USSEScoreboard.Interfaces;
+using System.Security.Claims;
+using USSEScoreboard.Models.HighlightViewModels;
 
 namespace USSEScoreboard.Controllers
 {
     [Authorize]
     public class HighlightsController : Controller
-    {
-        private readonly UserManager<ApplicationUser> _userManager;
+    {        
         private readonly IHighlightRepository _highlightRepository;
         private readonly IUserProfileRepository _userProfileRepository;
 
-        public HighlightsController(UserManager<ApplicationUser> userManager,
+        public HighlightsController(
             IHighlightRepository highlightrepository,
             IUserProfileRepository userProfileRepository)
-        {
-            _userManager = userManager;
+        {            
             _highlightRepository = highlightrepository;
             _userProfileRepository = userProfileRepository;
         }
@@ -32,14 +32,38 @@ namespace USSEScoreboard.Controllers
         // GET: Highlights
         public async Task<IActionResult> Index()
         {
-            return View(await _highlightRepository.GetHighlightsAsync());
+            var model = new ListHighlightsViewModel();
+            model.Highlights = await _highlightRepository.GetHighlightsAsync();
+            var up = await _userProfileRepository.GetUserProfilesAsync();
+            var sList = new SelectList(up, "UserProfileId", "FullName");
+            model.ActiverUserList = sList;
+            return View(model);
         }
 
         // GET: Highlights/My
         public async Task<IActionResult> My()
         {
-            var userId = _userManager.GetUserId(User);            
-            return View(await _highlightRepository.GetHighlightsByUserId(userId));
+            // Get User Profile
+            // TODO Clean this up
+            var userId = User.Claims
+                .Where(x => x.Type.EndsWith("/claims/objectidentifier")).First().Value;
+            var model = new ListHighlightsViewModel();
+            model.Highlights = await _highlightRepository.GetHighlightsByUserId(userId);
+            var up = await _userProfileRepository.GetUserProfilesAsync();
+            //var sList = new SelectList(up, "UserProfileId", "FullName");
+            //model.ActiverUserList = sList;
+            return View(model);
+        }
+
+        public async Task<IActionResult> ByUser(int id)
+        {
+            // TODO: Refactor as we are duplicating code;
+            var model = new ListHighlightsViewModel();
+            model.Highlights = await _highlightRepository.GetHighlightsByUserProfileId(id);
+            var up = await _userProfileRepository.GetUserProfilesAsync();
+            //var sList = new SelectList(up, "UserProfileId", "FullName");
+            //model.ActiverUserList = sList;
+            return View(model);
         }
 
         // GET: Highlights/Details/5
@@ -79,7 +103,9 @@ namespace USSEScoreboard.Controllers
             if (ModelState.IsValid)
             {
                 // Get User Profile
-                var userId = _userManager.GetUserId(User);
+                // TODO Clean this up
+                var userId = User.Claims
+                    .Where(x => x.Type.EndsWith("/claims/objectidentifier")).First().Value;
                 var up = await _userProfileRepository
                     .GetUserProfileByUserIdAsync(userId);
 

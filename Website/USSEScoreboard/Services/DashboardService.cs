@@ -32,11 +32,8 @@ namespace USSEScoreboard.Services
                               IsAscendNotes = u.IsAscendNotes,
                               TotalPresentations = u.TotalPresentations,
                               TotalAscend = u.TotalAscend,
-                              CommitTotal = u.Commitments
-                              .Where(c => c.Status == CommitmentStatus.Active
-                              || c.Status == CommitmentStatus.Complete).Count(),
-                              CommitCompleted = u.Commitments
-                             .Where(c => c.Status == CommitmentStatus.Complete).Count(),
+                              CommitTotal = 0,
+                              CommitCompleted = 0,
                           });
 
             return myTeam;
@@ -44,37 +41,27 @@ namespace USSEScoreboard.Services
 
         public int GetTotalAscendActive()
         {
-            return _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendActive)
-                .Sum(a => a.TimeFrameTotal);
+            return 0;
         }
 
         public int GetTotalAscendComplete()
         {
-            return _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendCodeCompleted)
-                .Sum(a => a.TimeFrameTotal);
+            return 0;
         }
 
         public int GetTotalAscendProposed()
         {
-            return _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendProposed)
-                .Sum(a => a.TimeFrameTotal);
+            return 0;
         }
 
         public int GetTotalAscendWins()
         {
-            return _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.AscendWins)
-                .Sum(a => a.TimeFrameTotal);
+            return 0;
         }
 
         public int GetTotalPresentations()
         {
-            return _context.GlobalScoreEntry
-                .Where(a => a.GlobalScoreType == GlobalScoreEntryType.Presentations)
-                .Sum(a => a.TimeFrameTotal);
+            return 0;
         }
     }
 }

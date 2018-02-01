@@ -15,56 +15,27 @@ namespace USSEScoreboard.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IWIGSettingRepository _wigSettingRepository;
         private readonly IDashboardService _dashboardService;
+        private readonly IToggleService _toggleService;
 
         public HomeController(
-            ApplicationDbContext context, 
-            UserManager<ApplicationUser> userManager,
-            IWIGSettingRepository wigSettingRepository,
-            IDashboardService dashboardService)
+            ApplicationDbContext context,             
+            IDashboardService dashboardService,
+            IToggleService toggleService)
         {
             _context = context;
-            _userManager = userManager;
-            _wigSettingRepository = wigSettingRepository;
             _dashboardService = dashboardService;
+            _toggleService = toggleService;
         }
 
         public IActionResult Index()
         {
-
+            
             var model = new DashboardViewModel();
 
             //Team Profile Data
             model.TeamTotals = _dashboardService.GetTeamScores();
-
-            // Totals Globally
-            model.TotalPresentations = _dashboardService.GetTotalPresentations();
-            model.TotalAscendActive = _dashboardService.GetTotalAscendActive();
-            model.TotalAscendComplete = _dashboardService.GetTotalAscendComplete();
-            model.TotalAscendProposed = _dashboardService.GetTotalAscendProposed();
-            model.TotalAscendWins = _dashboardService.GetTotalAscendWins();
-
-            // Grab the settings from the repo
-            WIGSetting wg = _wigSettingRepository.GetSettings();
-            ProgressCalculator pg = new ProgressCalculator();
-            ProgressCalculator.Result result = pg.CalculateProgress(
-                wg.StartDate, wg.EndDate, wg.AscendWinGoal,
-                wg.CommunityWinGoal, model.TotalAscendWins, model.TotalPresentations);
-
-            // Overalls
-            model.AscendProgress = result.AscendProgressPct;
-            model.AscendOverall = result.AscendOverallPct;
-            model.CommunityProgress = result.CommunityProgressPct;
-            model.CommunityOverall = result.CommunityOverallPct;
-
-            // Assigned classes
-            model.AscendProgressClass = GetProgressBarClass(result.AscendProgressPct);
-            model.AscendOverallClass = GetProgressBarClass(result.AscendOverallPct);
-            model.CommunityProgressClass = GetProgressBarClass(result.CommunityProgressPct);
-            model.CommunityOverallClass = GetProgressBarClass(result.CommunityOverallPct);
-
+            
             return View(model);
             
         }
@@ -107,6 +78,38 @@ namespace USSEScoreboard.Controllers
                 return "progress-bar-warning";
             }
 
+        }
+
+        // GET: Commitments/ToggleExpensesUser/1
+        [HttpGet]
+        public async Task<IActionResult> ToggleExpensesUser(int id)
+        {
+            await _toggleService.ToggleUserExpense(id);
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        // GET: Commitments/ToggleCRMUser/1 (userprofiled)
+        [HttpGet]
+        public async Task<IActionResult> ToggleCRMUser(int id)
+        {
+            await _toggleService.ToggleUserCRM(id);
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        // GET: Commitments/ToggleFRIUser/1
+        [HttpGet]
+        public async Task<IActionResult> ToggleFRIUser(int id)
+        {
+            await _toggleService.ToggleUserFRI(id);
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        // GET: Commitments/ToggleAscendNotes/User/1
+        [HttpGet]
+        public async Task<IActionResult> ToggleAscendNotesUser(int id)
+        {
+            await _toggleService.ToggleUserAscendNotes(id);
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }

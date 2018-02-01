@@ -46,9 +46,12 @@ namespace USSEScoreboard.Models
                 .Select(u => u.UserProfileId).FirstOrDefaultAsync();
         }
 
+        // Returns only ACTIVE user profiles / team members. 
         public async Task<IEnumerable<UserProfile>> GetUserProfilesAsync()
         {
-            return await _context.UserProfile.ToListAsync();
+            return await _context.UserProfile
+                .Where(u => u.IsActiveTeamMember == true)
+                .ToListAsync();
         }
 
         public async Task<bool> ValidateUserProfileAsync(IEnumerable<Claim> claims)

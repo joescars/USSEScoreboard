@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using USSEScoreboard.Interfaces;
 using System.Security.Claims;
+using USSEScoreboard.Models.HighlightViewModels;
 
 namespace USSEScoreboard.Controllers
 {
@@ -31,7 +32,12 @@ namespace USSEScoreboard.Controllers
         // GET: Highlights
         public async Task<IActionResult> Index()
         {
-            return View(await _highlightRepository.GetHighlightsAsync());
+            var model = new ListHighlightsViewModel();
+            model.Highlights = await _highlightRepository.GetHighlightsAsync();
+            var up = await _userProfileRepository.GetUserProfilesAsync();
+            var sList = new SelectList(up, "UserProfileId", "FullName");
+            model.ActiverUserList = sList;
+            return View(model);
         }
 
         // GET: Highlights/My
@@ -41,13 +47,23 @@ namespace USSEScoreboard.Controllers
             // TODO Clean this up
             var userId = User.Claims
                 .Where(x => x.Type.EndsWith("/claims/objectidentifier")).First().Value;
-            return View(await _highlightRepository.GetHighlightsByUserId(userId));
+            var model = new ListHighlightsViewModel();
+            model.Highlights = await _highlightRepository.GetHighlightsByUserId(userId);
+            var up = await _userProfileRepository.GetUserProfilesAsync();
+            //var sList = new SelectList(up, "UserProfileId", "FullName");
+            //model.ActiverUserList = sList;
+            return View(model);
         }
 
         public async Task<IActionResult> ByUser(int id)
         {
-            // Get User Profile
-            return View(await _highlightRepository.GetHighlightsByUserProfileId(id));
+            // TODO: Refactor as we are duplicating code;
+            var model = new ListHighlightsViewModel();
+            model.Highlights = await _highlightRepository.GetHighlightsByUserProfileId(id);
+            var up = await _userProfileRepository.GetUserProfilesAsync();
+            //var sList = new SelectList(up, "UserProfileId", "FullName");
+            //model.ActiverUserList = sList;
+            return View(model);
         }
 
         // GET: Highlights/Details/5

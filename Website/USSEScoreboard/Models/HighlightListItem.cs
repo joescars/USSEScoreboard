@@ -12,6 +12,7 @@ namespace USSEScoreboard.Models
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
         public DateTime DateCreated { get; set; }
+        public int SelectedUserProfileId { get; set; }
 
     }
 }

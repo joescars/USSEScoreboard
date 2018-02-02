@@ -11,9 +11,10 @@ Feel free to use the code to build a similar tasks / goal setting tool.
 Built using the following tools and languages:
 
 * [Visual Studio Community Edition](https://www.visualstudio.com/downloads/)
-* [ASP.NET Core](https://www.asp.net/core)
-* [MVC Core 1.0](https://docs.asp.net/en/latest/tutorials/first-mvc-app/)
-* [Entity Framework Core 1.0](https://docs.efproject.net/en/latest/)
+* [ASP.NET Core 2.0](https://www.asp.net/core)
+* [MVC Core](https://docs.microsoft.com/en-us/aspnet/core/mvc/overview)
+* [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
+* [Azure Functions C# Class Library](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-class-library)
 * [Microsoft Azure PaaS Services](https://azure.microsoft.com/)
     * [Web Apps](https://azure.microsoft.com/en-us/services/app-service/web/)
     * [Azure Functions](https://azure.microsoft.com/en-us/services/functions/)

@@ -20,7 +20,7 @@ namespace Scoreboard.Website.Migrations
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("USSEScoreboard.Models.Highlight", b =>
+            modelBuilder.Entity("Scoreboard.Website.Models.Highlight", b =>
                 {
                     b.Property<int>("HighlightId")
                         .ValueGeneratedOnAdd();
@@ -44,7 +44,7 @@ namespace Scoreboard.Website.Migrations
                     b.ToTable("Highlight");
                 });
 
-            modelBuilder.Entity("USSEScoreboard.Models.UserProfile", b =>
+            modelBuilder.Entity("Scoreboard.Website.Models.UserProfile", b =>
                 {
                     b.Property<int>("UserProfileId")
                         .ValueGeneratedOnAdd();
@@ -84,9 +84,9 @@ namespace Scoreboard.Website.Migrations
                     b.ToTable("UserProfile");
                 });
 
-            modelBuilder.Entity("USSEScoreboard.Models.Highlight", b =>
+            modelBuilder.Entity("Scoreboard.Website.Models.Highlight", b =>
                 {
-                    b.HasOne("USSEScoreboard.Models.UserProfile", "UserProfile")
+                    b.HasOne("Scoreboard.Website.Models.UserProfile", "UserProfile")
                         .WithMany()
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade);

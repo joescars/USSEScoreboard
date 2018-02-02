@@ -1,4 +1,4 @@
-# US South East Scoreboard
+# Southeast Scoreboard
 
 This is a generic tool built to help manage commitments and goals for our team. It has a custom structure based on a changing set of rules. 
 

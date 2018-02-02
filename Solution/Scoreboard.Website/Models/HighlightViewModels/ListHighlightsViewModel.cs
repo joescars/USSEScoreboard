@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace USSEScoreboard.Models.HighlightViewModels
+namespace Scoreboard.Website.Models.HighlightViewModels
 {
     public class ListHighlightsViewModel
     {

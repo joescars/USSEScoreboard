@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 
-namespace USSEScoreboard.Models.ManageViewModels
+namespace Scoreboard.Website.Models.ManageViewModels
 {
     public class ManageLoginsViewModel
     {

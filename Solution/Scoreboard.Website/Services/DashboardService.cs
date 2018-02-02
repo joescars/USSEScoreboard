@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using USSEScoreboard.Data;
-using USSEScoreboard.Models;
-using USSEScoreboard.Interfaces;
+using Scoreboard.Website.Data;
+using Scoreboard.Website.Models;
+using Scoreboard.Website.Interfaces;
 
-namespace USSEScoreboard.Services
+namespace Scoreboard.Website.Services
 {
     public class DashboardService : IDashboardService
     {

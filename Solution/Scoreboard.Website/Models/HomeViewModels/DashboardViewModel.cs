@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace USSEScoreboard.Models.HomeViewModels
+namespace Scoreboard.Website.Models.HomeViewModels
 {
     public class DashboardViewModel
     {

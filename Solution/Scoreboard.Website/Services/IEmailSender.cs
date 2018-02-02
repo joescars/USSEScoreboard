@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace USSEScoreboard.Services
+namespace Scoreboard.Website.Services
 {
     public interface IEmailSender
     {

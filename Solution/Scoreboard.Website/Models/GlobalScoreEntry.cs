@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace USSEScoreboard.Models
+namespace Scoreboard.Website.Models
 {
     public enum GlobalScoreEntryType
     {

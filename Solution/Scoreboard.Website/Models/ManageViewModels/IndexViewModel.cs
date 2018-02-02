@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace USSEScoreboard.Models.ManageViewModels
+namespace Scoreboard.Website.Models.ManageViewModels
 {
     public class IndexViewModel
     {

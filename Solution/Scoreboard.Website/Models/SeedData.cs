@@ -5,9 +5,9 @@
 //using System.Collections.Generic;
 //using System.Linq;
 //using System.Threading.Tasks;
-//using USSEScoreboard.Data;
+//using Scoreboard.Website.Data;
 
-//namespace USSEScoreboard.Models
+//namespace Scoreboard.Website.Models
 //{
 //    public class SeedData
 //    {

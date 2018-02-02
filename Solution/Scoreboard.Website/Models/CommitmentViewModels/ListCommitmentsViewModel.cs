@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace USSEScoreboard.Models.CommitmentViewModels
+namespace Scoreboard.Website.Models.CommitmentViewModels
 {
     public class ListCommitmentsViewModel
     {

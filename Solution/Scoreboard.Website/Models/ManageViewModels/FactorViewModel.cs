@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace USSEScoreboard.Models.ManageViewModels
+namespace Scoreboard.Website.Models.ManageViewModels
 {
     public class FactorViewModel
     {

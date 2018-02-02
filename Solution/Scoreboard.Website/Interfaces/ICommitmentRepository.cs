@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using USSEScoreboard.Models;
-using USSEScoreboard.Models.CommitmentViewModels;
+using Scoreboard.Website.Models;
+using Scoreboard.Website.Models.CommitmentViewModels;
 
-namespace USSEScoreboard.Interfaces
+namespace Scoreboard.Website.Interfaces
 {
     public interface ICommitmentRepository
     {

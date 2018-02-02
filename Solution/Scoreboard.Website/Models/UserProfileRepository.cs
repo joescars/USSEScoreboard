@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using USSEScoreboard.Data;
-using USSEScoreboard.Interfaces;
+using Scoreboard.Website.Data;
+using Scoreboard.Website.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace USSEScoreboard.Models
+namespace Scoreboard.Website.Models
 {
     public class UserProfileRepository : IUserProfileRepository
     {

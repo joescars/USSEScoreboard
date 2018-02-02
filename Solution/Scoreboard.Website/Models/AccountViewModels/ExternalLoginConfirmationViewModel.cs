@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace USSEScoreboard.Models.AccountViewModels
+namespace Scoreboard.Website.Models.AccountViewModels
 {
     public class ExternalLoginConfirmationViewModel
     {

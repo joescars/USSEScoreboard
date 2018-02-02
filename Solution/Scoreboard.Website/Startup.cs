@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using USSEScoreboard.Data;
-using USSEScoreboard.Models;
-using USSEScoreboard.Services;
-using USSEScoreboard.Interfaces;
+using Scoreboard.Website.Data;
+using Scoreboard.Website.Models;
+using Scoreboard.Website.Services;
+using Scoreboard.Website.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 
-namespace USSEScoreboard
+namespace Scoreboard.Website
 {
     public class Startup
     {

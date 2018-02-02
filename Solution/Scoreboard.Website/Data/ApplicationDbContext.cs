@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using USSEScoreboard.Models;
+using Scoreboard.Website.Models;
 
-namespace USSEScoreboard.Data
+namespace Scoreboard.Website.Data
 {
     public class ApplicationDbContext : DbContext
     {

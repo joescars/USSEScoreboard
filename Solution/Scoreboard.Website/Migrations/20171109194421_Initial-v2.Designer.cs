@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
-using USSEScoreboard.Data;
+using Scoreboard.Website.Data;
 
-namespace USSEScoreboard.Migrations
+namespace Scoreboard.Website.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20171109194421_Initial-v2")]

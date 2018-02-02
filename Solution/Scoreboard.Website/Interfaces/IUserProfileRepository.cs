@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using USSEScoreboard.Models;
+using Scoreboard.Website.Models;
 
-namespace USSEScoreboard.Interfaces
+namespace Scoreboard.Website.Interfaces
 {
     public interface IUserProfileRepository
     {

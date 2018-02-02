@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace USSEScoreboard.Models.WigViewModels
+namespace Scoreboard.Website.Models.WigViewModels
 {
     public class EditWigViewModel
     {

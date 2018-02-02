@@ -6,7 +6,7 @@ using SendGrid;
 using System.Net.Mail;
 using SendGrid.Helpers.Mail;
 
-namespace USSEScoreboard.Services
+namespace Scoreboard.Website.Services
 {
     // This class is used by the application to send Email and SMS
     // when you turn on two-factor authentication in ASP.NET Identity.

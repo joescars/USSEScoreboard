@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using USSEScoreboard.Interfaces;
-using USSEScoreboard.Data;
-using USSEScoreboard.Models;
+using Scoreboard.Website.Interfaces;
+using Scoreboard.Website.Data;
+using Scoreboard.Website.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace USSEScoreboard.Models
+namespace Scoreboard.Website.Models
 {
     public class HighlightRepository : IHighlightRepository
     {

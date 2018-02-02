@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace USSEScoreboard.Migrations
+namespace Scoreboard.Website.Migrations
 {
     public partial class Initialv2 : Migration
     {

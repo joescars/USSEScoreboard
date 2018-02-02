@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using USSEScoreboard;
+using Scoreboard.Website;
 
 namespace AspNetCoreDotNetCore2._0App
 {

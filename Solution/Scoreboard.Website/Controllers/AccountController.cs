@@ -8,17 +8,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using USSEScoreboard.Models;
-using USSEScoreboard.Models.AccountViewModels;
-using USSEScoreboard.Services;
+using Scoreboard.Website.Models;
+using Scoreboard.Website.Models.AccountViewModels;
+using Scoreboard.Website.Services;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using USSEScoreboard.Data;
+using Scoreboard.Website.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using USSEScoreboard.Interfaces;
+using Scoreboard.Website.Interfaces;
 
-namespace USSEScoreboard.Controllers
+namespace Scoreboard.Website.Controllers
 {
     public class AccountController : Controller
     {

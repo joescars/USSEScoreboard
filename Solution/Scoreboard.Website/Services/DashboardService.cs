@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Scoreboard.Website.Data;
 using Scoreboard.Website.Models;
 using Scoreboard.Website.Interfaces;
+using Scoreboard.Common.Data;
 
 namespace Scoreboard.Website.Services
 {

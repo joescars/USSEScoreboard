@@ -1,18 +1,22 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Scoreboard.Common.Entities;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Scoreboard.Website.Models;
+using System.Text;
+using System.Configuration;
 
-namespace Scoreboard.Website.Data
+namespace Scoreboard.Common.Data
 {
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+        }
+
+        public ApplicationDbContext(string ConnStr)
+            : base (new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(ConnStr).Options)
+        {   
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -25,8 +29,7 @@ namespace Scoreboard.Website.Data
         }
 
         public DbSet<UserProfile> UserProfile { get; set; }
-        
-        public DbSet<Highlight> Highlight { get; set; }
 
+        public DbSet<Highlight> Highlight { get; set; }
     }
 }

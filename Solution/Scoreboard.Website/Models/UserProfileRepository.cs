@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Scoreboard.Website.Data;
 using Scoreboard.Website.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Scoreboard.Common.Entities;
+using Scoreboard.Common.Data;
 
 namespace Scoreboard.Website.Models
 {

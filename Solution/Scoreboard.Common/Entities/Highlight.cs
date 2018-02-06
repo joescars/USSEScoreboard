@@ -4,22 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Scoreboard.Website.Models
+namespace Scoreboard.Common.Entities
 {
-    public class PresentationEntry
+    public class Highlight
     {
-        public int PresentationEntryId { get; set; }
+        public int HighlightId { get; set; }
+        public string Body { get; set; }
         [ForeignKey("UserProfileId")]
         public int UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
-        public int Total { get; set; }
-        public DateTime WeekEnding { get; set; }
+        public DateTime DateStart { get; set; }
+        public DateTime DateEnd { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
 
-        public PresentationEntry()
+        public Highlight()
         {
-            this.Total = 0;
             this.DateCreated = DateTime.Now;
             this.DateModified = DateTime.Now;
         }

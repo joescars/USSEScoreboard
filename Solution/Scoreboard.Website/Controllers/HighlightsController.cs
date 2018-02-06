@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Scoreboard.Website.Data;
 using Scoreboard.Website.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Scoreboard.Website.Interfaces;
 using System.Security.Claims;
 using Scoreboard.Website.Models.HighlightViewModels;
+using Scoreboard.Common.Entities;
 
 namespace Scoreboard.Website.Controllers
 {

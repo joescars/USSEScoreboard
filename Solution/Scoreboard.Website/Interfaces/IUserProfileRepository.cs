@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Scoreboard.Website.Models;
+using Scoreboard.Common.Entities;
 
 namespace Scoreboard.Website.Interfaces
 {

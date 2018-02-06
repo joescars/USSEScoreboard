@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scoreboard.Functions", "Sco
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scoreboard.Website", "Scoreboard.Website\Scoreboard.Website.csproj", "{6C2BD293-4FE9-456D-9D90-1140E89A8683}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scoreboard.Common", "Scoreboard.Common\Scoreboard.Common.csproj", "{C69FFDCD-E4B9-4E70-822D-79FB46F2ACBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6C2BD293-4FE9-456D-9D90-1140E89A8683}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C2BD293-4FE9-456D-9D90-1140E89A8683}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C2BD293-4FE9-456D-9D90-1140E89A8683}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C69FFDCD-E4B9-4E70-822D-79FB46F2ACBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C69FFDCD-E4B9-4E70-822D-79FB46F2ACBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C69FFDCD-E4B9-4E70-822D-79FB46F2ACBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C69FFDCD-E4B9-4E70-822D-79FB46F2ACBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

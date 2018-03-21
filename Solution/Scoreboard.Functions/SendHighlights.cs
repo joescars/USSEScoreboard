@@ -32,7 +32,7 @@ namespace Scoreboard.Functions
 
             log.Info($"Sending to: {sendTo}");
 
-            SendMail(sendTo, hm.messagebody).Wait();
+            //SendMail(sendTo, hm.messagebody).Wait();
         }
 
         static async Task SendMail(string toEmail, string msgBody)

@@ -10,5 +10,5 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build Solution\Scoreboard.Website --configuration $(buildConfiguration)
+- script: dotnet build .\Solution\Scoreboard.Website --configuration $(buildConfiguration)
   displayName: 'dotnet build Scoreboard.website $(buildConfiguration)'

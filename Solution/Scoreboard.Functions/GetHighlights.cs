@@ -2,17 +2,21 @@ using System;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
-using System.Data.Entity;
-using Scoreboard.Functions.Models;
-using Scoreboard.Functions.Data;
+using Scoreboard.Functions.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Scoreboard.Common.Entities;
+using Scoreboard.Common.Data;
+using System.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace Scoreboard.Functions
 {
     public static class GetHighlights
     {
+        private static string conn = ConfigurationManager.ConnectionStrings["HighlightContext"].ConnectionString;       
+
         [FunctionName("GetHighlights")]
         public async static Task Run([TimerTrigger("0 0 9 * * 1")]TimerInfo myTimer, 
             [Queue("sedash-mailqueue", Connection = "AzureWebJobsStorage")] IAsyncCollector<string> outputQueue,
@@ -36,10 +40,11 @@ namespace Scoreboard.Functions
 
         private async static Task<string> GetUserHighlights()
         {
+
             string body = "<!DOCTYPE html>";
             body += "<html><head><style type=\"text/css\">body{font-family:Arial;font-size:13px;}</style></head><body>";
 
-            using (var db = new HighlightDbContext())
+            using (var db = new ApplicationDbContext(conn))
             {
                 // Runs on Monday to set for any items 
                 // entered previous Mon -> Sun
@@ -50,7 +55,7 @@ namespace Scoreboard.Functions
                 body += "<h3>Highlights for Week Ending " + currDate.AddDays(-3).ToShortDateString() + "</h3>";
                 body += "<hr size=\"1\">";
 
-                var myQuery = await db.Highlights
+                var myQuery = await db.Highlight
                 .Include(h => h.UserProfile)
                 .Where(h => h.DateStart >= startDate && h.DateEnd <= endDate)
                 .Select(h => new HighlightSearchResult
@@ -80,9 +85,9 @@ namespace Scoreboard.Functions
 
         static async Task<List<UserProfile>> GetUsers()
         {
-            using (var db = new HighlightDbContext())
+            using (var db = new ApplicationDbContext(conn))
             {
-                List<UserProfile> myUsersToSend = await db.UserProfiles
+                List<UserProfile> myUsersToSend = await db.UserProfile
                     .Where(u => u.IsActiveTeamMember == true).ToListAsync();
 
                 return myUsersToSend;

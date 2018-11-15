@@ -12,11 +12,11 @@ using Scoreboard.Website.Models;
 using Scoreboard.Website.Models.AccountViewModels;
 using Scoreboard.Website.Services;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Scoreboard.Website.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Scoreboard.Website.Interfaces;
+using Scoreboard.Common.Entities;
 
 namespace Scoreboard.Website.Controllers
 {

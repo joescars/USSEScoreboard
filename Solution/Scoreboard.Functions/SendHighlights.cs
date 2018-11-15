@@ -2,10 +2,10 @@ using System;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
-using Scoreboard.Functions.Models;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading.Tasks;
+using Scoreboard.Functions.ViewModels;
 
 namespace Scoreboard.Functions
 {

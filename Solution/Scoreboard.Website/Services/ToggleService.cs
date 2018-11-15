@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Scoreboard.Website.Data;
 using Scoreboard.Website.Models;
 using Scoreboard.Website.Interfaces;
+using Scoreboard.Common.Data;
+using Scoreboard.Common.Entities;
 
 namespace Scoreboard.Website.Services
 {

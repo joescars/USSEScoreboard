@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Scoreboard.Website.Data;
 using Microsoft.AspNetCore.Identity;
 using Scoreboard.Website.Models;
 using Scoreboard.Website.Services;
 using Scoreboard.Website.Interfaces;
 using Scoreboard.Website.Models.HomeViewModels;
+using Scoreboard.Common.Entities;
+using Scoreboard.Common.Data;
 
 namespace Scoreboard.Website.Controllers
 {

@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Scoreboard.Website.Data;
 using Scoreboard.Website.Models;
 using Scoreboard.Website.Services;
 using Scoreboard.Website.Interfaces;
@@ -20,6 +19,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
+using Scoreboard.Common.Data;
 
 namespace Scoreboard.Website
 {

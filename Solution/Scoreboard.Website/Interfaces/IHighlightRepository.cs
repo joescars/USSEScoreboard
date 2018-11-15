@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Scoreboard.Website.Models;
+using Scoreboard.Common.Entities;
 
 namespace Scoreboard.Website.Interfaces
 {

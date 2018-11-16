@@ -1,6 +1,7 @@
 # Southeast Scoreboard
 
 [![Build Status](https://dev.azure.com/joraio/Scoreboard/_apis/build/status/joescars.USSEScoreboard)](https://dev.azure.com/joraio/Scoreboard/_build/latest?definitionId=4)
+![Deployment Status](https://vsrm.dev.azure.com/joraio/_apis/public/Release/badge/1c293197-b689-4d4d-af69-b288da36b4fb/2/2)
 
 This is a generic tool built to help manage commitments and goals for our team. It has a custom structure based on a changing set of rules. 
 
@@ -14,7 +15,7 @@ Built using the following tools and languages:
 
 * [Azure Pipelines Ops](https://azure.microsoft.com/en-us/services/devops/pipelines/)
 * [Visual Studio Community Edition](https://www.visualstudio.com/downloads/)
-* [ASP.NET Core 2.0](https://www.asp.net/core)
+* [ASP.NET Core 2.1](https://www.asp.net/core)
 * [MVC Core](https://docs.microsoft.com/en-us/aspnet/core/mvc/overview)
 * [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
 * [Azure Functions C# Class Library](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-class-library)
